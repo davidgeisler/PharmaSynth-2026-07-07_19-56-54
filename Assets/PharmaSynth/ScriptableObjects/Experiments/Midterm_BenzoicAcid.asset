@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Midterm_BenzoicAcid
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: midterm-benzoic-acid
+  moduleTitle: 'Midterm 1: Benzoic Acid'
+  intendedLearningOutcomes:
+  - Oxidise benzaldehyde to benzoic acid with dilute KMnO4
+  - Isolate the product by filtering MnO2 and acidifying with HCl
+  - Purify crystals by recrystallisation from hot water
+  - Confirm benzoic acid by litmus, FeCl3 and ester-formation tests
+  tasks: []
+  graphTasks:
+  - taskId: prepare-permanganate
+    label: Prepare 0.1% KMnO4 solution (0.1 g / 100 mL)
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Dissolve 0.1 g potassium permanganate in 100 mL purified water.
+  - taskId: oxidise-benzaldehyde
+    label: Add benzaldehyde to KMnO4 and warm to oxidise
+    phase: 1
+    prerequisites:
+    - prepare-permanganate
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Add benzaldehyde to the permanganate; warm until the violet colour is discharged.
+  - taskId: filter-mno2
+    label: Filter off the brown MnO2 sludge
+    phase: 1
+    prerequisites:
+    - oxidise-benzaldehyde
+    progressWeight: 1
+    skill: 2
+    rubricCategory: 0
+    required: 1
+    hint: Filter the hot mixture to remove the brown manganese dioxide.
+  - taskId: acidify
+    label: Acidify the filtrate with 6N HCl to precipitate benzoic acid
+    phase: 1
+    prerequisites:
+    - filter-mno2
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Add 6N HCl until acidic; white benzoic acid crystals separate.
+  - taskId: crystallise
+    label: Cool in an ice bath; recrystallise from hot water
+    phase: 1
+    prerequisites:
+    - acidify
+    progressWeight: 1
+    skill: 2
+    rubricCategory: 0
+    required: 1
+    hint: Chill to complete crystallisation, then recrystallise from the minimum
+      hot water.
+  - taskId: test-litmus
+    label: 'Litmus test: turns blue litmus red (acidic)'
+    phase: 2
+    prerequisites:
+    - crystallise
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Dissolve a little product; blue litmus turning red confirms a carboxylic
+      acid.
+  - taskId: test-fecl3
+    label: 'FeCl3 test: buff / salmon precipitate'
+    phase: 2
+    prerequisites:
+    - crystallise
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Neutralise to sodium benzoate then add FeCl3; a buff precipitate confirms
+      benzoate.
+  - taskId: test-ester
+    label: Ester test with propyl alcohol (fruity odour)
+    phase: 2
+    prerequisites:
+    - crystallise
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Warm with propyl alcohol + a drop of H2SO4; a fruity ester odour confirms
+      the acid.
+  - taskId: record-yield
+    label: Record yield and observations on the data sheet
+    phase: 3
+    prerequisites:
+    - test-litmus
+    - test-fecl3
+    - test-ester
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter the crystal mass, % yield and each test result.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 900

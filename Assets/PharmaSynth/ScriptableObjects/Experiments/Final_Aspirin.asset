@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Final_Aspirin
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: final-aspirin
+  moduleTitle: 'Final 2: Aspirin'
+  intendedLearningOutcomes:
+  - Acetylate salicylic acid with acetic anhydride using an acid catalyst
+  - Control water-bath temperature to avoid decomposition (overheat error)
+  - Isolate crystals by ice crystallisation and Buchner (vacuum) filtration
+  - Confirm purity with the ferric-chloride test (no violet = acetylated)
+  tasks: []
+  graphTasks:
+  - taskId: weigh-salicylic
+    label: Weigh salicylic acid (10 g)
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Weigh 10 g of salicylic acid into a dry conical flask.
+  - taskId: add-anhydride
+    label: Add acetic anhydride + a few drops conc. H2SO4 (fume hood)
+    phase: 0
+    prerequisites:
+    - weigh-salicylic
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: In the fume hood, add 25 mL acetic anhydride and 5 drops conc. sulfuric
+      acid.
+  - taskId: warm-waterbath
+    label: Warm gently in a water bath (do NOT overheat)
+    phase: 1
+    prerequisites:
+    - add-anhydride
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Warm in a water bath ~10 min. Overheating chars the product and forces
+      a redo.
+  - taskId: crystallise-ice
+    label: Add cold water and crystallise in an ice bath
+    phase: 1
+    prerequisites:
+    - warm-waterbath
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Pour into cold water to destroy excess anhydride; chill on ice to crystallise.
+  - taskId: buchner-filter
+    label: Collect crystals by Buchner (vacuum) filtration
+    phase: 1
+    prerequisites:
+    - crystallise-ice
+    progressWeight: 1
+    skill: 2
+    rubricCategory: 0
+    required: 1
+    hint: Filter under vacuum and wash with a little cold water.
+  - taskId: test-fecl3
+    label: 'FeCl3 test: no violet colour = acetylation complete'
+    phase: 2
+    prerequisites:
+    - buchner-filter
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Add FeCl3 to a sample; a violet colour means unreacted salicylic acid remains.
+  - taskId: record-yield
+    label: Record % yield and observations on the data sheet
+    phase: 3
+    prerequisites:
+    - test-fecl3
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter the aspirin mass and calculate % yield from 10 g salicylic acid.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 720

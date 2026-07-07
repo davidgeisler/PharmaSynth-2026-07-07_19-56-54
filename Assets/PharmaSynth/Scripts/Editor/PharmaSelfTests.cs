@@ -35,6 +35,7 @@ public static class PharmaSelfTests
         ChemVisualSuite();
         UISuite();
         W4Suite();
+        InteractionSuite();
         ContentSuite();
 
         string summary = $"PharmaSynth Self-Tests: {_total - _fail}/{_total} passed";
@@ -228,15 +229,80 @@ public static class PharmaSelfTests
         finally { UnityEngine.Object.DestroyImmediate(rgo); UnityEngine.Object.DestroyImmediate(module); }
     }
 
+    static void InteractionSuite()
+    {
+        // A trigger station requiring a specific LabItem accepts only that prop
+        // (bring-the-right-thing-here), while an unset id accepts anything (legacy poke).
+        var sgo = new GameObject("station");
+        var igo = new GameObject("correct"); var wgo = new GameObject("wrong");
+        try
+        {
+            var station = sgo.AddComponent<ExperimentTaskStation>();
+            station.SetRequiredItemId("sodium-acetate");
+            var correct = igo.AddComponent<LabItem>(); correct.SetItemId("sodium-acetate");
+            var wrong = wgo.AddComponent<LabItem>(); wrong.SetItemId("soda-lime");
+            A("interaction: station accepts matching item", station.AcceptsItem(correct));
+            A("interaction: station rejects wrong item", !station.AcceptsItem(wrong));
+            A("interaction: station rejects null item", !station.AcceptsItem(null));
+
+            var open = new GameObject("open").AddComponent<ExperimentTaskStation>();
+            A("interaction: unset id accepts anything", open.AcceptsItem(wrong) && open.AcceptsItem(null));
+            UnityEngine.Object.DestroyImmediate(open.gameObject);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(sgo);
+            UnityEngine.Object.DestroyImmediate(igo);
+            UnityEngine.Object.DestroyImmediate(wgo);
+        }
+    }
+
     static void ContentSuite()
     {
         string dir = "Assets/PharmaSynth/ScriptableObjects/Experiments/";
-        foreach (var (file, tasks) in new[] { ("Tutorial_Methane", 5), ("Prelim_ChemicalCompounding", 6), ("Prelim_EthylAlcohol", 7) })
+        foreach (var (file, tasks) in new[] {
+            ("Tutorial_Methane", 5), ("Prelim_ChemicalCompounding", 6), ("Prelim_EthylAlcohol", 7),
+            ("Midterm_BenzoicAcid", 9), ("Final_Aspirin", 7) })
         {
             var m = AssetDatabase.LoadAssetAtPath<ExperimentModuleDefinition>(dir + file + ".asset");
             A("content: " + file + " loads", m != null);
-            if (m != null) A("content: " + file + " has " + tasks + " tasks", m.BuildTaskGraph().Tasks.Count == tasks);
+            if (m == null) continue;
+
+            var g = m.BuildTaskGraph();
+            A("content: " + file + " has " + tasks + " tasks", g.Tasks.Count == tasks);
+
+            // The authored graph must be fully solvable respecting prerequisites,
+            // proving there are no unreachable steps or prerequisite cycles.
+            A("content: " + file + " solvable to 100%", DriveToCompletion(g) && g.Progress01 >= 0.999f);
+
+            // Every phase that has tasks must be reachable/complete after a clean run.
+            foreach (TaskPhase ph in System.Enum.GetValues(typeof(TaskPhase)))
+            {
+                bool hasPhase = false;
+                foreach (var t in g.Tasks) if (t.phase == ph) { hasPhase = true; break; }
+                if (hasPhase) A("content: " + file + " phase " + ph + " complete", g.IsPhaseComplete(ph));
+            }
+
+            // The scoring/mastery spine must build from the authored data.
+            A("content: " + file + " builds mastery model", m.BuildMasteryModel() != null);
+            A("content: " + file + " builds score calculator", m.BuildScoreCalculator() != null);
         }
+    }
+
+    /// Repeatedly completes every currently-available task until none remain.
+    /// Returns false if it stalls with required tasks still incomplete (unreachable step).
+    static bool DriveToCompletion(TaskGraph g)
+    {
+        for (int guard = 0; guard < 100; guard++)
+        {
+            var ids = new System.Collections.Generic.List<string>();
+            foreach (var t in g.AvailableTasks()) ids.Add(t.taskId);
+            if (ids.Count == 0) break;
+            foreach (var id in ids) g.TryComplete(id);
+        }
+        foreach (var t in g.Tasks)
+            if (t.required && !g.IsComplete(t.taskId)) return false;
+        return true;
     }
 }
 #endif

@@ -37,12 +37,15 @@ public class ExperimentTaskStation : MonoBehaviour
     [SerializeField] private bool activateOnSelect = true;     // poke/grab the station to complete it
     [SerializeField] private bool activateOnTriggerEnter = false;
     [SerializeField] private string requiredTag = "";   // e.g. only the player's hand collider
+    [Tooltip("If set, only a grabbable LabItem with this exact itemId completes the station (hands-on 'bring the right prop here').")]
+    [SerializeField] private string requiredItemId = "";
 
     private XRBaseInteractable _hookedInteractable;
 
     public string TaskId => taskId;
     public void SetRunner(ExperimentRunner r) => runner = r;
     public void SetTaskId(string id) => taskId = id;
+    public void SetRequiredItemId(string id) => requiredItemId = id;
 
     private void OnEnable()
     {
@@ -76,6 +79,15 @@ public class ExperimentTaskStation : MonoBehaviour
     {
         if (!activateOnTriggerEnter) return;
         if (!string.IsNullOrEmpty(requiredTag) && !other.CompareTag(requiredTag)) return;
+        if (!string.IsNullOrEmpty(requiredItemId))
+        {
+            var item = LabItem.Resolve(other);
+            if (item == null || item.itemId != requiredItemId) return;   // wrong prop → ignore
+        }
         Activate();
     }
+
+    /// Would the given item complete this station? Pure predicate for edit-mode tests.
+    public bool AcceptsItem(LabItem item)
+        => string.IsNullOrEmpty(requiredItemId) || (item != null && item.itemId == requiredItemId);
 }
