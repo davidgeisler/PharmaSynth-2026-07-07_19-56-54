@@ -1227,6 +1227,7 @@ GameObject:
   - component: {fileID: 191569879}
   - component: {fileID: 191569882}
   - component: {fileID: 191569881}
+  - component: {fileID: 191569883}
   m_Layer: 0
   m_Name: ExperimentSystems
   m_TagString: Untagged
@@ -1303,6 +1304,21 @@ MonoBehaviour:
   runner: {fileID: 191569879}
   clearStationRegistryOnBegin: 1
   beginOnSelect: 0
+--- !u!114 &191569883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191569878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe1374ea035b0a4bb3bf121682e8f46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DevExperimentDriver
+  runner: {fileID: 191569879}
+  starter: {fileID: 191569882}
+  enableInBuild: 0
 --- !u!1 &238422237
 GameObject:
   m_ObjectHideFlags: 0
@@ -7138,6 +7154,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4467159820709882772, guid: 70b989489405b6f4da587631e978a478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1579804415}
+    - targetCorrespondingSourceObject: {fileID: 4467159820709882772, guid: 70b989489405b6f4da587631e978a478, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1579804416}
     - targetCorrespondingSourceObject: {fileID: 1206839871727133987, guid: 70b989489405b6f4da587631e978a478, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2004146996}
@@ -7699,6 +7718,7 @@ MonoBehaviour:
     overheat: "Careful \u2014 it's overheating! Ease off the heat."
     safety: Safety first! Mind the hazard and keep your PPE on.
   lineSeconds: 3.5
+  deferIntroToDirector: 1
 --- !u!114 &1579804413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7833,6 +7853,43 @@ MonoBehaviour:
   neutral: {r: 0.2, g: 0.9, b: 1, a: 1}
   happy: {r: 0.3, g: 1, b: 0.5, a: 1}
   warning: {r: 1, g: 0.6, b: 0.15, a: 1}
+--- !u!114 &1579804416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579804411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2ea67509dc9ac4ba9d771486616d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneDirector
+  runner: {fileID: 191569879}
+  narration: {fileID: 1579804413}
+  faceBehaviour: {fileID: 1579804415}
+  intro: {fileID: 0}
+  reagentPrep: {fileID: 0}
+  success: {fileID: 0}
+  failure: {fileID: 0}
+  onCutsceneStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onCutsceneFinished:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1579804412}
+        m_TargetAssemblyTypeName: PharmeeBrain, Assembly-CSharp
+        m_MethodName: InstructCurrent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1584590506
 PrefabInstance:
   m_ObjectHideFlags: 0

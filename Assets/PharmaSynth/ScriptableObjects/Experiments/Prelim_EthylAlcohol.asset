@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Prelim_EthylAlcohol
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: prelim-ethyl-alcohol
+  moduleTitle: 'Prelim: Ethyl Alcohol Synthesis'
+  intendedLearningOutcomes:
+  - Ferment sugar to ethanol with yeast
+  - Confirm CO2 evolution with limewater
+  - "Distil and collect the 70\u201380\xB0C fraction"
+  - Confirm ethanol by combustion, iodoform and ester tests
+  tasks: []
+  graphTasks:
+  - taskId: prepare-must
+    label: Prepare the fermentation must (sugar + yeast)
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Dissolve brown sugar, add dry yeast and ammonium phosphate.
+  - taskId: ferment
+    label: Ferment; confirm CO2 with limewater
+    phase: 1
+    prerequisites:
+    - prepare-must
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Seal with a delivery tube into limewater; watch it turn milky.
+  - taskId: distill
+    label: "Distil; collect the 70\u201380\xB0C fraction"
+    phase: 1
+    prerequisites:
+    - ferment
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: "Heat gently; collect only the 70\u201380\xB0C cut."
+  - taskId: test-combustion
+    label: Combustion test (blue flame)
+    phase: 2
+    prerequisites:
+    - distill
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Ignite a sample; a blue flame means complete combustion.
+  - taskId: test-iodoform
+    label: Iodoform test (yellow precipitate)
+    phase: 2
+    prerequisites:
+    - distill
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: "Add KI + NaOCl, warm to 60\xB0C; look for a yellow precipitate."
+  - taskId: test-ester
+    label: Ester formation (fruity odor)
+    phase: 2
+    prerequisites:
+    - distill
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Warm with acetic acid + H2SO4; note the fruity smell.
+  - taskId: record-yield
+    label: Record yield and observations
+    phase: 3
+    prerequisites:
+    - test-combustion
+    - test-iodoform
+    - test-ester
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter the distillate volume and test results.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 00000000030000000100000005000000
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 600

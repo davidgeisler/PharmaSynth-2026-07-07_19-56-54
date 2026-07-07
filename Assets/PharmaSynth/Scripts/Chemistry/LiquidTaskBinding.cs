@@ -18,6 +18,7 @@ public class LiquidTaskBinding : MonoBehaviour
     [SerializeField] private LiquidPhysics vessel;
     [SerializeField] private ExperimentRunner runner;
     [SerializeField] private List<ReagentStep> expectedReagents = new List<ReagentStep>();
+    [SerializeField] private FumeHoodZone fumeHood;   // toxic reagents must be handled here
 
     private void OnEnable()
     {
@@ -48,6 +49,10 @@ public class LiquidTaskBinding : MonoBehaviour
     public void HandleReagent(ChemicalData chem)
     {
         if (runner == null || chem == null) return;
+
+        // Fume-hood safety: a toxic/volatile reagent handled outside the hood is a violation.
+        if (chem.requiresFumeHood && (fumeHood == null || !fumeHood.IsOccupied))
+            runner.RecordMistake(LabErrorType.FumeHoodViolation, chem.chemicalName + " must be handled in the fume hood");
 
         string taskId = TaskForReagent(chem);
         if (string.IsNullOrEmpty(taskId))

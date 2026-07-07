@@ -34,6 +34,8 @@ public class PharmeeBrain : MonoBehaviour
     [SerializeField] private MonoBehaviour faceBehaviour; // optional IPharmeeFace
     [SerializeField] private DialogueSet lines = new DialogueSet();
     [SerializeField] private float lineSeconds = 3.5f;
+    [Tooltip("When a CutsceneDirector handles intro/outro, let it greet — the brain only instructs/warns.")]
+    [SerializeField] private bool deferIntroToDirector = false;
 
     private IPharmeeFace _face;
     private bool _subscribed;
@@ -81,6 +83,9 @@ public class PharmeeBrain : MonoBehaviour
 
     private void OnStarted(ExperimentModuleDefinition m)
     {
+        // With a cutscene director present, it plays the intro then calls
+        // InstructCurrent() on finish — the brain stays quiet here to avoid overlap.
+        if (deferIntroToDirector) return;
         Speak(PharmeeState.Greeting, PharmeeFaceExpression.Happy, lines.greeting);
         InstructCurrent();
     }
@@ -92,6 +97,8 @@ public class PharmeeBrain : MonoBehaviour
 
     private void OnFinished(ExperimentResult r)
     {
+        // The end cutscene carries the celebrate/encourage line when a director is present.
+        if (deferIntroToDirector) return;
         if (r.passed) Speak(PharmeeState.Celebrating, PharmeeFaceExpression.Happy, lines.celebrate);
         else Speak(PharmeeState.Encouraging, PharmeeFaceExpression.Neutral, lines.encourage);
     }
