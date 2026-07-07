@@ -12,7 +12,50 @@ Guidance for Claude Code working in this repository. Read this first each sessio
 `C:\Users\MSI\.claude\plans\you-are-the-best-cozy-possum.md` — the critique-hardened master plan: full design spec, architecture, asset gap list, week-by-week roadmap, error-handling matrix, Quest 3 perf budget, verification strategy. Follow it; update it when decisions change.
 Key user requirements not in the old docs: wrist-flip watch checklist (right hand default, button fallback); auto-checking task conditions; end cutscene ALWAYS (success or fail variant); NPC robot dialogues; improved animations; **spacious lab layout** (wide clearances around tables/gather points, unobstructed experimentation).
 
-## Current status (as of 2026-07-07 session — Week 1 setup DONE)
+## ⭐ SESSION HANDOFF — end of Week 4 (2026-07-08). READ THIS FIRST.
+
+**Where we are:** W1–W4 DONE. The entire game **engine is feature-complete and verified** (45/45 assertions via menu **Tools ▸ PharmaSynth ▸ Run Self-Tests**), and a **playable Methane tutorial** is assembled in `Assets/Scenes/SampleScene.unity`. Console is zero-error. Work branch: `feature/asset-intake` (nothing committed — commit only when asked).
+
+**How to play-test right now:** open SampleScene → press Play → drive with keyboard **B**=begin, **1-5**=complete step, **F**=finish, **R**=retry (DevExperimentDriver on `ExperimentSystems`). MCP-driven play mode is unreliable on this PC — a human presses Play. In the XR Device Simulator you can also poke the 5 station cubes.
+
+**Architecture map** (all runtime C# under `Assets/PharmaSynth/Scripts/`, global namespace, thin MonoBehaviours over unit-tested plain-C# cores):
+- `Experiment/` — `TaskGraph`(+Model), `ExperimentModuleDefinition` (v2 data: graphTasks/phases/skills/rubric/threshold), `ExperimentRunner` (orchestrator + events + two-part gate), `MistakeLog` (9 LabErrorTypes), `ExperimentFlowManager` (legacy, one Ethyl module).
+- `Scoring/` — `MasteryModel` (BKT), `ScoreCalculator` (rubric, normalized), `ExperimentGrader` (run-state→grade).
+- `Progression/` — `ProgressionService` (versioned JSON save + gate/unlock).
+- `Chemistry/` — `LiquidPhysics` (event-driven, de-hardcoded), `LiquidTaskBinding` (context-aware reagent→task + fume-hood check), `ReactionRule/Registry`, `ChemicalData`, `TemperatureSim`, `GasCollection`, `CrystallizationController`, `FiltrationController`, `PharmaLiquid.shader`.
+- `NPC/` — `PharmeeBrain` (dialogue state machine), `PharmeeFace` (IPharmeeFace), `NPCNarrationController` (subtitles + Say()), `CutsceneData`+`CutsceneDirector` (VR-safe, end cutscene always), `ModuleCutsceneController` (inherited, PlayableDirector).
+- `UI/` — `ExperimentHudController`, `TabletChecklistController`, `GradeScreenController`, `WristWatchController`.
+- `Interaction/` — `ExperimentTaskStation`(+registry), `ExperimentStarter`, `WaypointGuide`, `DevExperimentDriver`.
+- `Safety/` — `PPEController`, `FumeHoodZone`, `HazardZone`, `AcidCorrosion`/`SaltBurn` (inherited).
+- `Editor/PharmaSelfTests.cs` — the regression suite.
+- **Experiments authored** (`ScriptableObjects/Experiments/`): `Tutorial_Methane`, `Prelim_ChemicalCompounding`, `Prelim_EthylAlcohol`. Cutscenes in `ScriptableObjects/Cutscenes/`.
+- **Scene objects:** `ExperimentSystems` (runner+starter+guide+devdriver, module=Methane), `LabHUD`, `LabTablet`, `GradeScreen`, `RobotNPC` (PharmeeBrain+Face+Narration+CutsceneDirector+`PharmeeSubtitles`), `MethaneStations` (5), `BeginButton`, `PPELocker`, `WaypointMarker`, `XR Origin (XR Rig)`.
+
+**ART ASSETS = IN SCOPE to CREATE/REPLACE/IMPROVE (user directive 2026-07-08).** Nothing is blocked on "sourcing." Produce the best outcome by any means: author in Blender/DCC (`Docs/raw-art-sources/` has the lab-coat + test-tube sources), improve/re-texture the imported packs, buy/import Asset Store where it's faster, or use **`Unity_AssetGeneration_*` (COSTS Unity AI credits — flag before spending)** for textures/props. Storyboard/cutscene PDFs are references to EXCEED, not copy (their labels are garbled AI text). Re-author clean reagent-label textures. Placeholder poke-cubes/primitive UI are stand-ins to be replaced with real props/polished canvases.
+
+## REMAINING IMPLEMENTATION ROADMAP (W5 → Aug 31 deadline)
+
+Engine is done; remaining work = **content (fast, data-driven)** + **art/interaction (needs assets, now in scope)** + **on-device**. Suggested order:
+1. **Real interactions** (replace poke-stations): grabbable reagent bottles/apparatus (XRGrabInteractable) → wire to the BUILT systems — pour→`LiquidTaskBinding`, place-on-scale→`WeighingScaleController`, burner→`TemperatureSim`, gas→`GasCollection`, ice-bath→`CrystallizationController`, Büchner→`FiltrationController`. Sockets for placement. This makes Methane truly hands-on; the logic already works & is tested.
+2. **Art pass 1 — Pharmee & UI:** re-point `PharmeeFace` at the robot's screen mesh; author Pharmee animations (idle-float/talk/gesture/celebrate/warn) + face-state materials; polish the world-space HUD/tablet/watch/grade canvases (replace primitive panels); proper wrist-watch model + gesture tune.
+3. **Audio:** create SFX (pour/bubble/shatter/alarm/UI) + Pharmee robotic beep "voice" set + ambient lab loop + menu music; add an `AudioService` (mixer groups) and wire the AudioSource hooks already present (NPCNarrationController, BreakableGlassware).
+4. **PPE flow polish:** locker/ante-room, mirror/avatar reflection showing worn PPE, glove material swap on hands.
+5. **Dr. Jimenez:** create/rig a scientist examiner (assessment mode: observes, no hints); `ExaminerNPC` component to build.
+6. **Cutscenes polish:** the data-driven director works; add staging/fades/props; wine-making "7 days & 7 nights" time-skip; per-experiment cutscene data.
+7. **Content — remaining experiments as v2 data** (quick, same template): M1 Benzoic Acid, M2 Acetanilide, M3 Acetone, M4 Chloroform, F1 Benzamide, F2 Aspirin (incl. overheat branch — TemperatureSim.Overheated ready), F3 Caffeine, F4 Wine. Chemistry from Appendix C (fix storyboard errors). Author reaction rules (ReactionRegistry) + per-vessel bindings.
+8. **Menus & flow:** MainMenu/Lobby scene (Tutorial/Laboratory/Settings/Quit), Period hub (3 doors, mastery-gated via ProgressionService), experiment-select, Settings (audio/text/comfort/handedness), post-lab quiz UI + data-sheet yield entry.
+9. **On-device (when Quest 3 arrives):** finish Android OpenXR feature toggles if not already; comfort + 90 Hz perf pass (ASTC/atlasing/draw-calls); wrist-gesture ergonomics; full revision-checklist UAT; ISO/IEC 25010 acceptance instrument; final APK + turnover docs.
+
+**Known gotchas (carry forward):**
+- `Unity_RunCommand` compiles inside `Unity.AI.*` namespace → `Image` etc. resolve to `Unity.AI.Image`; **fully-qualify `UnityEngine.UI.Image`** (alias `using UImage = UnityEngine.UI.Image;`). `System.Reflection`/`ISet` are blocked; filesystem writes (`File.WriteAllText`, `Directory.Delete`, bulk `AssetDatabase` delete/move loops) get flagged "requires user interaction" — do those via the Bash tool or single `AssetDatabase.CreateAsset` calls.
+- **Edit-mode:** `OnEnable`/`Awake` don't fire on `AddComponent` → give components a public `SetX()`/bind method for edit-mode tests (pattern used throughout).
+- MCP "named pipe not found" = Unity busy/reloading; wait for `Logs/Editor.log` quiet, retry. XR/package ops have crashed the editor twice (auto-recovered).
+- Before deleting a script, **grep all of `Assets/` for the TYPE NAME** (not just scan scene/prefab components) — the LiquidData deletion broke XRBottleUI.
+- FBX imports have **no colliders**; add them in-scene (walkable floor = `Floor (1)`). Standalone XR `InitManagerOnStart`=FALSE (headless-PC-safe); Android=TRUE.
+- Poppler/PDF: machine TEMP hijacked `C:\Program Files\poppler-24.08.0\...`; use `pdftotext.exe` at Git path + python pypdf; manuscript via gdoc `export?format=txt`.
+
+## Detailed progress log (history; the SESSION HANDOFF section above is the current-state summary)
+### Week 1 setup DONE
 - ✅ All Docs processed via 13-agent digest → `Docs/digests/doc-digest-13agents.json` (+ plan critique in `plan-critique-3agents.json`; storyboard/cutscene page renders in `Docs/digests/images/`, gitignored).
 - ✅ Plan approved: `C:\Users\MSI\.claude\plans\you-are-the-best-cozy-possum.md`. Work on branch **`feature/asset-intake`**.
 - ✅ Handoff archives backed up (MD5-verified) to `C:\Users\MSI\PharmaSynth-handoff-backup\` (also holds `pre-import-snapshot/`). All zips + `Transition.unitypackage` now DELETED from repo (backups verified). Only the 2 reference PDFs remain in `Docs/handoff_assets/`.
