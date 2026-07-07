@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Midterm_Acetanilide
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: midterm-acetanilide
+  moduleTitle: 'Midterm 2: Acetanilide'
+  intendedLearningOutcomes:
+  - Acetylate aniline to acetanilide in the fume hood
+  - Isolate crystals by ice crystallisation and washing
+  - Confirm the amide by hydrolysis and bromination tests
+  tasks: []
+  graphTasks:
+  - taskId: prep-hcl
+    label: "Prepare 0.1N HCl (2.1 mL conc HCl \u2192 250 mL)"
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Slowly dilute 2.1 mL concentrated HCl to 250 mL in a volumetric flask.
+  - taskId: measure-aniline
+    label: Measure 2 mL aniline in the fume hood
+    phase: 0
+    prerequisites:
+    - prep-hcl
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: "Aniline is toxic \u2014 always work in the fume hood."
+  - taskId: add-acetic
+    label: Add 2 mL glacial acetic acid
+    phase: 1
+    prerequisites:
+    - measure-aniline
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Add glacial acetic acid to the aniline.
+  - taskId: add-acylating
+    label: Carefully add 2 mL acetyl chloride (fume hood)
+    phase: 1
+    prerequisites:
+    - add-acetic
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: 'Add acetyl chloride slowly; it reacts vigorously. (Client flag: acetic
+      anhydride is the safer alternative.)'
+  - taskId: heat-bath
+    label: Heat gently ~5 min in a water bath
+    phase: 1
+    prerequisites:
+    - add-acylating
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Warm in a water bath about 5 minutes, then cool.
+  - taskId: ice-crystallise
+    label: Add 20 mL ice-cold water to crystallise
+    phase: 1
+    prerequisites:
+    - heat-bath
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Pour into ice-cold water to precipitate acetanilide.
+  - taskId: filter-wash
+    label: "Filter, wash 3\xD7 with water, dry"
+    phase: 1
+    prerequisites:
+    - ice-crystallise
+    progressWeight: 1
+    skill: 2
+    rubricCategory: 0
+    required: 1
+    hint: Filter the crystals, wash three times, and dry.
+  - taskId: test-hydrolysis
+    label: Hydrolysis with conc HCl (crystals reappear)
+    phase: 2
+    prerequisites:
+    - filter-wash
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Boil with conc HCl; on cooling crystals of the amine salt appear.
+  - taskId: test-bromination
+    label: Bromination vs aniline (bromine uptake)
+    phase: 2
+    prerequisites:
+    - filter-wash
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Add bromine water; compare the amount needed against free aniline.
+  - taskId: record-yield
+    label: Record % yield and observations
+    phase: 3
+    prerequisites:
+    - test-hydrolysis
+    - test-bromination
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter crystal mass, % yield and test results.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 900

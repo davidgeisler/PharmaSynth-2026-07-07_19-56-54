@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Final_Benzamide
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: final-benzamide
+  moduleTitle: 'Final 1: Benzamide'
+  intendedLearningOutcomes:
+  - Prepare benzamide from benzoyl chloride and ammonia in an ice bath
+  - Isolate and oven-dry the crystals
+  - Confirm the amide by alkaline, acid and nitrous-acid tests
+  tasks: []
+  graphTasks:
+  - taskId: measure-ammonia
+    label: Place 5 mL concentrated ammonia in a 50 mL flask (fume hood)
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Measure concentrated ammonia in the fume hood.
+  - taskId: ice-bath
+    label: Cool the flask in an ice bath
+    phase: 0
+    prerequisites:
+    - measure-ammonia
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Chilling controls the vigorous reaction.
+  - taskId: add-benzoyl
+    label: Add 1 mL benzoyl chloride dropwise, shaking
+    phase: 1
+    prerequisites:
+    - ice-bath
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Add benzoyl chloride drop by drop, shaking frequently.
+  - taskId: stand
+    label: "Let stand 10\u201315 minutes"
+    phase: 1
+    prerequisites:
+    - add-benzoyl
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Allow the benzamide to crystallise fully.
+  - taskId: filter-dry
+    label: Filter, wash with cold water, oven-dry
+    phase: 1
+    prerequisites:
+    - stand
+    progressWeight: 1
+    skill: 2
+    rubricCategory: 0
+    required: 1
+    hint: Collect the precipitate and dry it in the oven.
+  - taskId: test-alkali
+    label: "Alkaline hydrolysis (ammonia vapour \u2192 blue litmus)"
+    phase: 2
+    prerequisites:
+    - filter-dry
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Boil with 10% NaOH; ammonia vapour turns moist litmus blue.
+  - taskId: test-acid
+    label: Acid hydrolysis (dil HCl)
+    phase: 2
+    prerequisites:
+    - filter-dry
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Boil with dilute HCl; test the vapour with litmus.
+  - taskId: test-nitrous
+    label: Nitrous-acid test (dil HCl + sodium nitrite)
+    phase: 2
+    prerequisites:
+    - filter-dry
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: "Add sodium nitrite to the acidified sample. (Manual's 'nitrate' is a typo
+      \u2014 use nitrite.)"
+  - taskId: record-yield
+    label: Record % yield and observations
+    phase: 3
+    prerequisites:
+    - test-alkali
+    - test-acid
+    - test-nitrous
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter crystal mass, % yield and test results.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 900

@@ -36,6 +36,7 @@ public static class PharmaSelfTests
         UISuite();
         W4Suite();
         InteractionSuite();
+        ProgressionFlowSuite();
         ContentSuite();
 
         string summary = $"PharmaSynth Self-Tests: {_total - _fail}/{_total} passed";
@@ -257,12 +258,52 @@ public static class PharmaSelfTests
         }
     }
 
+    static void ProgressionFlowSuite()
+    {
+        A("catalog: 11 entries", ExperimentCatalog.Count == 11);
+        int tut = 0, pre = 0, mid = 0, fin = 0;
+        foreach (var e in ExperimentCatalog.Entries)
+        {
+            if (e.period == ExperimentPeriod.Tutorial) tut++;
+            else if (e.period == ExperimentPeriod.Prelim) pre++;
+            else if (e.period == ExperimentPeriod.Midterm) mid++;
+            else fin++;
+        }
+        A("catalog: period split 1/2/4/4", tut == 1 && pre == 2 && mid == 4 && fin == 4);
+
+        // Every prerequisite must reference an experiment earlier in the roster.
+        bool chainOk = true; var seen = new List<string>();
+        foreach (var e in ExperimentCatalog.Entries)
+        {
+            if (!string.IsNullOrEmpty(e.prerequisiteModuleId) && !seen.Contains(e.prerequisiteModuleId)) chainOk = false;
+            seen.Add(e.moduleId);
+        }
+        A("catalog: prereq chain valid + ordered", chainOk);
+
+        var svc = new ProgressionService(System.IO.Path.Combine(Application.temporaryCachePath, "flow_selftest.json"));
+        var flow = new ProgressionFlow(svc);
+        A("flow: only tutorial unlocked at start", flow.IsUnlocked("tutorial-methane") && !flow.IsUnlocked("prelim-ethyl-alcohol"));
+        A("flow: next is the tutorial", flow.NextExperiment()?.moduleId == "tutorial-methane");
+        A("flow: tutorial period open, prelim closed", flow.IsPeriodUnlocked(ExperimentPeriod.Tutorial) && !flow.IsPeriodUnlocked(ExperimentPeriod.Prelim));
+
+        svc.RecordResult("tutorial-methane", new ExperimentResult { passed = true }, false);
+        A("flow: passing tutorial unlocks next + completes its period",
+            flow.IsUnlocked("prelim-chemical-compounding") && flow.IsPeriodComplete(ExperimentPeriod.Tutorial) && flow.IsPeriodUnlocked(ExperimentPeriod.Prelim));
+        A("flow: next is chemical compounding", flow.NextExperiment()?.moduleId == "prelim-chemical-compounding");
+
+        foreach (var e in ExperimentCatalog.Entries) svc.RecordResult(e.moduleId, new ExperimentResult { passed = true }, false);
+        A("flow: all passed → 100% + no next", flow.AllComplete() && Near(flow.OverallCompletion01(), 1f) && flow.NextExperiment() == null);
+        A("flow: final period unlocked + complete", flow.IsPeriodUnlocked(ExperimentPeriod.Final) && flow.IsPeriodComplete(ExperimentPeriod.Final));
+    }
+
     static void ContentSuite()
     {
         string dir = "Assets/PharmaSynth/ScriptableObjects/Experiments/";
         foreach (var (file, tasks) in new[] {
             ("Tutorial_Methane", 5), ("Prelim_ChemicalCompounding", 6), ("Prelim_EthylAlcohol", 7),
-            ("Midterm_BenzoicAcid", 9), ("Final_Aspirin", 7) })
+            ("Midterm_BenzoicAcid", 9), ("Final_Aspirin", 7),
+            ("Midterm_Acetanilide", 10), ("Midterm_Acetone", 10), ("Midterm_Chloroform", 10),
+            ("Final_Benzamide", 9), ("Final_Caffeine", 9), ("Final_WineMaking", 8) })
         {
             var m = AssetDatabase.LoadAssetAtPath<ExperimentModuleDefinition>(dir + file + ".asset");
             A("content: " + file + " loads", m != null);

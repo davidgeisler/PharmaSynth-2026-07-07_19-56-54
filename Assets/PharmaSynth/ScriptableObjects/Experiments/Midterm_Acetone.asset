@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Midterm_Acetone
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: midterm-acetone
+  moduleTitle: 'Midterm 3: Acetone'
+  intendedLearningOutcomes:
+  - Prepare acetone by dry distillation of acetate salts
+  - "Collect the 56 \xB0C fraction"
+  - Confirm the ketone by Tollen's, Schiff's, iodoform and bisulfite tests
+  tasks: []
+  graphTasks:
+  - taskId: prep-koh
+    label: Prepare 10% KOH (10 g / 100 mL)
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Dissolve 10 g KOH in 100 mL purified water.
+  - taskId: weigh-acetates
+    label: Weigh & mix 7 g calcium acetate + 7 g sodium acetate
+    phase: 0
+    prerequisites:
+    - prep-koh
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Mix the two dry acetate powders in a test tube.
+  - taskId: setup-distill
+    label: Set the tube horizontal, connect the condenser
+    phase: 1
+    prerequisites:
+    - weigh-acetates
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Tap a channel along the tube and connect it to a condenser.
+  - taskId: heat-glow
+    label: Heat until the acetates glow, turning the tube
+    phase: 1
+    prerequisites:
+    - setup-distill
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Heat strongly, rotating the tube for even decomposition.
+  - taskId: collect-56
+    label: "Distil and collect the fraction at 56 \xB0C"
+    phase: 1
+    prerequisites:
+    - heat-glow
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: "Acetone boils at 56 \xB0C \u2014 collect only that cut."
+  - taskId: test-tollens
+    label: "Tollen's test (no silver mirror \u2014 ketone)"
+    phase: 2
+    prerequisites:
+    - collect-56
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Ketones do not reduce Tollen's reagent, unlike aldehydes.
+  - taskId: test-schiff
+    label: Schiff's reagent
+    phase: 2
+    prerequisites:
+    - collect-56
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Note the colour after standing.
+  - taskId: test-iodoform
+    label: "Iodoform-type test (KI + NaOCl \u2192 yellow)"
+    phase: 2
+    prerequisites:
+    - collect-56
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Warm with KI and sodium hypochlorite; a yellow precipitate/odour is positive.
+  - taskId: test-bisulfite
+    label: Bisulfite addition product
+    phase: 2
+    prerequisites:
+    - collect-56
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Shake acetone with saturated sodium bisulfite; a crystalline adduct forms.
+  - taskId: record-yield
+    label: Record % yield and observations
+    phase: 3
+    prerequisites:
+    - test-tollens
+    - test-schiff
+    - test-iodoform
+    - test-bisulfite
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 5
+    required: 1
+    hint: Enter distillate mass, % yield and test results.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 1000
