@@ -42,6 +42,35 @@ public class NPCNarrationController : MonoBehaviour
         narrationRoutine = StartCoroutine(PlayLinesRoutine());
     }
 
+    /// Reactive single-line narration (interrupts the current line). Used by
+    /// PharmeeBrain for per-step instructions, warnings, and celebrations.
+    public void Say(string subtitle, float seconds = 3f, AudioClip clip = null)
+    {
+        if (!isActiveAndEnabled) return; // edit-mode / disabled: no coroutine
+        if (narrationRoutine != null)
+            StopCoroutine(narrationRoutine);
+        narrationRoutine = StartCoroutine(SayRoutine(subtitle, seconds, clip));
+    }
+
+    private IEnumerator SayRoutine(string subtitle, float seconds, AudioClip clip)
+    {
+        if (subtitleText != null) subtitleText.text = subtitle;
+        if (skipButton != null) skipButton.SetActive(true);
+
+        float waitSeconds = Mathf.Max(0.1f, seconds);
+        if (narratorAudioSource != null && clip != null)
+        {
+            narratorAudioSource.clip = clip;
+            narratorAudioSource.Play();
+            waitSeconds = clip.length;
+        }
+
+        yield return new WaitForSeconds(waitSeconds);
+
+        if (subtitleText != null) subtitleText.text = string.Empty;
+        if (skipButton != null) skipButton.SetActive(false);
+    }
+
     public void SkipNarration()
     {
         if (narrationRoutine != null)
