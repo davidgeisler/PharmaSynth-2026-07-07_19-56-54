@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3620650690898939181}
   - component: {fileID: 3620650690901806349}
   - component: {fileID: 3620650690900709325}
+  - component: {fileID: 6429802800071570728}
   m_Layer: 0
   m_Name: TestTube_WithLiquid
   m_TagString: Untagged
@@ -59,10 +60,15 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5fa2d54e0de4b1844bd36402333542fe, type: 2}
+  - {fileID: 2100000, guid: 7635b2807fa80af459b394c1fb92590c, type: 2}
   - {fileID: 2100000, guid: ff04f2be4ce6d934a8624dfa3c34aa4b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -81,10 +87,37 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6429802800071570728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3620650690898710797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3e4c034be72264288b5ba2d7d3041a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LiquidPhysics
+  mainRenderer: {fileID: 3620650690900709325}
+  precipitateRenderer: {fileID: 0}
+  maxVolume: 1000
+  currentLiquidVolume: 500
+  currentPptVolume: 0
+  HorizonalFloatAdj: 0.13
+  currentChemical: {fileID: 0}
+  currentPptChemical: {fileID: 0}
+  registry: {fileID: 0}
+  colorChangeSpeed: 2
+  MaxWobble: 0.03
+  WobbleSpeed: 1
+  Recovery: 1
 --- !u!1 &3620650690898710799
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +176,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -164,7 +202,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}

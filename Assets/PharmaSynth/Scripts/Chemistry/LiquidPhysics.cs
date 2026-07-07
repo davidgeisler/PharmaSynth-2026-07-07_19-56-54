@@ -1,10 +1,17 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 [RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(MeshFilter))]
 public class LiquidPhysics : MonoBehaviour
 {
+    // Chemistry is reported as events; experiment logic (task completion, wrong-reagent
+    // grading) lives in bindings that know the current context — not hardcoded here.
+    public event Action<ChemicalData, float> LiquidAdded;          // (chemical, amount)
+    public event Action<ReactionRule> ReactionOccurred;            // a registered reaction fired
+    public event Action<ChemicalData, ChemicalData> WrongReagentMixed; // (current, incoming) with no rule
+
     [Header("Components")]
     public Renderer mainRenderer;
     public Renderer precipitateRenderer;
@@ -58,10 +65,6 @@ public class LiquidPhysics : MonoBehaviour
 
     // State
     private bool isWobbling = true; // Start active to settle initial state
-    private bool hasGlucoseOrSucrose;
-    private bool hasWater;
-    private bool hasYeast;
-    private bool fermentationRoutineStarted;
 
     void Start()
     {
@@ -206,7 +209,7 @@ public class LiquidPhysics : MonoBehaviour
         if (incomingChemical == null)
             return;
 
-        CheckEthylAlcoholTaskProgress(incomingChemical);
+        LiquidAdded?.Invoke(incomingChemical, amountToAdd);
 
         if (currentLiquidVolume + currentPptVolume + amountToAdd > maxVolume) return;
 
@@ -242,28 +245,17 @@ public class LiquidPhysics : MonoBehaviour
                     currentLiquidVolume += amountToAdd;
                 }
                 UpdateAllVisuals(); // Update Color only on reaction
+                ReactionOccurred?.Invoke(rule);
             }
             else
             {
                 currentLiquidVolume += amountToAdd;
-                NotifyWrongReagent(currentChemical, incomingChemical);
+                // No registered reaction: report the mix so a context-aware binding can
+                // decide whether it is actually "wrong" for the current step.
+                if (currentChemical != null && incomingChemical != null && currentChemical != incomingChemical)
+                    WrongReagentMixed?.Invoke(currentChemical, incomingChemical);
             }
         }
-    }
-
-    private void NotifyWrongReagent(ChemicalData primary, ChemicalData secondary)
-    {
-        if (primary == null || secondary == null)
-            return;
-
-        if (primary == secondary)
-            return;
-
-        ExperimentFlowManager manager = ExperimentFlowManager.Instance;
-        if (manager == null)
-            return;
-
-        manager.MarkWrongReagent(primary.chemicalName, secondary.chemicalName);
     }
 
     public void UpdateAllVisuals()
@@ -328,47 +320,6 @@ public class LiquidPhysics : MonoBehaviour
         if (currentLiquidVolume < 0) currentLiquidVolume = 0;
 
         return currentChemical;
-    }
-
-    private void CheckEthylAlcoholTaskProgress(ChemicalData incomingChemical)
-    {
-        if (incomingChemical == null || ExperimentFlowManager.Instance == null)
-            return;
-
-        string chemName = incomingChemical.chemicalName.ToLower();
-
-        if (chemName.Contains("glucose") || chemName.Contains("sucrose"))
-            hasGlucoseOrSucrose = true;
-
-        if (chemName.Contains("water") || chemName.Contains("distilled"))
-            hasWater = true;
-
-        if (chemName.Contains("yeast"))
-            hasYeast = true;
-
-        if (hasGlucoseOrSucrose && hasWater)
-        {
-            ExperimentFlowManager.Instance.CompleteTask("fermentation-mixture");
-        }
-
-        if (hasYeast)
-        {
-            ExperimentFlowManager.Instance.CompleteTask("add-yeast");
-        }
-
-        if (hasGlucoseOrSucrose && hasWater && hasYeast && !fermentationRoutineStarted)
-        {
-            fermentationRoutineStarted = true;
-            StartCoroutine(CompleteFermentationAfterDelay());
-        }
-    }
-
-    private IEnumerator CompleteFermentationAfterDelay()
-    {
-        yield return new WaitForSeconds(10f);
-
-        if (ExperimentFlowManager.Instance != null)
-            ExperimentFlowManager.Instance.CompleteTask("fermentation");
     }
 }
 

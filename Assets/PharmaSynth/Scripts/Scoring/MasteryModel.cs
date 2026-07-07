@@ -73,6 +73,8 @@ public class MasteryModel
         _pL[skill] = Clamp01(updated);
     }
 
+    public bool IsTracked(LabSkill skill) => _pL.ContainsKey(skill);
+
     public float GetMastery(LabSkill skill) => _pL.TryGetValue(skill, out float v) ? v : Clamp01(_p.pL0);
 
     /// Mean P(learned) across tracked skills — the value compared to the mastery gate.

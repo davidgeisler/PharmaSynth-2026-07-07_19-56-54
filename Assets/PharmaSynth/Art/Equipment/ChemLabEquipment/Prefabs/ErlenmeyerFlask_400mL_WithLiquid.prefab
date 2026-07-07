@@ -59,6 +59,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &5359063746189323049
 MeshCollider:
@@ -118,6 +125,7 @@ GameObject:
   - component: {fileID: 5359063746186189195}
   - component: {fileID: 5359063746185222987}
   - component: {fileID: 5359063746189323051}
+  - component: {fileID: 3991317928100763845}
   m_Layer: 0
   m_Name: ErlenmeyerFlask_400mL_WithLiquid
   m_TagString: Untagged
@@ -166,10 +174,15 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5fa2d54e0de4b1844bd36402333542fe, type: 2}
+  - {fileID: 2100000, guid: 7635b2807fa80af459b394c1fb92590c, type: 2}
   - {fileID: 2100000, guid: ff04f2be4ce6d934a8624dfa3c34aa4b, type: 2}
   - {fileID: 2100000, guid: 30a5c1663196ad944836a16ab6e9a75d, type: 2}
   m_StaticBatchInfo:
@@ -189,9 +202,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &5359063746189323051
 MeshCollider:
@@ -215,3 +230,28 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: d75c8158c3ca94e498c0786eae4f76ef, type: 3}
+--- !u!114 &3991317928100763845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5359063746187216267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3e4c034be72264288b5ba2d7d3041a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LiquidPhysics
+  mainRenderer: {fileID: 5359063746185222987}
+  precipitateRenderer: {fileID: 0}
+  maxVolume: 1000
+  currentLiquidVolume: 500
+  currentPptVolume: 0
+  HorizonalFloatAdj: 0.13
+  currentChemical: {fileID: 0}
+  currentPptChemical: {fileID: 0}
+  registry: {fileID: 0}
+  colorChangeSpeed: 2
+  MaxWobble: 0.03
+  WobbleSpeed: 1
+  Recovery: 1

@@ -8,8 +8,10 @@ public class ReactionRegistry : ScriptableObject
 
     public ReactionRule FindReaction(ChemicalData a, ChemicalData b)
     {
+        if (rules == null) return null;
         foreach (var rule in rules)
         {
+            if (rule == null) continue;
             // Matches A+B or B+A
             if ((rule.inputChemicalA == a && rule.inputChemicalB == b) ||
                 (rule.inputChemicalA == b && rule.inputChemicalB == a))

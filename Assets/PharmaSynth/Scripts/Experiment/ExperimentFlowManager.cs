@@ -46,6 +46,7 @@ public class ExperimentFlowManager : MonoBehaviour
     public event Action<string> MistakeRecorded;
 
     private readonly HashSet<string> completedTaskIds = new HashSet<string>();
+    private readonly MistakeLog mistakes = new MistakeLog();
     private Coroutine statusRoutine;
     private int currentScore;
     private int maxScore;
@@ -54,6 +55,8 @@ public class ExperimentFlowManager : MonoBehaviour
 
     public int CurrentScore => currentScore;
     public int MaxScore => maxScore;
+    public int MistakeCount => mistakes.Count;
+    public MistakeLog Mistakes => mistakes;
 
     private void Awake()
     {
@@ -172,6 +175,7 @@ public class ExperimentFlowManager : MonoBehaviour
     {
         ApplyPenalty(wrongReagentPenalty);
         string message = "Wrong reagent mix: " + primaryChemical + " + " + secondaryChemical;
+        mistakes.Record(LabErrorType.WrongReagent, message);
         PushStatus(message, statusErrorColor);
         MistakeRecorded?.Invoke(message);
     }
@@ -180,6 +184,7 @@ public class ExperimentFlowManager : MonoBehaviour
     {
         ApplyPenalty(wrongStepPenalty);
         string message = "Wrong step detected: " + stepName;
+        mistakes.Record(LabErrorType.WrongStep, message);
         PushStatus(message, statusErrorColor);
         MistakeRecorded?.Invoke(message);
     }
@@ -188,6 +193,7 @@ public class ExperimentFlowManager : MonoBehaviour
     {
         ApplyPenalty(droppedGlassPenalty);
         string message = "Glassware dropped: " + glasswareName;
+        mistakes.Record(LabErrorType.DroppedGlassware, message);
         PushStatus(message, statusErrorColor);
         MistakeRecorded?.Invoke(message);
     }
@@ -196,6 +202,7 @@ public class ExperimentFlowManager : MonoBehaviour
     {
         ApplyPenalty(fireIncidentPenalty);
         string message = "Fire procedure issue: " + details;
+        mistakes.Record(LabErrorType.FireSafety, message);
         PushStatus(message, statusErrorColor);
         MistakeRecorded?.Invoke(message);
     }

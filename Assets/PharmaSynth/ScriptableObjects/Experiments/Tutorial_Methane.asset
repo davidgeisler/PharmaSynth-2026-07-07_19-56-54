@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951a6ee5ea398d74bb35c9fb7a4d1939, type: 3}
+  m_Name: Tutorial_Methane
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentModuleDefinition
+  moduleId: tutorial-methane
+  moduleTitle: 'Tutorial: Methane Synthesis'
+  intendedLearningOutcomes:
+  - Assemble a gas-generation apparatus safely
+  - Perform the decarboxylation of sodium acetate with soda lime
+  - Collect a gas over water and confirm it by combustion
+  - Follow lab safety and PPE throughout
+  tasks: []
+  graphTasks:
+  - taskId: prepare-mixture
+    label: Grind & mix sodium acetate with soda lime
+    phase: 0
+    prerequisites: []
+    progressWeight: 1
+    skill: 0
+    rubricCategory: 0
+    required: 1
+    hint: Combine dry sodium acetate with soda lime in the mortar.
+  - taskId: setup-apparatus
+    label: Assemble the hard-glass tube, delivery tube & trough
+    phase: 1
+    prerequisites:
+    - prepare-mixture
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Clamp the tube, fit the cork + delivery tube into the water trough.
+  - taskId: heat-mixture
+    label: Heat the mixture with the burner
+    phase: 1
+    prerequisites:
+    - setup-apparatus
+    progressWeight: 1
+    skill: 1
+    rubricCategory: 0
+    required: 1
+    hint: Apply gentle then strong heat; watch for gas bubbling through the trough.
+  - taskId: collect-gas
+    label: Collect methane over water
+    phase: 1
+    prerequisites:
+    - heat-mixture
+    progressWeight: 1
+    skill: 3
+    rubricCategory: 0
+    required: 1
+    hint: Invert the collection tube over the delivery outlet; let it fill.
+  - taskId: test-gas
+    label: Confirm methane by combustion (clean blue flame)
+    phase: 2
+    prerequisites:
+    - collect-gas
+    progressWeight: 1
+    skill: 5
+    rubricCategory: 1
+    required: 1
+    hint: Bring a lit splint to the mouth of the tube; methane burns with a pale
+      blue flame.
+  masteryThreshold: 0.9
+  bkt:
+    pL0: 0.25
+    pTransit: 0.2
+    pSlip: 0.1
+    pGuess: 0.2
+  trackedSkills: 00000000030000000100000005000000
+  rubricWeights:
+    procedure: 0.4
+    chemicalTests: 0.2
+    materialsAndPPE: 0.15
+    timeManagement: 0.1
+    sanitation: 0.1
+    documentation: 0.05
+  parTimeSeconds: 300
