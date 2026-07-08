@@ -92,7 +92,7 @@ All engine logic (task graph, BKT, scoring, grading, progression, catalog querie
 
 **Why:** MCP-driven play mode is unreliable on this machine (play sessions exit silently), so the project's verification strategy is **edit-mode assertion suites** that construct and exercise the pure cores headlessly — 157 assertions run without ever entering play mode (§7). Two supporting conventions: everything is in the **global namespace** (matching the inherited code style), and every component exposes a public `SetX()`/bind method because `Awake`/`OnEnable` don't fire on `AddComponent` in edit mode.
 
-All runtime code is under `Assets/PharmaSynth/Scripts/` — **63 C# files** across 9 folders.
+All runtime code is under `Assets/PharmaSynth/Scripts/` — **64 C# files** across 9 folders.
 
 ### 3.2 System-by-system map
 
@@ -150,7 +150,7 @@ All runtime code is under `Assets/PharmaSynth/Scripts/` — **63 C# files** acro
 | `CutsceneDirector.cs` | Subscribes to the runner: intro on start, transition on reagent-prep phase complete, success/failure on finish — the **end cutscene always plays**. |
 | `ModuleCutsceneController.cs` | Inherited PlayableDirector-based controller (double-fire and Hold-wrap bugs fixed per audit). |
 
-**`UI/` (9 files)** — all world-space, all subscribed to `ExperimentRunner` events.
+**`UI/` (10 files)** — all world-space; the live experiment surfaces are driven by `ExperimentRunner` (event subscriptions, except the wrist watch, which polls the runner's state each frame).
 
 | Class | Role |
 |---|---|
@@ -159,6 +159,7 @@ All runtime code is under `Assets/PharmaSynth/Scripts/` — **63 C# files** acro
 | `GradeScreenController.cs` | Grade %, mistakes, time, per-criterion breakdown, PASSED/TRY AGAIN; Continue gated on pass; Retry/Continue UnityEvents; auto-shows on finish. |
 | `WristWatchController.cs` | Wrist-flip gesture (supination + gaze with hysteresis) **plus an InputAction button fallback**; compact step/progress/mastery readout. Right hand default. |
 | `MainMenuController.cs` | Menu buttons: Tutorial (launches Methane), Laboratory (resolves the player's next experiment via `ProgressionFlow` and loads the lab), Settings toggle, Quit. |
+| `FaceCamera.cs` | Billboard utility: keeps world-space labels/canvases rotated to face the player's camera (Y-axis upright mode + yaw offset). |
 | `TimerController.cs` / `MoveInstructionsOnTilt.cs` / `ChemLabelUpdater.cs` / `UIfuncs.cs` | Inherited utilities (`MoveInstructionsOnTilt` was the seed of the wrist-watch gesture). |
 
 **`Interaction/` (12 files)** — XR interaction layer.
@@ -177,7 +178,7 @@ All runtime code is under `Assets/PharmaSynth/Scripts/` — **63 C# files** acro
 
 | Class | Role |
 |---|---|
-| `PPEController.cs` | PPE locker interaction; donning PPE gates the lab (MissingPPE otherwise). |
+| `PPEController.cs` | PPE locker interaction; donning PPE removes the lab-entry blockers and drives worn visuals/mirror hooks (`onPPEWorn`). No sensor records `MissingPPE` yet — that error type exists only in the taxonomy/grader. |
 | `HazardZones.cs` | `FumeHoodZone` (occupancy + `Contains` check used by `LiquidTaskBinding`) and `HazardZone` (contact → debounced `RecordMistake`). |
 | `FireProcedureZone.cs`, `AcidCorrosion.cs`, `SaltBurn.cs`, `SpoonSaltController.cs` | Inherited hazard/demo components being folded into the unified matrix. |
 
@@ -238,7 +239,7 @@ Two scenes under `Assets/Scenes/`:
 - **`MainMenu.unity`** — the lobby: Tutorial / Laboratory / Settings / Quit, driven by `MainMenuController` (Laboratory resolves your next unlocked experiment from the save and loads the lab).
 - **`SampleScene.unity`** — the assembled laboratory (10.6×11.2 m room, widened central aisle, collision-passed furniture) with `ExperimentSystems` (runner + starter + guide + dev driver, module = Methane), the world-space `LabHUD` / `LabTablet` / `GradeScreen`, `RobotNPC` (Pharmee), 5 Methane stations, PPE locker, Begin button, waypoint marker, and the XR rig.
 
-**Hands-on Methane flow (the real gameplay):** open SampleScene → Play → grab a prop off the ReagentBench and carry it into its matching station trigger zone. Five `LabItem` props map to the five stations: `reagent-jar`→PrepareMixture, `glass-tube`→SetupApparatus, `burner`→HeatMixture, `collection-tube`→CollectGas, `lit-splint`→TestGas. Order is enforced (wrong prop is ignored; wrong order records a WrongStep mistake).
+**Hands-on Methane flow (the real gameplay):** open SampleScene → Play → grab one of the five props under `MethaneProps` (staged in front of the right island; the earlier stand-in "ReagentBench" object no longer exists in the scene) and carry it into its matching station trigger zone. Five `LabItem` props map to the five stations: `reagent-jar`→PrepareMixture, `glass-tube`→SetupApparatus, `burner`→HeatMixture, `collection-tube`→CollectGas, `lit-splint`→TestGas. Order is enforced (wrong prop is ignored; wrong order records a WrongStep mistake).
 
 **Keyboard fallback:** `DevExperimentDriver` on `ExperimentSystems` — **B** = begin/restart, **1–5** = complete step N, **F** = finish (shows the grade screen), **R** = retry. This drives the entire loop without XR hardware.
 
@@ -255,7 +256,7 @@ Two scenes under `Assets/Scenes/`:
 - Graphics: **Vulkan-first** (+ OpenGLES3 fallback), single-pass instanced rendering.
 - Scripting: **IL2CPP**, **ARM64**.
 - Textures: **ASTC**.
-- XR: **OpenXR is the sole active loader** (verified — the deprecated `com.unity.xr.oculus` package was removed). `com.unity.xr.meta-openxr` supplies Quest-specific features; enabled on Android: **Meta Quest Support**, **Meta Quest Touch Plus + Oculus Touch controller profiles**, **Hand Interaction profile**, and **Foveated Rendering** (plain OpenXR lacks FFR). `InitManagerOnStart = TRUE` on Android.
+- XR: **OpenXR is the sole active loader** (verified — the deprecated `com.unity.xr.oculus` package was removed). `com.unity.xr.meta-openxr` supplies Quest-specific features. **Meta Quest Support**, **Meta Quest Touch Plus + Oculus Touch controller profiles**, **Hand Interaction profile**, and **Foveated Rendering** (plain OpenXR lacks FFR) were enabled on Android during the W2 config pass, **but the on-disk `Assets/XR/Settings/OpenXR Package Settings.asset` currently has every one of those feature flags reset to disabled** (regressed somewhere between the W2 and W5 commits — likely one of the editor crashes during XR/package operations; the Meta feature-set selection survives in the OpenXR editor settings). **Re-enable them in Project Settings → XR Plug-in Management → OpenXR (Android) before any device build.** `InitManagerOnStart = TRUE` on Android.
 - **Standalone (editor/PC) keeps `InitManagerOnStart = FALSE`** — deliberate: OpenXR auto-init on this headset-less PC kills play mode, so the editor and XR Device Simulator run safely; Quest builds auto-init as normal.
 - No Cinemachine, by design — the XR camera is never animated.
 
@@ -289,7 +290,7 @@ Supporting habits: chemistry QA against Appendix C; grep the whole `Assets/` tre
 ## 8. Team & process
 
 - **People:** Rasty Espartero (PM + dev), David Geisler Mahayag (dev), Claude Code as build assistant (~1.3 human FTE + AI multiplier).
-- **Branches:** `main` + the active work branch **`feature/asset-intake`**. Commits and pushes happen **only when explicitly requested** — never proactively, no destructive git operations. Handoff binaries and digest images are gitignored; the original handoff archives live in an off-repo, MD5-verified backup.
+- **Branches:** all W1–W5 milestone commits live on **`main`** (the current branch); **`feature/asset-intake`** exists but was left behind at the initial approved-planning commit. Commits and pushes happen **only when explicitly requested** — never proactively, no destructive git operations. Handoff binaries and digest images are gitignored; the original handoff archives live in an off-repo, MD5-verified backup.
 - **Living documents:** `CLAUDE.md` (repo root) is the always-current state/handoff — read it first each session; the approved master plan (path below) records every design decision and is updated when decisions change. Game-design changes are confirmed with the user/client before implementation.
 - **Client gates:** week-by-week checkpoints per the plan — audit findings & tier order (W1), scoring-weight sign-off (W2, hard exit criterion), dialogue copy sign-off (W4), headset escalation deadline (W5), rolling module reviews (W6), final validation & turnover (W8). Open client flags: the three chemistry reconciliations (§2.2), the wine rubric, and Dr. Jimenez model budget. Slip policy (pre-agreed): Caffeine → bespoke fail-cutscene staging → wine finale extras, in that order; Tier 1 is never at risk.
 - **Status at a glance (2026-07-08):** Weeks 1–4 done, Week 5 in progress. Engine feature-complete and verified; all 11 experiments authored as data; Methane playable hands-on end-to-end; main menu wired. Remaining: per-experiment world wiring + cutscene data, art/audio passes, Dr. Jimenez, menus/hub polish, and on-device validation.
