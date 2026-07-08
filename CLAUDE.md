@@ -130,6 +130,7 @@ Quest 3 headset NOT delivered yet. Test in-editor via **XR Device Simulator**; e
 - **`Docs/build-and-run.md`** — run/test/build: in-editor iteration, simulator caveats, regression suite, Build Settings, Quest 3 Android build, perf budget, workstation gotchas.
 - **`Docs/gameplay-rules.md`** — designer/client-facing rulebook: player journey, 11-experiment table, progression + grading rules, penalty matrix, mastery in plain words, safety rules, assists.
 - **`Docs/content-authoring.md`** — cookbook for adding content without engine changes: module authoring (worked example + 5-step checklist), reagents/reactions, the Methane scene-wiring pattern, cutscenes, chemistry accuracy rules, enum index appendix.
+- **`Docs/remaining-work-checklist.md`** — ⭐ the actionable checkbox tracker for ALL remaining work: per-experiment wiring matrix, missing assets, built-but-unplaced components, attribute passes, scenes/UI, NPC, on-device, client decisions. **Check items off here as they land.**
 - **`Docs/audit-report.md`** — the W1 inherited-code audit (historical).
 
 ## Docs handoff (all processed — see digests)
