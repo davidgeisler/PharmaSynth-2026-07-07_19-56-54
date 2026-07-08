@@ -24,7 +24,9 @@ Engine + data are done for all 11; everything below is scene/content wiring. "Si
 | F3 | Caffeine (Tier 3) | [x] | [ ] | [ ] | [ ] | [ ] extraction | [x] | [x] |
 | F4 | Wine Making | [x] | [ ] | [ ] | [ ] | [ ] time-skip | [x] +montage | [x] |
 
-Counts: cutscene SOs **44/44** ✅ · quiz questions **33/33** ✅ (data; presentation UI still TODO) · reaction-rule assets **0** · hands-on scene wiring **1/11** (Methane).
+Counts: cutscene SOs **44/44** ✅ · quiz questions **33/33** ✅ (data; UI TODO) · **reaction-rule assets 10** (`MasterReactionRegistry` — covers Ethyl ferment/iodoform/ester/limewater, Benzoic oxidation, Aspirin synth + FeCl₃, Acetanilide, Benzamide, Chloroform) · **pour path built + verified** (`LiquidPourer` tilt-pour → `LiquidPhysics.AddLiquid` → reaction + `LiquidTaskBinding` task-complete; PourReactionSuite green) · hands-on scene wiring **2/11** — Methane (hand-built) + **Ethyl Alcohol (auto-built)** via the new module-driven `ExperimentSceneBuilder`.
+
+**Module-driven scene builder ✅ (2026-07-08):** `ExperimentSceneBuilder` + `ExperimentLayout` SO + `SceneAssetLibrary` (42 prefabs + 31 chemicals). On module load it clears the `DynamicStage`, toggles the hand-built `MethaneStage` for Methane, else spawns that module's stations/props/vessels from its layout (grounded, labelled, pour-wired). `Layout_EthylAlcohol` authored (fermentation beaker with 4 pour-bindings + 2 zone stations + 6 props). Regression-covered (SceneBuilderSuite, 183/183). **Remaining: author the other 9 `ExperimentLayout` assets** (one per experiment) — pure data now, no code.
 
 - [x] **Methane heat/collect real verbs** — burner in zone heats (`TemperatureSim`), hot apparatus + tube in zone fills (`GasCollection`); tasks complete via auto-check (`MethaneApparatusRig` + `ZoneItemSensor`, regression-covered).
 - [ ] Remaining Methane verb polish: mortar grind interaction (prepare-mixture), splint-flame test visual, flame/bubble VFX.
@@ -64,7 +66,7 @@ Counts: cutscene SOs **44/44** ✅ · quiz questions **33/33** ✅ (data; presen
 
 ### Data
 - [x] **Quiz bank: 33 MCQs** (3 per experiment) authored as 11 `QuizBank` assets (`ScriptableObjects/Quizzes/`) + new `QuizBank`/`QuizQuestion` type with `Score()`. Regression-covered. **Still TODO: the tablet quiz UI to present them + feed `QuizBank.Score` into the grader's quiz fraction.**
-- [ ] **ReactionRule assets + a ReactionRegistry asset per experiment** (0 exist) — powers LiquidPhysics reactions & wrong-mix detection.
+- [x] **Reaction rules** — 10 `ReactionRule` assets + `MasterReactionRegistry` (`ScriptableObjects/Reactions/`), plus ~16 product/reagent `ChemicalData` (Benzoic Acid, Aspirin, Acetanilide, Benzamide, Chloroform, Iodoform, MnO₂, ester, CaCO₃, acetyl chloride, NaOCl, sugar, yeast, limewater, CO₂). Bidirectional lookup + pour→react→task chain regression-covered (PourReactionSuite). **Still TODO: assign the registry to each experiment's vessels in-scene + author remaining test reactions (ethanol functional-group tests, acetone Tollen's/Schiff, caffeine/wine).**
 - [ ] Data-sheet definitions (expected yield ranges per experiment).
 
 ## 3. Built & tested code that is NOT yet placed in the scene

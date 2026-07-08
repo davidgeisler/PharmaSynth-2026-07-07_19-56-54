@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d79212f7a99e579438d8e87e49ba408d, type: 3}
+  m_Name: Layout_EthylAlcohol
+  m_EditorClassIdentifier: Assembly-CSharp::ExperimentLayout
+  moduleId: prelim-ethyl-alcohol
+  stations:
+  - taskId: distill
+    label: 3. Distil (70-80 C)
+    requiredItemId: distill-flask
+    pos: {x: -1.15, y: 0.91, z: -3.4}
+  - taskId: test-combustion
+    label: 4. Combustion test
+    requiredItemId: splint
+    pos: {x: -1.15, y: 0.91, z: -4}
+  props:
+  - prefabName: Vial_Brown
+    itemId: sugar
+    displayName: Brown Sugar
+    pos: {x: -2.05, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Brown Sugar
+  - prefabName: Vial_Brown
+    itemId: yeast
+    displayName: Yeast
+    pos: {x: -1.75, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Yeast
+  - prefabName: Vial_Brown
+    itemId: hypo
+    displayName: Sodium Hypochlorite
+    pos: {x: -1.45, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Sodium Hypochlorite
+  - prefabName: Vial_Brown
+    itemId: acetic
+    displayName: Glacial Acetic Acid
+    pos: {x: -1.15, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Glacial Acetic Acid
+  - prefabName: ErlenmeyerFlask_400mL
+    itemId: distill-flask
+    displayName: Distillation Flask
+    pos: {x: -0.85, y: 0.91, z: -1.95}
+    targetHeight: 0.2
+    pourable: 0
+    fillChemical: 
+  - prefabName: GlassRod
+    itemId: splint
+    displayName: Lit Splint
+    pos: {x: -0.6, y: 0.91, z: -1.95}
+    targetHeight: 0.18
+    pourable: 0
+    fillChemical: 
+  vessels:
+  - prefabName: Beaker_500mL
+    displayName: Fermentation Beaker
+    pos: {x: -1.45, y: 0.91, z: -2.6}
+    targetHeight: 0.24
+    startChemical: 
+    bindings:
+    - reagentChemical: Brown Sugar
+      taskId: prepare-must
+    - reagentChemical: Yeast
+      taskId: ferment
+    - reagentChemical: Sodium Hypochlorite
+      taskId: test-iodoform
+    - reagentChemical: Glacial Acetic Acid
+      taskId: test-ester

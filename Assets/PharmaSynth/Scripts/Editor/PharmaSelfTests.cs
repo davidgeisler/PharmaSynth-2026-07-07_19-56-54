@@ -37,6 +37,8 @@ public static class PharmaSelfTests
         W4Suite();
         InteractionSuite();
         RealVerbSuite();
+        PourReactionSuite();
+        SceneBuilderSuite();
         ProgressionFlowSuite();
         LibrarySuite();
         ContentSuite();
@@ -298,6 +300,99 @@ public static class PharmaSelfTests
         A("roster: quiz bank per experiment (11)", coverage && qBanks == 11);
         A("roster: 33 quiz questions total, all valid (4 opts, in-range answer)", qTotal == 33 && allValid);
         A("roster: quiz scoring (all-correct = 100%)", scoreOk);
+    }
+
+    static ChemicalData LoadChem(string file)
+        => AssetDatabase.LoadAssetAtPath<ChemicalData>("Assets/PharmaSynth/ScriptableObjects/Chemicals/" + file + ".asset");
+
+    static void PourReactionSuite()
+    {
+        var reg = AssetDatabase.LoadAssetAtPath<ReactionRegistry>(
+            "Assets/PharmaSynth/ScriptableObjects/Reactions/MasterReactionRegistry.asset");
+        A("reaction: registry loads", reg != null);
+        if (reg == null) return;
+
+        var benz = LoadChem("Chem_Benzaldehyde");
+        var kmno4 = LoadChem("Chem_PotassiumPermanganate");
+        var benzoic = LoadChem("Chem_BenzoicAcid");
+        A("reaction: reaction chemicals exist", benz && kmno4 && benzoic);
+        var rule = reg.FindReaction(benz, kmno4);
+        A("reaction: benzaldehyde+KMnO4 rule found (either order)", rule != null && reg.FindReaction(kmno4, benz) != null);
+        if (rule != null)
+            A("reaction: product = benzoic acid + precipitate", rule.resultLiquid == benzoic && rule.hasPrecipitate);
+
+        // LiquidPhysics turns reactants into product + fires ReactionOccurred on AddLiquid.
+        var vgo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var lp = vgo.AddComponent<LiquidPhysics>();
+            lp.mainRenderer = null; lp.precipitateRenderer = null;   // skip material work in edit mode
+            lp.registry = reg; lp.currentChemical = benz; lp.currentLiquidVolume = 100f;
+            bool reacted = false; lp.ReactionOccurred += _ => reacted = true;
+            lp.AddLiquid(kmno4, 40f);
+            A("reaction: AddLiquid fires ReactionOccurred", reacted);
+            A("reaction: currentChemical becomes the product", lp.currentChemical == benzoic);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(vgo); }
+
+        // Pour path: the expected reagent, delivered to a bound vessel, completes its task.
+        var module = AssetDatabase.LoadAssetAtPath<ExperimentModuleDefinition>(
+            "Assets/PharmaSynth/ScriptableObjects/Experiments/Midterm_BenzoicAcid.asset");
+        var rgo = new GameObject("pr_runner"); var vgo2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var runner = rgo.AddComponent<ExperimentRunner>();
+            runner.SetModule(module); runner.StartExperiment();
+            runner.CompleteTask("prepare-permanganate");            // satisfy the prerequisite
+            var lp2 = vgo2.AddComponent<LiquidPhysics>();
+            lp2.mainRenderer = null; lp2.currentChemical = benz; lp2.currentLiquidVolume = 100f;
+            var bind = vgo2.AddComponent<LiquidTaskBinding>();
+            bind.SetVesselAndRunner(lp2, runner);
+            bind.AddExpected(kmno4, "oxidise-benzaldehyde");
+            bind.HandleReagent(kmno4);                              // = pour KMnO4 into the flask
+            A("pour: expected reagent completes its task", runner.Graph.IsComplete("oxidise-benzaldehyde"));
+            bind.HandleReagent(LoadChem("Chem_Aniline"));           // unexpected reagent → mistake
+            A("pour: unexpected reagent logs a WrongReagent mistake", runner.Mistakes.CountOf(LabErrorType.WrongReagent) >= 1);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(rgo); UnityEngine.Object.DestroyImmediate(vgo2); }
+    }
+
+    static void SceneBuilderSuite()
+    {
+        var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
+        var reg = AssetDatabase.LoadAssetAtPath<ReactionRegistry>("Assets/PharmaSynth/ScriptableObjects/Reactions/MasterReactionRegistry.asset");
+        var lay = AssetDatabase.LoadAssetAtPath<ExperimentLayout>("Assets/PharmaSynth/ScriptableObjects/Layouts/Layout_EthylAlcohol.asset");
+        A("builder: library/registry/layout exist", lib != null && reg != null && lay != null);
+        A("builder: library has prefabs + chemicals", lib != null && lib.prefabs.Count >= 40 && lib.chemicals.Count >= 20);
+        if (lib == null || lay == null) return;
+
+        var module = AssetDatabase.LoadAssetAtPath<ExperimentModuleDefinition>("Assets/PharmaSynth/ScriptableObjects/Experiments/Prelim_EthylAlcohol.asset");
+        var rgo = new GameObject("sb_runner"); var bgo = new GameObject("sb_builder");
+        try
+        {
+            var runner = rgo.AddComponent<ExperimentRunner>();
+            runner.SetModule(module); runner.StartExperiment();
+            var builder = bgo.AddComponent<ExperimentSceneBuilder>();
+            builder.SetRefs(runner, lib, reg, new List<ExperimentLayout> { lay });
+
+            int n = builder.Build("prelim-ethyl-alcohol");
+            A("builder: spawns 9 roots (2 stations + 6 props + 1 vessel)", n == 9);
+            A("builder: 2 task stations built", bgo.GetComponentsInChildren<ExperimentTaskStation>().Length == 2);
+            A("builder: props carry LabItem ids", bgo.GetComponentsInChildren<LabItem>().Length == 6);
+
+            var bind = bgo.GetComponentInChildren<LiquidTaskBinding>();
+            A("builder: vessel has a LiquidTaskBinding", bind != null);
+            var sugar = LoadChem("Chem_BrownSugar");
+            if (bind != null && sugar != null)
+            {
+                bind.HandleReagent(sugar);            // = pour Brown Sugar into the fermentation beaker
+                A("builder: pouring sugar completes prepare-must", runner.Graph.IsComplete("prepare-must"));
+            }
+
+            int m = builder.Build("tutorial-methane");
+            A("builder: Methane builds 0 dynamic (uses its hand-built stage)", m == 0);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(rgo); UnityEngine.Object.DestroyImmediate(bgo); }
     }
 
     static void RealVerbSuite()

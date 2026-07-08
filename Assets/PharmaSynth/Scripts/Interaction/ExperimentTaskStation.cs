@@ -47,6 +47,14 @@ public class ExperimentTaskStation : MonoBehaviour
     public void SetTaskId(string id) => taskId = id;
     public void SetRequiredItemId(string id) => requiredItemId = id;
 
+    /// One-call runtime setup (used by the ExperimentSceneBuilder, which can't use
+    /// SerializedObject at play time).
+    public void Configure(ExperimentRunner r, string task, string itemId, bool triggerEnter, bool onSelect)
+    {
+        runner = r; taskId = task; requiredItemId = itemId;
+        activateOnTriggerEnter = triggerEnter; activateOnSelect = onSelect;
+    }
+
     private void OnEnable()
     {
         ExperimentStationRegistry.Register(taskId, transform);

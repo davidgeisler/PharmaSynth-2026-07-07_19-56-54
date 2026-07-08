@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01516afa913689418acac02be1cc669, type: 3}
+  m_Name: MasterReactionRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::ReactionRegistry
+  rules:
+  - {fileID: 11400000, guid: ef539ff8fef2b1f4c8bc96d90cf86b09, type: 2}
+  - {fileID: 11400000, guid: 30c946ba1b7cb8646a71f5d6f5ac6300, type: 2}
+  - {fileID: 11400000, guid: 5ad05bfe9841811419a1fb47a244c117, type: 2}
+  - {fileID: 11400000, guid: cef45a211c5c8d84e9595da35e633fb3, type: 2}
+  - {fileID: 11400000, guid: 54dc87ce967462a4faccb3771321c562, type: 2}
+  - {fileID: 11400000, guid: 5e90f1e73646d2747996e8d1711c97ad, type: 2}
+  - {fileID: 11400000, guid: bb8a34cff092b464aa2609dd539030ea, type: 2}
+  - {fileID: 11400000, guid: c14ce0b521221bd47a8537f3a579c5ed, type: 2}
+  - {fileID: 11400000, guid: 458d9d8f5357bdf44942d1071a708516, type: 2}
+  - {fileID: 11400000, guid: cc83c62134844e34ea60906ce558ecaf, type: 2}
