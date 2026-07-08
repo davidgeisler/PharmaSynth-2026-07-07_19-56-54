@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaa93f2aa9be4d4babad2427d4a3c02, type: 3}
+  m_Name: Quiz_Methane
+  m_EditorClassIdentifier: Assembly-CSharp::QuizBank
+  moduleId: tutorial-methane
+  questions:
+  - prompt: Which gas is produced when sodium acetate is heated with soda lime?
+    options:
+    - Ethane
+    - Methane
+    - Carbon dioxide
+    - Hydrogen
+    correctIndex: 1
+    explanation: Decarboxylation of the acetate gives methane (CH4).
+  - prompt: Why is methane collected over water?
+    options:
+    - It reacts with air
+    - It is denser than water
+    - It is nearly insoluble in water
+    - It dissolves the soda lime
+    correctIndex: 2
+    explanation: Methane is only slightly soluble in water, so it displaces it cleanly.
+  - prompt: 'A clean, pale-blue flame on ignition indicates:'
+    options:
+    - Complete combustion
+    - Presence of water
+    - Carbon dioxide
+    - Incomplete reaction
+    correctIndex: 0
+    explanation: Complete combustion of the collected methane.

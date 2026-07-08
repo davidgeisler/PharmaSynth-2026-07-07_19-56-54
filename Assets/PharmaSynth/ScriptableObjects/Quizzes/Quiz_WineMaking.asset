@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaa93f2aa9be4d4babad2427d4a3c02, type: 3}
+  m_Name: Quiz_WineMaking
+  m_EditorClassIdentifier: Assembly-CSharp::QuizBank
+  moduleId: final-winemaking
+  questions:
+  - prompt: 'In winemaking, yeast converts sugar into ethanol and:'
+    options:
+    - Oxygen
+    - Carbon dioxide
+    - Methane
+    - Water only
+    correctIndex: 1
+    explanation: Fermentation releases CO2.
+  - prompt: 'The airlock on the vessel allows:'
+    options:
+    - Air in freely
+    - Nothing to move
+    - CO2 out but no air in
+    - Sugar in
+    correctIndex: 2
+    explanation: CO2 out while keeping air/contaminants from entering.
+  - prompt: 'Evolved gas turning limewater milky confirms:'
+    options:
+    - Carbon dioxide is being produced
+    - The wine is finished
+    - Oxygen is present
+    - The yeast is dead
+    correctIndex: 0
+    explanation: Milky limewater confirms carbon dioxide from fermentation.

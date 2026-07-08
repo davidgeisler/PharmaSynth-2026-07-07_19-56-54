@@ -55,12 +55,12 @@ public class MethaneApparatusRig : MonoBehaviour
         if (temperature != null)
         {
             temperature.ResetSim();
-            runner.Graph.RegisterCondition("heat-mixture", () => temperature.AtLeast(heatDoneC));
+            runner.Graph.RegisterCondition("heat-mixture", () => temperature != null && temperature.AtLeast(heatDoneC));
         }
         if (gas != null)
         {
             gas.ResetCollection();
-            runner.Graph.RegisterCondition("collect-gas", () => gas.Collected(collectedFraction));
+            runner.Graph.RegisterCondition("collect-gas", () => gas != null && gas.Collected(collectedFraction));
         }
     }
 

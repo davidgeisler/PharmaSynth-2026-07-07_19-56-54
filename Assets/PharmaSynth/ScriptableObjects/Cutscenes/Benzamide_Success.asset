@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cdb85042f7c8d74cb6d93b40d200268, type: 3}
+  m_Name: Benzamide_Success
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  kind: 2
+  title: Benzamide
+  beats:
+  - subtitle: Outstanding work!
+    seconds: 2.5
+    face: 1
+  - subtitle: White benzamide crystals, and hydrolysis frees ammonia just as it should.
+      Excellent.
+    seconds: 4.5
+    face: 1
+  - subtitle: Your results are recorded. Dr. Jimenez will be impressed.
+    seconds: 4
+    face: 1

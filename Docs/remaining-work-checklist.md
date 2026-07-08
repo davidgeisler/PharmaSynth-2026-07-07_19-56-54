@@ -12,24 +12,25 @@ Engine + data are done for all 11; everything below is scene/content wiring. "Si
 
 | # | Experiment | v2 data | Props+stations | Reaction rules | Vessel bindings | Sim rigs | Cutscenes ×4 | Quiz ×3 |
 |---|-----------|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-| T0 | **Methane (Tutorial)** | [x] | [x] carry-to-zone | [ ] | n/a (dry) | [x] burner heats + gas fills (real verbs) | [x] 4 SOs | [ ] |
-| P1 | **Chemical Compounding** | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| P2 | **Ethyl Alcohol** | [x] | [ ] | [ ] | [ ] | [ ] ferment+distil | [ ] | [ ] |
-| M1 | **Benzoic Acid** | [x] | [ ] | [ ] | [ ] | [ ] cryst+filt | [ ] | [ ] |
-| M2 | Acetanilide | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| M3 | Acetone | [x] | [ ] | [ ] | [ ] | [ ] distil 56° | [ ] | [ ] |
-| M4 | Chloroform | [x] | [ ] | [ ] | [ ] | [ ] reflux+distil | [ ] | [ ] |
-| F1 | Benzamide | [x] | [ ] | [ ] | [ ] | [ ] ice bath | [ ] | [ ] |
-| F2 | **Aspirin** | [x] | [ ] | [ ] | [ ] | [ ] **overheat branch** | [ ] | [ ] |
-| F3 | Caffeine (Tier 3) | [x] | [ ] | [ ] | [ ] | [ ] extraction | [ ] | [ ] |
-| F4 | Wine Making | [x] | [ ] | [ ] | [ ] | [ ] time-skip | [ ] +montage | [ ] |
+| T0 | **Methane (Tutorial)** | [x] | [x] carry-to-zone | [ ] | n/a (dry) | [x] burner heats + gas fills | [x] | [x] |
+| P1 | **Chemical Compounding** | [x] | [ ] | [ ] | [ ] | [ ] | [x] | [x] |
+| P2 | **Ethyl Alcohol** | [x] | [ ] | [ ] | [ ] | [ ] ferment+distil | [x] | [x] |
+| M1 | **Benzoic Acid** | [x] | [ ] | [ ] | [ ] | [ ] cryst+filt | [x] | [x] |
+| M2 | Acetanilide | [x] | [ ] | [ ] | [ ] | [ ] | [x] | [x] |
+| M3 | Acetone | [x] | [ ] | [ ] | [ ] | [ ] distil 56° | [x] | [x] |
+| M4 | Chloroform | [x] | [ ] | [ ] | [ ] | [ ] reflux+distil | [x] | [x] |
+| F1 | Benzamide | [x] | [ ] | [ ] | [ ] | [ ] ice bath | [x] | [x] |
+| F2 | **Aspirin** | [x] | [ ] | [ ] | [ ] | [ ] **overheat branch** | [x] | [x] |
+| F3 | Caffeine (Tier 3) | [x] | [ ] | [ ] | [ ] | [ ] extraction | [x] | [x] |
+| F4 | Wine Making | [x] | [ ] | [ ] | [ ] | [ ] time-skip | [x] +montage | [x] |
 
-Counts: cutscene SOs **4/44** · reaction-rule assets **0** · quiz questions **0/33** · hands-on wiring **1/11** (Methane, carry-to-zone level only — real verbs below).
+Counts: cutscene SOs **44/44** ✅ · quiz questions **33/33** ✅ (data; presentation UI still TODO) · reaction-rule assets **0** · hands-on scene wiring **1/11** (Methane).
 
 - [x] **Methane heat/collect real verbs** — burner in zone heats (`TemperatureSim`), hot apparatus + tube in zone fills (`GasCollection`); tasks complete via auto-check (`MethaneApparatusRig` + `ZoneItemSensor`, regression-covered).
 - [ ] Remaining Methane verb polish: mortar grind interaction (prepare-mixture), splint-flame test visual, flame/bubble VFX.
 - [ ] **Wine bespoke rubric** (workmanship/appearance/presentation/documentation/flavour) — currently standard 6-category.
-- [ ] Per-experiment ILO cards ×11 (intro cutscene content).
+- [x] **Cutscene data — all 44** (`<Experiment>_Intro/ReagentPrep/Success/Failure` for all 11) authored with per-experiment chemistry + safety dialogue. Still TODO: wire each experiment's 4 SOs into its scene `CutsceneDirector`; staging/fades; wine time-skip montage.
+- [ ] Per-experiment ILO cards ×11 (visual intro-cutscene card art).
 
 ## 2. Assets that do not exist yet (create / source / buy)
 
@@ -59,7 +60,7 @@ Counts: cutscene SOs **4/44** · reaction-rule assets **0** · quiz questions **
 - [ ] `AudioService` + mixer groups (master/SFX/voice/ambient) and wiring to the existing AudioSource hooks (`NPCNarrationController`, `BreakableGlassware`) — only 2 AudioSources exist in the scene today (defaults).
 
 ### Data
-- [ ] **Quiz bank: 33 MCQs** (3 per experiment) + quiz SO type (doesn't exist yet).
+- [x] **Quiz bank: 33 MCQs** (3 per experiment) authored as 11 `QuizBank` assets (`ScriptableObjects/Quizzes/`) + new `QuizBank`/`QuizQuestion` type with `Score()`. Regression-covered. **Still TODO: the tablet quiz UI to present them + feed `QuizBank.Score` into the grader's quiz fraction.**
 - [ ] **ReactionRule assets + a ReactionRegistry asset per experiment** (0 exist) — powers LiquidPhysics reactions & wrong-mix detection.
 - [ ] Data-sheet definitions (expected yield ranges per experiment).
 

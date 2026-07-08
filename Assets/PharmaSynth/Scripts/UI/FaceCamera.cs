@@ -11,6 +11,10 @@ public class FaceCamera : MonoBehaviour
     [Tooltip("Extra yaw in degrees if an asset's readable side is not its -Z face.")]
     public float yawOffset = 0f;
 
+    [Tooltip("Characters (Pharmee): point +Z TOWARD the viewer so the face looks at them. " +
+             "Leave off for UI text/panels, whose +Z should point away to read correctly.")]
+    public bool faceTowardCamera = false;
+
     private Transform _cam;
 
     private void LateUpdate()
@@ -22,9 +26,11 @@ public class FaceCamera : MonoBehaviour
             _cam = c.transform;
         }
 
-        // UGUI canvases and 3D TMP text are readable when their forward (+Z)
-        // points AWAY from the viewer.
-        Vector3 dir = transform.position - _cam.position;
+        // UI text/panels read when +Z points AWAY from the viewer; a character faces
+        // the viewer when +Z points TOWARD them.
+        Vector3 dir = faceTowardCamera
+            ? _cam.position - transform.position
+            : transform.position - _cam.position;
         if (yAxisOnly) dir.y = 0f;
         if (dir.sqrMagnitude < 0.0001f) return;
         transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up)

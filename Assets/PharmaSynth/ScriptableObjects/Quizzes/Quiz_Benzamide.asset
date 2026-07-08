@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaa93f2aa9be4d4babad2427d4a3c02, type: 3}
+  m_Name: Quiz_Benzamide
+  m_EditorClassIdentifier: Assembly-CSharp::QuizBank
+  moduleId: final-benzamide
+  questions:
+  - prompt: 'Benzamide is prepared from ammonia and:'
+    options:
+    - Benzoic acid
+    - Benzoyl chloride
+    - Benzaldehyde
+    - Aniline
+    correctIndex: 1
+    explanation: Benzoyl chloride reacts with ammonia to give benzamide.
+  - prompt: Why is the reaction run in an ice bath?
+    options:
+    - To freeze the product
+    - To speed it up
+    - To control the vigorous reaction
+    - To colour it
+    correctIndex: 2
+    explanation: Benzoyl chloride reacts vigorously; cooling controls it.
+  - prompt: Alkaline hydrolysis of benzamide releases which gas?
+    options:
+    - Ammonia
+    - Hydrogen
+    - Chlorine
+    - Oxygen
+    correctIndex: 0
+    explanation: Boiling with NaOH liberates ammonia.

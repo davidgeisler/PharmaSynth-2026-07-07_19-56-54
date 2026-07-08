@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaa93f2aa9be4d4babad2427d4a3c02, type: 3}
+  m_Name: Quiz_Caffeine
+  m_EditorClassIdentifier: Assembly-CSharp::QuizBank
+  moduleId: final-caffeine
+  questions:
+  - prompt: 'Caffeine is extracted from tea using sodium carbonate and:'
+    options:
+    - Water only
+    - An organic solvent
+    - Sulfuric acid
+    - Sodium metal
+    correctIndex: 1
+    explanation: An organic solvent (dichloromethane) extracts the caffeine.
+  - prompt: 'Caffeine is purified in this experiment by:'
+    options:
+    - Distillation
+    - Filtration only
+    - Sublimation
+    - Fermentation
+    correctIndex: 2
+    explanation: It sublimes cleanly to needle crystals.
+  - prompt: 'The murexide test for caffeine produces a colour that is:'
+    options:
+    - Purple
+    - Green
+    - Colourless
+    - Black
+    correctIndex: 0
+    explanation: Murexide gives a characteristic purple.

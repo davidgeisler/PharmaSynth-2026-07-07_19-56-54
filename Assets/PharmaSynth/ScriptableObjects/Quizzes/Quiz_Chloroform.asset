@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaa93f2aa9be4d4babad2427d4a3c02, type: 3}
+  m_Name: Quiz_Chloroform
+  m_EditorClassIdentifier: Assembly-CSharp::QuizBank
+  moduleId: midterm-chloroform
+  questions:
+  - prompt: 'Chloroform is made by reacting bleaching powder with:'
+    options:
+    - Ethanol
+    - Acetone
+    - Benzene
+    - Phenol
+    correctIndex: 1
+    explanation: The haloform reaction uses acetone.
+  - prompt: 'A distinctive physical property of chloroform is that it is:'
+    options:
+    - Highly flammable
+    - A gas at room temperature
+    - Non-flammable and dense
+    - Water-soluble in all ratios
+    correctIndex: 2
+    explanation: Chloroform is dense and non-flammable.
+  - prompt: 'The acetone-water mix is added to the flask:'
+    options:
+    - Drop by drop
+    - All at once
+    - After distillation
+    - Frozen
+    correctIndex: 0
+    explanation: Dropwise, to control the exothermic reaction.

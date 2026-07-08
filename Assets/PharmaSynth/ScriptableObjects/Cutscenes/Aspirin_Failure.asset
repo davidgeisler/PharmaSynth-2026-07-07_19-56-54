@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cdb85042f7c8d74cb6d93b40d200268, type: 3}
+  m_Name: Aspirin_Failure
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneData
+  kind: 3
+  title: Aspirin
+  beats:
+  - subtitle: "Hmm \u2014 that didn't go to plan."
+    seconds: 3
+    face: 2
+  - subtitle: "The water bath overheated and charred the batch \u2014 a classic aspirin
+      mistake. Keep it low and slow."
+    seconds: 4.5
+    face: 2
+  - subtitle: "No harm done \u2014 that's what practice is for. Let's reset and try
+      again."
+    seconds: 4
+    face: 0

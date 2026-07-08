@@ -47,7 +47,7 @@ public class ExperimentRunner : MonoBehaviour
     private bool _running;
     private bool _finished;
 
-    public bool IsRunning => _running && !_finished;
+    public bool IsRunning => _running && !_finished && _graph != null;
     public float ElapsedSeconds => _elapsed;
     public float Progress01 => _graph != null ? _graph.Progress01 : 0f;
     public int MistakeCount => _mistakes != null ? _mistakes.Count : 0;

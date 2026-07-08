@@ -40,6 +40,7 @@ public static class PharmaSelfTests
         ProgressionFlowSuite();
         LibrarySuite();
         ContentSuite();
+        RosterDataSuite();
 
         string summary = $"PharmaSynth Self-Tests: {_total - _fail}/{_total} passed";
         if (_fail == 0) Debug.Log("<color=#4CD07D>" + summary + " — ALL GREEN</color>");
@@ -258,6 +259,45 @@ public static class PharmaSelfTests
             UnityEngine.Object.DestroyImmediate(igo);
             UnityEngine.Object.DestroyImmediate(wgo);
         }
+    }
+
+    static void RosterDataSuite()
+    {
+        // Cutscenes: every experiment has all 4 kinds, each with beats.
+        string[] keys = { "Methane","ChemicalCompounding","EthylAlcohol","BenzoicAcid","Acetanilide",
+            "Acetone","Chloroform","Benzamide","Aspirin","Caffeine","WineMaking" };
+        string cdir = "Assets/PharmaSynth/ScriptableObjects/Cutscenes/";
+        int csOk = 0;
+        foreach (var k in keys)
+            foreach (var kind in new[]{ "Intro","ReagentPrep","Success","Failure" })
+            {
+                var cs = AssetDatabase.LoadAssetAtPath<CutsceneData>(cdir + k + "_" + kind + ".asset");
+                if (cs != null && cs.beats.Count > 0 && cs.TotalDuration() > 0f) csOk++;
+            }
+        A("roster: 44 cutscenes present with beats", csOk == 44);
+
+        // Quiz banks: one per catalog module, all valid, 3 questions, scoring works.
+        string qdir = "Assets/PharmaSynth/ScriptableObjects/Quizzes/";
+        int qBanks = 0, qTotal = 0; bool allValid = true, scoreOk = true, coverage = true;
+        foreach (var e in ExperimentCatalog.Entries)
+        {
+            QuizBank bank = null;
+            foreach (var g in AssetDatabase.FindAssets("t:QuizBank", new[]{ qdir.TrimEnd('/') }))
+            {
+                var b = AssetDatabase.LoadAssetAtPath<QuizBank>(AssetDatabase.GUIDToAssetPath(g));
+                if (b != null && b.moduleId == e.moduleId) { bank = b; break; }
+            }
+            if (bank == null) { coverage = false; continue; }
+            qBanks++; qTotal += bank.Count;
+            if (!bank.AllValid() || bank.Count != 3) allValid = false;
+            // all-correct answers → perfect score
+            var ans = new List<int>();
+            foreach (var q in bank.questions) ans.Add(q.correctIndex);
+            if (!Near(bank.Score(ans), 1f)) scoreOk = false;
+        }
+        A("roster: quiz bank per experiment (11)", coverage && qBanks == 11);
+        A("roster: 33 quiz questions total, all valid (4 opts, in-range answer)", qTotal == 33 && allValid);
+        A("roster: quiz scoring (all-correct = 100%)", scoreOk);
     }
 
     static void RealVerbSuite()
