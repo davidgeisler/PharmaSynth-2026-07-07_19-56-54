@@ -388,7 +388,8 @@ public static class PharmaSelfTests
             var m2 = new GatekeeperModel();
             m2.Fire(GateEvent.Approach); m2.Fire(GateEvent.PickLabTour);
             A("gate: lab tour opens door", m2.State == GateState.LabTour && m2.IsLabTour && GatekeeperModel.DoorOpen(m2.State));
-            A("gate: re-approach from tour", m2.Fire(GateEvent.Approach) && m2.State == GateState.ModeChoice);
+            A("gate: approach never shuts an open tour door", !m2.Fire(GateEvent.Approach) && m2.State == GateState.LabTour);
+            A("gate: poking Pharmee reopens the talk", m2.Fire(GateEvent.TalkRequested) && m2.State == GateState.ModeChoice);
 
             var m3 = new GatekeeperModel();
             m3.Fire(GateEvent.Approach); m3.Fire(GateEvent.PickCampaign); m3.Fire(GateEvent.ExplainDone);

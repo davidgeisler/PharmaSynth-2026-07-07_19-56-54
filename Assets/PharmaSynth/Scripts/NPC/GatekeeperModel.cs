@@ -17,7 +17,8 @@ public enum GateEvent
     Approach, PickLabTour, PickCampaign, ExplainDone, EpisodeChosen,
     Coated, Ready, Loaded, ProceedConfirmed, CrossedThreshold,
     ContinueAfterPass, DebriefDone, TeleportDone, AnnounceDone,
-    SupplyExhausted, RestartConfirmed, Dismiss
+    SupplyExhausted, RestartConfirmed, Dismiss,
+    TalkRequested   // poking Pharmee re-opens the conversation (e.g. during Lab Tour)
 }
 
 /// Pure, table-driven state machine for the Pharmee door gate. No Unity types —
@@ -52,7 +53,7 @@ public class GatekeeperModel
         switch (s)
         {
             case GateState.Blocked:
-                if (e == GateEvent.Approach) return GateState.ModeChoice;
+                if (e == GateEvent.Approach || e == GateEvent.TalkRequested) return GateState.ModeChoice;
                 break;
             case GateState.ModeChoice:
                 if (e == GateEvent.PickLabTour) return GateState.LabTour;
@@ -60,7 +61,10 @@ public class GatekeeperModel
                 if (e == GateEvent.Dismiss) return GateState.Blocked;
                 break;
             case GateState.LabTour:
-                if (e == GateEvent.Approach) return GateState.ModeChoice;   // re-approach to switch
+                // NOTE: Approach must NOT transition here — walking to the open door
+                // re-enters the approach trigger and would slam it shut again.
+                // Poke Pharmee (TalkRequested) to change plans instead.
+                if (e == GateEvent.TalkRequested) return GateState.ModeChoice;
                 break;
             case GateState.CampaignExplain:
                 if (e == GateEvent.ExplainDone) return GateState.EpisodePick;

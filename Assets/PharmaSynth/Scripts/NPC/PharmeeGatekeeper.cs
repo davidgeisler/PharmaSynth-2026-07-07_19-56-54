@@ -28,7 +28,8 @@ public class PharmeeGatekeeper : MonoBehaviour
     [SerializeField] private PPEController ppe;
     [SerializeField] private ExperimentLauncher launcher;
     [SerializeField] private ExperimentRunner runner;
-    [SerializeField] private GameObject doorBlocker;
+    [SerializeField] private GameObject doorBlocker;      // legacy holo barrier (optional)
+    [SerializeField] private DoorOpener doorOpener;       // the real hinged lab door
 
     [Header("Return loop")]
     [SerializeField] private Transform frontDoorSpawn;    // where the player lands after passing
@@ -83,8 +84,12 @@ public class PharmeeGatekeeper : MonoBehaviour
 
     // ---- scene entry points (trigger relays, PPE, panel) -------------------
 
-    /// DoorApproachTrigger → the gate conversation (also re-opens after Lab Tour).
+    /// DoorApproachTrigger → the gate conversation (only from Blocked — walking
+    /// through an OPEN door must never slam it shut again).
     public void OnApproachTriggerEntered() => Model.Fire(GateEvent.Approach);
+
+    /// Poking Pharmee re-opens the conversation (e.g. to end a Lab Tour).
+    public void OnPharmeeTalk() => Model.Fire(GateEvent.TalkRequested);
 
     /// LabThresholdTrigger → the period starts the moment the player walks in.
     public void OnThresholdTriggerEntered()
@@ -332,7 +337,9 @@ public class PharmeeGatekeeper : MonoBehaviour
 
     private void ApplyDoor(GateState s)
     {
-        if (doorBlocker != null) doorBlocker.SetActive(!GatekeeperModel.DoorOpen(s));
+        bool open = GatekeeperModel.DoorOpen(s);
+        if (doorBlocker != null) doorBlocker.SetActive(!open);
+        if (doorOpener != null) doorOpener.SetOpen(open);
     }
 
     private void Say(string line)
