@@ -9,6 +9,7 @@ public class LiquidPhysics : MonoBehaviour
     // Chemistry is reported as events; experiment logic (task completion, wrong-reagent
     // grading) lives in bindings that know the current context — not hardcoded here.
     public event Action<ChemicalData, float> LiquidAdded;          // (chemical, amount)
+    public event Action<ChemicalData, float> LiquidRejected;       // overflow: add refused (vessel full)
     public event Action<ReactionRule> ReactionOccurred;            // a registered reaction fired
     public event Action<ChemicalData, ChemicalData> WrongReagentMixed; // (current, incoming) with no rule
 
@@ -217,9 +218,15 @@ public class LiquidPhysics : MonoBehaviour
         if (incomingChemical == null)
             return;
 
-        LiquidAdded?.Invoke(incomingChemical, amountToAdd);
+        // Capacity guard FIRST — a rejected overflow must not raise LiquidAdded
+        // (it used to complete tasks on pours into an already-full vessel).
+        if (currentLiquidVolume + currentPptVolume + amountToAdd > maxVolume)
+        {
+            LiquidRejected?.Invoke(incomingChemical, amountToAdd);
+            return;
+        }
 
-        if (currentLiquidVolume + currentPptVolume + amountToAdd > maxVolume) return;
+        LiquidAdded?.Invoke(incomingChemical, amountToAdd);
 
         // If waking up from empty, ensure visuals update
         if (currentLiquidVolume <= 0.1f && currentPptVolume <= 0.1f)

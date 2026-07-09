@@ -34,6 +34,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Ethanol
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-bromine
     displayName: Bromine Water
@@ -41,6 +42,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Bromine Water
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-kmno4
     displayName: KMnO4 Solution
@@ -48,6 +50,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Potassium Permanganate
+    supplyMl: 0
   - prefabName: GlassRod
     itemId: test-combustion
     displayName: Lit Splint
@@ -55,6 +58,7 @@ MonoBehaviour:
     targetHeight: 0.18
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Spatula
     itemId: test-sodium
     displayName: Sodium Scoop
@@ -62,6 +66,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: Beaker_100mL
     displayName: Test Beaker
@@ -71,7 +76,10 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Ethanol
       taskId: gather-ethanol
+      requiredMl: 50
     - reagentChemical: Bromine Water
       taskId: test-bromine
+      requiredMl: 50
     - reagentChemical: Potassium Permanganate
       taskId: test-kmno4
+      requiredMl: 50

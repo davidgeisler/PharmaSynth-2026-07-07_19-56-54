@@ -31,6 +31,7 @@ public class ExperimentHudController : MonoBehaviour
     private void OnEnable()
     {
         if (runner == null) return;
+        runner.ExperimentPrepared += OnStarted;   // armed stage shows a clean, frozen HUD
         runner.ExperimentStarted += OnStarted;
         runner.ProgressChanged += OnProgress;
         runner.TaskCompleted += OnTaskCompleted;
@@ -40,6 +41,7 @@ public class ExperimentHudController : MonoBehaviour
     private void OnDisable()
     {
         if (runner == null) return;
+        runner.ExperimentPrepared -= OnStarted;
         runner.ExperimentStarted -= OnStarted;
         runner.ProgressChanged -= OnProgress;
         runner.TaskCompleted -= OnTaskCompleted;

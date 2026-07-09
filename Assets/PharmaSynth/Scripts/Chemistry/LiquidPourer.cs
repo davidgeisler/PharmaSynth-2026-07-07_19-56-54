@@ -9,7 +9,7 @@ public class LiquidPourer : MonoBehaviour
 
     [Header("Settings")]
     public float pourThreshold = 45f;
-    public float maxFlowRate = 100f;
+    public float maxFlowRate = 35f;   // ml/s at full inversion (finite ~150 ml bottles must survive 2-3 pours)
 
     [Header("Stream Animation")]
     public int streamSegments = 10;

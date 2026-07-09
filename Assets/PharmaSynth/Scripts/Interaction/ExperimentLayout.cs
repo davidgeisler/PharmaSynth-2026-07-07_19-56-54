@@ -37,12 +37,20 @@ public class ExperimentLayout : ScriptableObject
         public float targetHeight = 0.16f;
         public bool pourable = false;     // add LiquidPourer + fill
         public string fillChemical = "";  // ChemicalData name to fill a pourable bottle with
+        [Tooltip("Finite supply in ml (0 = auto: 2.5x the summed need, so ~2 spare pours).")]
+        public float supplyMl = 0f;
     }
 
     [Serializable]
     public class Vessel
     {
-        [Serializable] public class Bind { public string reagentChemical; public string taskId; }
+        [Serializable] public class Bind
+        {
+            public string reagentChemical;
+            public string taskId;
+            [Tooltip("Minimum ml poured before the step completes (0 = any amount).")]
+            public float requiredMl;
+        }
         public string prefabName;
         public string displayName;
         public Vector3 pos;

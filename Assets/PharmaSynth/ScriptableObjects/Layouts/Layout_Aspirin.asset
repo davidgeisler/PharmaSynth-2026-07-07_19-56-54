@@ -40,6 +40,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Salicylic Acid
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: add-anhydride
     displayName: Acetic Anhydride
@@ -47,6 +48,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Acetic Anhydride
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-fecl3
     displayName: Ferric Chloride
@@ -54,6 +56,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Ferric Chloride 10%
+    supplyMl: 0
   - prefabName: BunsenBurner
     itemId: warm-waterbath
     displayName: Bunsen Burner
@@ -61,6 +64,7 @@ MonoBehaviour:
     targetHeight: 0.22
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: WatchGlass
     itemId: crystallise-ice
     displayName: Watch Glass
@@ -68,6 +72,7 @@ MonoBehaviour:
     targetHeight: 0.12
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Funnel
     itemId: buchner-filter
     displayName: Buchner Funnel
@@ -75,6 +80,7 @@ MonoBehaviour:
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Synthesis Flask
@@ -84,7 +90,10 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Salicylic Acid
       taskId: weigh-salicylic
+      requiredMl: 50
     - reagentChemical: Acetic Anhydride
       taskId: add-anhydride
+      requiredMl: 50
     - reagentChemical: Ferric Chloride 10%
       taskId: test-fecl3
+      requiredMl: 50

@@ -52,21 +52,21 @@ MonoBehaviour:
   - key: pharmee-greet
     clip: {fileID: 8300000, guid: 0893eac139e3e5d4d81dd15b6ee3d8dc, type: 3}
     category: 2
-    volume: 0.25
+    volume: 0.08
   - key: pharmee-instruct
     clip: {fileID: 8300000, guid: edbcd1773c2ca0c4696438340894aeb4, type: 3}
     category: 2
-    volume: 0.25
+    volume: 0.08
   - key: pharmee-celebrate
     clip: {fileID: 8300000, guid: 7815e767fd1101d43b291048ac16bde9, type: 3}
     category: 2
-    volume: 0.28
+    volume: 0.09
   - key: pharmee-warn
     clip: {fileID: 8300000, guid: 9909009e050ed4940a4100f6f021bfc0, type: 3}
     category: 2
-    volume: 0.3
+    volume: 0.1
   - key: ambient-lab
-    clip: {fileID: 8300000, guid: b0f3070b9533b9544b03bf3f0cfa7cfe, type: 3}
+    clip: {fileID: 0}
     category: 1
     volume: 0.04
   - key: music-menu

@@ -109,7 +109,8 @@ public class HubSelectController : MonoBehaviour
         var flow = new ProgressionFlow(service);
         if (!CanSelect(flow, moduleId)) return false;
         GameFlow.Select(moduleId);
-        if (Application.isPlaying) SceneManager.LoadScene(labSceneName);
+        if (Application.isPlaying)
+            ScreenFader.FadeOutThen(() => SceneManager.LoadScene(labSceneName));
         return true;
     }
 }

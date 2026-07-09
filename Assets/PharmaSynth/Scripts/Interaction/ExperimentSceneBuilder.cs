@@ -119,7 +119,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         if (prefab == null) { Debug.LogWarning("[SceneBuilder] missing prefab " + p.prefabName); return; }
         var inst = Instantiate(prefab, stage);
         inst.name = "Prop_" + p.itemId;
-        Normalise(inst, p.targetHeight);
+        Normalise(inst, p.prefabName, p.targetHeight);
         Seat(inst.transform, p.pos);
         var item = inst.GetComponent<LabItem>() ?? inst.AddComponent<LabItem>();
         item.itemId = p.itemId; item.displayName = p.displayName;
@@ -129,7 +129,11 @@ public class ExperimentSceneBuilder : MonoBehaviour
             var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
             lp.registry = registry;
             var chem = assets.GetChemical(p.fillChemical);
-            if (chem != null) { lp.currentChemical = chem; lp.currentLiquidVolume = lp.maxVolume * 0.6f; }
+            if (chem != null)
+            {
+                lp.currentChemical = chem;
+                lp.currentLiquidVolume = SupplyFor(p, chem);   // finite: ~need + 2 spare pours
+            }
             var pourer = inst.GetComponent<LiquidPourer>() ?? inst.AddComponent<LiquidPourer>();
             if (pourer.spout == null)
             {
@@ -148,7 +152,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         if (prefab == null) { Debug.LogWarning("[SceneBuilder] missing vessel prefab " + v.prefabName); return; }
         var inst = Instantiate(prefab, stage);
         inst.name = "Vessel_" + v.prefabName;
-        Normalise(inst, v.targetHeight);
+        Normalise(inst, v.prefabName, v.targetHeight);
         Seat(inst.transform, v.pos);
         var rb = inst.GetComponent<Rigidbody>(); if (rb != null) rb.isKinematic = true;
         var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
@@ -163,12 +167,27 @@ public class ExperimentSceneBuilder : MonoBehaviour
         foreach (var b in v.bindings)
         {
             var reagent = assets.GetChemical(b.reagentChemical);
-            if (reagent != null) bind.AddExpected(reagent, b.taskId);
+            if (reagent != null) bind.AddExpected(reagent, b.taskId, b.requiredMl);
         }
         var pl = inst.AddComponent<ProximityLabel>(); pl.SetLabel(v.displayName, 1.6f);
     }
 
     // ---- helpers ----------------------------------------------------------
+
+    /// Finite bottle supply: the authored supplyMl, or 2.5x the summed requiredMl of
+    /// every binding this chemical feeds (min 120 ml). A chemical no binding consumes
+    /// keeps the legacy 60% fill (display/test reagents).
+    private float SupplyFor(ExperimentLayout.Prop p, ChemicalData chem)
+    {
+        if (p.supplyMl > 0f) return p.supplyMl;
+        float needed = 0f;
+        var layout = FindLayout(runner != null && runner.Module != null ? runner.Module.moduleId : null);
+        if (layout != null)
+            foreach (var v in layout.vessels)
+                foreach (var b in v.bindings)
+                    if (b.reagentChemical == p.fillChemical && b.requiredMl > 0f) needed += b.requiredMl;
+        return needed > 0f ? Mathf.Max(120f, needed * 2.5f) : 600f;
+    }
 
     private static Bounds WB(GameObject g)
     {
@@ -179,10 +198,19 @@ public class ExperimentSceneBuilder : MonoBehaviour
     }
 
     private static void Normalise(GameObject g, float targetHeight)
+        => Normalise(g, null, targetHeight);
+
+    /// RealSizes-aware normalisation: known prefabs scale by their realistic
+    /// LONGEST dimension (bounds-HEIGHT normalisation inflated flat tools 3-16x);
+    /// unknown names keep the legacy height behaviour.
+    private static void Normalise(GameObject g, string prefabName, float fallbackHeight)
     {
         g.transform.localScale = Vector3.one;
-        float h = Mathf.Max(WB(g).size.y, 0.01f);
-        g.transform.localScale = Vector3.one * (targetHeight / h);
+        var size = WB(g).size;
+        if (RealSizes.TryGet(prefabName, out float target))
+            g.transform.localScale = Vector3.one * RealSizes.UniformScaleFactor(size, target);
+        else
+            g.transform.localScale = Vector3.one * (fallbackHeight / Mathf.Max(size.y, 0.01f));
     }
 
     private static void Seat(Transform t, Vector3 pos)

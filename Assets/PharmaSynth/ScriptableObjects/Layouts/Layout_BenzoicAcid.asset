@@ -40,6 +40,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Potassium Permanganate
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: oxidise-benzaldehyde
     displayName: Benzaldehyde
@@ -47,6 +48,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Benzaldehyde
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: acidify
     displayName: HCl 6N
@@ -54,6 +56,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Hydrochloric Acid 6N
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-fecl3
     displayName: Ferric Chloride
@@ -61,6 +64,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Ferric Chloride 10%
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-ester
     displayName: Sulfuric Acid
@@ -68,6 +72,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Sulfuric Acid
+    supplyMl: 0
   - prefabName: Funnel
     itemId: filter-mno2
     displayName: Funnel
@@ -75,6 +80,7 @@ MonoBehaviour:
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: WatchGlass
     itemId: crystallise
     displayName: Watch Glass
@@ -82,6 +88,7 @@ MonoBehaviour:
     targetHeight: 0.12
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Dropper
     itemId: test-litmus
     displayName: Dropper
@@ -89,6 +96,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: Beaker_500mL
     displayName: Reaction Beaker
@@ -98,11 +106,16 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Potassium Permanganate
       taskId: prepare-permanganate
+      requiredMl: 50
     - reagentChemical: Benzaldehyde
       taskId: oxidise-benzaldehyde
+      requiredMl: 50
     - reagentChemical: Hydrochloric Acid 6N
       taskId: acidify
+      requiredMl: 50
     - reagentChemical: Ferric Chloride 10%
       taskId: test-fecl3
+      requiredMl: 50
     - reagentChemical: Sulfuric Acid
       taskId: test-ester
+      requiredMl: 50

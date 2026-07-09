@@ -64,6 +64,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Silver Nitrate
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-iodoform
     displayName: Sodium Hypochlorite
@@ -71,6 +72,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Sodium Hypochlorite
+    supplyMl: 0
   - prefabName: Spatula
     itemId: prep-koh
     displayName: KOH Spatula
@@ -78,6 +80,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Scoopula
     itemId: weigh-acetates
     displayName: Acetate Scoop
@@ -85,6 +88,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: RetortStand
     itemId: setup-distill
     displayName: Retort Stand
@@ -92,6 +96,7 @@ MonoBehaviour:
     targetHeight: 0.35
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: BunsenBurner
     itemId: heat-glow
     displayName: Bunsen Burner
@@ -99,6 +104,7 @@ MonoBehaviour:
     targetHeight: 0.22
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Beaker_100mL
     itemId: collect-56
     displayName: Collection Beaker
@@ -106,6 +112,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: TestTube
     itemId: test-schiff
     displayName: Schiff Test Tube
@@ -113,6 +120,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: EvaporatingDish
     itemId: test-bisulfite
     displayName: Bisulfite Dish
@@ -120,6 +128,7 @@ MonoBehaviour:
     targetHeight: 0.1
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Distillation Flask
@@ -129,5 +138,7 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Silver Nitrate
       taskId: test-tollens
+      requiredMl: 50
     - reagentChemical: Sodium Hypochlorite
       taskId: test-iodoform
+      requiredMl: 50

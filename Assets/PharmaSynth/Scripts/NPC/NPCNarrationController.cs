@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,6 +19,8 @@ public class NPCNarrationController : MonoBehaviour
     [SerializeField] private AudioSource narratorAudioSource;
     [SerializeField] private TMP_Text subtitleText;
     [SerializeField] private GameObject skipButton;
+    [Tooltip("The visible bubble/panel behind the subtitle — shown only while a line is speaking.")]
+    [SerializeField] private GameObject panelRoot;
 
     [Header("Sequence")]
     [SerializeField] private List<NarrationLine> tutorialLines = new List<NarrationLine>();
@@ -26,10 +29,21 @@ public class NPCNarrationController : MonoBehaviour
     [Header("Events")]
     public UnityEvent onNarrationFinished;
 
+    /// Per-line hooks: the overhead bubble AND the HUD dialogue bar both mirror these.
+    public event Action<string, float> LineStarted;
+    public event Action LineEnded;
+
+    /// True while a line is on screen (between BeginLine and EndLine).
+    public bool IsSpeaking { get; private set; }
+
     private Coroutine narrationRoutine;
+
+    /// Edit-mode/test binding for the auto-hidden bubble panel.
+    public void SetPanelRoot(GameObject g) => panelRoot = g;
 
     private void Start()
     {
+        if (panelRoot != null) panelRoot.SetActive(false); // silent until spoken to
         if (playOnStart)
             PlayTutorialNarration();
     }
@@ -52,11 +66,30 @@ public class NPCNarrationController : MonoBehaviour
         narrationRoutine = StartCoroutine(SayRoutine(subtitle, seconds, clip));
     }
 
-    private IEnumerator SayRoutine(string subtitle, float seconds, AudioClip clip)
+    /// Coroutine-free line start: shows text + bubble + skip, raises LineStarted.
+    /// Public so it is edit-mode testable and callable by cutscene staging.
+    public void BeginLine(string subtitle, float seconds)
     {
         if (subtitleText != null) subtitleText.text = subtitle;
+        if (panelRoot != null) panelRoot.SetActive(true);
         if (skipButton != null) skipButton.SetActive(true);
+        IsSpeaking = true;
+        LineStarted?.Invoke(subtitle, seconds);
+    }
 
+    /// Coroutine-free line end: clears text, hides bubble + skip, raises LineEnded.
+    public void EndLine()
+    {
+        if (subtitleText != null) subtitleText.text = string.Empty;
+        if (panelRoot != null) panelRoot.SetActive(false);
+        if (skipButton != null) skipButton.SetActive(false);
+        if (!IsSpeaking) return; // idempotent — visuals reset above either way
+        IsSpeaking = false;
+        LineEnded?.Invoke();
+    }
+
+    private IEnumerator SayRoutine(string subtitle, float seconds, AudioClip clip)
+    {
         float waitSeconds = Mathf.Max(0.1f, seconds);
         if (narratorAudioSource != null && clip != null)
         {
@@ -65,10 +98,9 @@ public class NPCNarrationController : MonoBehaviour
             waitSeconds = clip.length;
         }
 
+        BeginLine(subtitle, waitSeconds);
         yield return new WaitForSeconds(waitSeconds);
-
-        if (subtitleText != null) subtitleText.text = string.Empty;
-        if (skipButton != null) skipButton.SetActive(false);
+        EndLine();
     }
 
     public void SkipNarration()
@@ -79,28 +111,17 @@ public class NPCNarrationController : MonoBehaviour
         if (narratorAudioSource != null)
             narratorAudioSource.Stop();
 
-        if (subtitleText != null)
-            subtitleText.text = string.Empty;
-
-        if (skipButton != null)
-            skipButton.SetActive(false);
-
+        EndLine();
         onNarrationFinished?.Invoke();
     }
 
     private IEnumerator PlayLinesRoutine()
     {
-        if (skipButton != null)
-            skipButton.SetActive(true);
-
         for (int i = 0; i < tutorialLines.Count; i++)
         {
             NarrationLine line = tutorialLines[i];
             if (line == null)
                 continue;
-
-            if (subtitleText != null)
-                subtitleText.text = line.subtitle;
 
             float waitSeconds = Mathf.Max(0.1f, line.fallbackSeconds);
 
@@ -111,15 +132,11 @@ public class NPCNarrationController : MonoBehaviour
                 waitSeconds = line.voiceClip.length;
             }
 
+            BeginLine(line.subtitle, waitSeconds);
             yield return new WaitForSeconds(waitSeconds);
         }
 
-        if (subtitleText != null)
-            subtitleText.text = string.Empty;
-
-        if (skipButton != null)
-            skipButton.SetActive(false);
-
+        EndLine();
         onNarrationFinished?.Invoke();
     }
 }

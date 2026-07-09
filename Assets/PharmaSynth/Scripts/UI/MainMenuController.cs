@@ -23,7 +23,7 @@ public class MainMenuController : MonoBehaviour
     public void OnTutorial()
     {
         GameFlow.Select(tutorialModuleId);
-        SceneManager.LoadScene(labSceneName);
+        ScreenFader.FadeOutThen(() => SceneManager.LoadScene(labSceneName));
     }
 
     public void OnLaboratory()
@@ -31,7 +31,7 @@ public class MainMenuController : MonoBehaviour
         var service = new ProgressionService();
         service.Load();
         GameFlow.Select(ResolveLabTarget(new ProgressionFlow(service), tutorialModuleId));
-        SceneManager.LoadScene(labSceneName);
+        ScreenFader.FadeOutThen(() => SceneManager.LoadScene(labSceneName));
     }
 
     public void OnSettings()

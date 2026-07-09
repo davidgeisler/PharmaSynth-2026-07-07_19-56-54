@@ -32,6 +32,7 @@ public class ExperimentRunner : MonoBehaviour
     public UnityEvent onExperimentFinished;
 
     // Code-facing events (HUD/tablet/watch/NPC controllers subscribe here).
+    public event Action<ExperimentModuleDefinition> ExperimentPrepared;   // armed, clock off
     public event Action<ExperimentModuleDefinition> ExperimentStarted;
     public event Action<ExperimentTask> TaskCompleted;
     public event Action<TaskPhase> PhaseCompleted;
@@ -46,8 +47,12 @@ public class ExperimentRunner : MonoBehaviour
     private float _elapsed;
     private bool _running;
     private bool _finished;
+    private bool _armed;
 
     public bool IsRunning => _running && !_finished && _graph != null;
+    /// Attempt built and waiting for StartRun() — the clock is NOT running and
+    /// tasks are locked (used by the door gate: timer starts on walk-in).
+    public bool IsArmed => _armed && !_running && !_finished && _graph != null;
     public float ElapsedSeconds => _elapsed;
     public float Progress01 => _graph != null ? _graph.Progress01 : 0f;
     public int MistakeCount => _mistakes != null ? _mistakes.Count : 0;
@@ -63,13 +68,13 @@ public class ExperimentRunner : MonoBehaviour
         if (startOnAwake) StartExperiment();
     }
 
-    /// Build a fresh attempt from the module data and begin.
-    public void StartExperiment()
+    /// Shared attempt construction (graph/mastery/mistakes/grader, clock zeroed).
+    private bool BuildAttempt()
     {
         if (module == null)
         {
             Debug.LogError("[ExperimentRunner] No module assigned.");
-            return;
+            return false;
         }
 
         _graph = module.BuildTaskGraph();
@@ -77,12 +82,45 @@ public class ExperimentRunner : MonoBehaviour
         _mistakes = new MistakeLog();
         _grader = new ExperimentGrader(module.BuildScoreCalculator(), gradingConfig);
         _elapsed = 0f;
-        _running = true;
-        _finished = false;
 
         _graph.TaskCompleted += OnGraphTaskCompleted;
         _graph.PhaseCompleted += OnGraphPhaseCompleted;
         _mistakes.MistakeRecorded += OnMistakeRecorded;
+        return true;
+    }
+
+    /// Build a fresh attempt from the module data and begin.
+    public void StartExperiment()
+    {
+        if (!BuildAttempt()) return;
+        _armed = false;
+        _running = true;
+        _finished = false;
+
+        ExperimentStarted?.Invoke(module);
+        onExperimentStarted?.Invoke();
+        ProgressChanged?.Invoke(0f);
+    }
+
+    /// Build the attempt but hold the clock: tasks stay locked (IsRunning false)
+    /// until StartRun() — the door-gate seam ("the period starts when you walk in").
+    public void PrepareExperiment()
+    {
+        if (!BuildAttempt()) return;
+        _armed = true;
+        _running = false;
+        _finished = false;
+
+        ExperimentPrepared?.Invoke(module);
+        ProgressChanged?.Invoke(0f);
+    }
+
+    /// Start the clock on an armed attempt; falls back to a full start when not armed.
+    public void StartRun()
+    {
+        if (!IsArmed) { StartExperiment(); return; }
+        _armed = false;
+        _running = true;
 
         ExperimentStarted?.Invoke(module);
         onExperimentStarted?.Invoke();
@@ -115,7 +153,8 @@ public class ExperimentRunner : MonoBehaviour
     /// skill's mastery and feeds the grade penalty.
     public void RecordMistake(LabErrorType type, string message)
     {
-        if (_mistakes == null) return;
+        // Armed-but-not-started (and Lab Tour, where nothing is built) never grades.
+        if (!IsRunning || _mistakes == null) return;
         _mistakes.Record(type, message);
         LabSkill skill = MistakeLog.SkillFor(type);
         if (_mastery != null && _mastery.IsTracked(skill))

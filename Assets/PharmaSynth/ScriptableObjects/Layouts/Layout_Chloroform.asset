@@ -58,6 +58,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Bleaching Powder
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: prep-acetone-mix
     displayName: Acetone
@@ -65,6 +66,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Acetone
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-agno3
     displayName: Silver Nitrate
@@ -72,6 +74,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Silver Nitrate
+    supplyMl: 0
   - prefabName: RetortStand
     itemId: reflux-setup
     displayName: Retort Stand
@@ -79,6 +82,7 @@ MonoBehaviour:
     targetHeight: 0.35
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Dropper
     itemId: add-dropwise
     displayName: Dropper
@@ -86,6 +90,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Beaker_100mL
     itemId: distil
     displayName: Distillate Beaker
@@ -93,6 +98,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Funnel
     itemId: decant-wash
     displayName: Separating Funnel
@@ -100,6 +106,7 @@ MonoBehaviour:
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: WatchGlass
     itemId: dry-redistil
     displayName: Watch Glass
@@ -107,6 +114,7 @@ MonoBehaviour:
     targetHeight: 0.12
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: GlassRod
     itemId: test-flammability
     displayName: Lit Splint
@@ -114,6 +122,7 @@ MonoBehaviour:
     targetHeight: 0.18
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Reflux Flask
@@ -123,7 +132,10 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Bleaching Powder
       taskId: prep-bleach
+      requiredMl: 50
     - reagentChemical: Acetone
       taskId: prep-acetone-mix
+      requiredMl: 50
     - reagentChemical: Silver Nitrate
       taskId: test-agno3
+      requiredMl: 50

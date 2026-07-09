@@ -34,6 +34,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Brown Sugar
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: yeast
     displayName: Yeast
@@ -41,6 +42,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Yeast
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: hypo
     displayName: Sodium Hypochlorite
@@ -48,6 +50,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Sodium Hypochlorite
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: acetic
     displayName: Glacial Acetic Acid
@@ -55,6 +58,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Glacial Acetic Acid
+    supplyMl: 0
   - prefabName: ErlenmeyerFlask_400mL
     itemId: distill-flask
     displayName: Distillation Flask
@@ -62,6 +66,7 @@ MonoBehaviour:
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: GlassRod
     itemId: splint
     displayName: Lit Splint
@@ -69,6 +74,7 @@ MonoBehaviour:
     targetHeight: 0.18
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: Beaker_500mL
     displayName: Fermentation Beaker
@@ -78,9 +84,13 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Brown Sugar
       taskId: prepare-must
+      requiredMl: 50
     - reagentChemical: Yeast
       taskId: ferment
+      requiredMl: 50
     - reagentChemical: Sodium Hypochlorite
       taskId: test-iodoform
+      requiredMl: 50
     - reagentChemical: Glacial Acetic Acid
       taskId: test-ester
+      requiredMl: 50

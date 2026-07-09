@@ -46,6 +46,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Hydrochloric Acid 6N
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: measure-aniline
     displayName: Aniline
@@ -53,6 +54,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Aniline
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: add-acetic
     displayName: Glacial Acetic Acid
@@ -60,6 +62,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Glacial Acetic Acid
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: add-acylating
     displayName: Acetyl Chloride
@@ -67,6 +70,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Acetyl Chloride
+    supplyMl: 0
   - prefabName: Vial_Brown
     itemId: test-bromination
     displayName: Bromine Water
@@ -74,6 +78,7 @@ MonoBehaviour:
     targetHeight: 0.16
     pourable: 1
     fillChemical: Bromine Water
+    supplyMl: 0
   - prefabName: BunsenBurner
     itemId: heat-bath
     displayName: Bunsen Burner
@@ -81,6 +86,7 @@ MonoBehaviour:
     targetHeight: 0.22
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: WatchGlass
     itemId: ice-crystallise
     displayName: Watch Glass
@@ -88,6 +94,7 @@ MonoBehaviour:
     targetHeight: 0.12
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: Funnel
     itemId: filter-wash
     displayName: Funnel
@@ -95,6 +102,7 @@ MonoBehaviour:
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   - prefabName: TestTube
     itemId: test-hydrolysis
     displayName: Test Tube
@@ -102,6 +110,7 @@ MonoBehaviour:
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
+    supplyMl: 0
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Reaction Flask
@@ -111,11 +120,16 @@ MonoBehaviour:
     bindings:
     - reagentChemical: Hydrochloric Acid 6N
       taskId: prep-hcl
+      requiredMl: 50
     - reagentChemical: Aniline
       taskId: measure-aniline
+      requiredMl: 50
     - reagentChemical: Glacial Acetic Acid
       taskId: add-acetic
+      requiredMl: 50
     - reagentChemical: Acetyl Chloride
       taskId: add-acylating
+      requiredMl: 50
     - reagentChemical: Bromine Water
       taskId: test-bromination
+      requiredMl: 50

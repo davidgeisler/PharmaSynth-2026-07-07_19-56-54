@@ -49,6 +49,16 @@ public static class PharmaSelfTests
         ExaminerSuite();
         SettingsSuite();
         ResultsExportSuite();
+        RecorderSuite();
+        HudRigSuite();
+        FadeSuite();
+        ArmedRunnerSuite();
+        GatekeeperSuite();
+        UnlockReturnSuite();
+        LabMenuSuite();
+        DepletionSuite();
+        RealSizeSuite();
+        PharmeeAliveSuite();
         LibrarySuite();
         ContentSuite();
         RosterDataSuite();
@@ -160,6 +170,614 @@ public static class PharmaSelfTests
         A("progression: unlock next", svc.IsUnlocked("m2", "m"));
         var json = JsonUtility.ToJson(svc.Data);
         A("progression: json round-trips", JsonUtility.FromJson<ProgressSaveData>(json).modules[0].passed);
+    }
+
+    static void RecorderSuite()
+    {
+        string path = System.IO.Path.Combine(Application.temporaryCachePath, "recorder_selftest.json");
+        void Clean() { try { System.IO.File.Delete(path); System.IO.File.Delete(path + ".bak"); } catch { } }
+        Clean();
+        try
+        {
+            // Pure seam: fold results into the service (persists to the injected path).
+            var svc = new ProgressionService(path);
+            var rec = ResultRecorder.Record(svc, "m1", new ExperimentResult { grade = new GradeBreakdown { Total = 95 }, overallMastery = 0.92f, passed = true });
+            A("recorder: latches pass", rec.passed && rec.attempts == 1);
+            ResultRecorder.Record(svc, "m1", new ExperimentResult { grade = new GradeBreakdown { Total = 40 }, overallMastery = 0.3f, passed = false });
+            var r1 = svc.GetRecord("m1");
+            A("recorder: keeps best + attempts", Near(r1.bestGrade, 95f) && r1.attempts == 2 && r1.passed);
+            var reload = new ProgressionService(path); reload.Load();
+            A("recorder: persisted to disk", reload.IsPassed("m1"));
+
+            // Mono: ExperimentFinished → record written through the component.
+            var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+            module.moduleId = "selftest-recorder";
+            module.graphTasks = new List<ExperimentTask> { T("a", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure) };
+            module.trackedSkills = new List<LabSkill> { LabSkill.Measuring };
+            var go = new GameObject("SelfTestRecorder");
+            try
+            {
+                var runner = go.AddComponent<ExperimentRunner>();
+                var recorder = go.AddComponent<ResultRecorder>();
+                recorder.SavePathOverride = path;
+                recorder.SetRunner(runner);
+                ModuleRecord got = null; recorder.Recorded += r => got = r;
+                runner.SetModule(module);
+                runner.StartExperiment();
+                runner.CompleteTask("a");
+                runner.Finish(1f);
+                A("recorder: mono records on finish", got != null && got.moduleId == "selftest-recorder" && got.attempts >= 1);
+                var check = new ProgressionService(path); check.Load();
+                A("recorder: mono persisted", check.GetRecord("selftest-recorder") != null);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(go); UnityEngine.Object.DestroyImmediate(module); }
+        }
+        finally { Clean(); }
+    }
+
+    static void HudRigSuite()
+    {
+        // Lazy-follow solver math
+        var p = HudFollowSolver.Params.Default;
+        A("hud: yaw wrap", Near(HudFollowSolver.DeltaYawDeg(350f, 10f), 20f));
+        var anchor = HudFollowSolver.AnchorPoint(Vector3.zero, 0f, in p);
+        A("hud: anchor at distance", Near(anchor.z, p.distance) && Near(anchor.y, p.heightOffset) && Near(anchor.x, 0f));
+        var s = HudFollowSolver.Snapped(Vector3.zero, 0f, in p);
+        var before = s.pos; var beforeYaw = s.yawDeg;
+        HudFollowSolver.Step(ref s, Vector3.zero, p.yawDeadzoneDeg * 0.5f, in p, 1f / 60f);
+        A("hud: deadzone holds", (s.pos - before).magnitude < 0.0001f && Near(s.yawDeg, beforeYaw));
+        for (int i = 0; i < 240; i++) HudFollowSolver.Step(ref s, Vector3.zero, 90f, in p, 1f / 60f);
+        A("hud: converges on 90 deg turn", Near(s.yawDeg, 90f, 1.5f));
+        var target = HudFollowSolver.AnchorPoint(Vector3.zero, 90f, in p);
+        A("hud: converges to anchor", (s.pos - target).magnitude < 0.05f);
+
+        // Narration line events + bubble toggling + dialogue-bar mirroring
+        var go = new GameObject("hudtest");
+        try
+        {
+            var narr = go.AddComponent<NPCNarrationController>();
+            var panel = new GameObject("Bubble"); panel.transform.SetParent(go.transform);
+            narr.SetPanelRoot(panel);
+            string started = null; int ends = 0;
+            narr.LineStarted += (l, sec) => started = l;
+            narr.LineEnded += () => ends++;
+            narr.BeginLine("hello", 2f);
+            A("narration: BeginLine shows bubble + event", panel.activeSelf && started == "hello" && narr.IsSpeaking);
+            narr.EndLine();
+            A("narration: EndLine hides bubble + event", !panel.activeSelf && ends == 1 && !narr.IsSpeaking);
+            narr.EndLine();
+            A("narration: EndLine idempotent", ends == 1);
+
+            var barRoot = new GameObject("Bar"); barRoot.transform.SetParent(go.transform);
+            var lineGo = new GameObject("Line"); lineGo.transform.SetParent(barRoot.transform);
+            var lineText = lineGo.AddComponent<TMPro.TextMeshProUGUI>();
+            var bar = go.AddComponent<HudDialogueBar>();
+            bar.Bind(narr, barRoot, null, lineText);
+            narr.BeginLine("step two", 1f);
+            A("hudbar: mirrors line", barRoot.activeSelf && lineText.text == "step two");
+            narr.EndLine();
+            A("hudbar: hides on end", !barRoot.activeSelf && lineText.text == string.Empty);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); }
+    }
+
+    static void FadeSuite()
+    {
+        A("fade: ease endpoints", Near(FadeState.Ease01(0f), 0f) && Near(FadeState.Ease01(1f), 1f));
+        A("fade: ease midpoint", Near(FadeState.Ease01(0.5f), 0.5f));
+        A("fade: ease monotone", FadeState.Ease01(0.3f) < FadeState.Ease01(0.6f));
+        var f = new FadeState();
+        f.Begin(1f, 0.5f);
+        A("fade: busy while ramping", f.Busy && f.Alpha < 1f);
+        for (int i = 0; i < 40; i++) f.Step(1f / 60f);      // 0.66 s > 0.5 s
+        A("fade: reaches target + settles", Near(f.Alpha, 1f) && !f.Busy);
+        f.Begin(0f, 0.2f);
+        for (int i = 0; i < 30; i++) f.Step(1f / 60f);
+        A("fade: fades back down", Near(f.Alpha, 0f) && !f.Busy);
+    }
+
+    static void ArmedRunnerSuite()
+    {
+        var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+        module.moduleId = "selftest-armed";
+        module.graphTasks = new List<ExperimentTask> {
+            T("a", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure),
+            T("b", TaskPhase.Synthesis, 1, LabSkill.Transfer, RubricCategory.Procedure, "a"),
+        };
+        module.trackedSkills = new List<LabSkill> { LabSkill.Measuring, LabSkill.Transfer };
+        var go = new GameObject("SelfTestArmed");
+        try
+        {
+            var runner = go.AddComponent<ExperimentRunner>();
+            runner.SetModule(module);
+            int prepared = 0, started = 0;
+            runner.ExperimentPrepared += _ => prepared++;
+            runner.ExperimentStarted += _ => started++;
+
+            runner.PrepareExperiment();
+            A("armed: state flags", runner.IsArmed && !runner.IsRunning && prepared == 1 && started == 0);
+            runner.AdvanceTime(5f);
+            A("armed: clock frozen", Near(runner.ElapsedSeconds, 0f));
+            A("armed: tasks locked", runner.CompleteTask("a") == TaskCompletionResult.UnknownTask);
+            runner.RecordMistake(LabErrorType.WrongReagent, "pre-run");
+            A("armed: mistakes ignored", runner.MistakeCount == 0);
+
+            runner.StartRun();
+            A("armed: StartRun begins", runner.IsRunning && !runner.IsArmed && started == 1);
+            runner.AdvanceTime(3f);
+            A("armed: clock runs after start", Near(runner.ElapsedSeconds, 3f));
+            A("armed: tasks unlocked", runner.CompleteTask("a") == TaskCompletionResult.Completed);
+            runner.CompleteTask("b");
+            var res = runner.Finish(1f);
+            A("armed: finish works", res.grade.Total > 0f);
+
+            // StartRun with no armed attempt = legacy full start.
+            runner.StartRun();
+            A("armed: StartRun fallback", runner.IsRunning && Near(runner.ElapsedSeconds, 0f));
+
+            // Launcher modes over the real library asset.
+            var lib = AssetDatabase.LoadAssetAtPath<ExperimentLibrary>("Assets/PharmaSynth/ScriptableObjects/ExperimentLibrary.asset");
+            if (lib != null)
+            {
+                var lgo = new GameObject("SelfTestLauncher");
+                try
+                {
+                    var runner2 = lgo.AddComponent<ExperimentRunner>();
+                    var launcher = lgo.AddComponent<ExperimentLauncher>();
+                    launcher.SetLibrary(lib); launcher.SetRunner(runner2);
+                    var m1 = launcher.Launch("tutorial-methane", LaunchMode.StageOnly);
+                    A("launcher: StageOnly furnishes without clock", m1 != null && !runner2.IsRunning && !runner2.IsArmed);
+                    var m2 = launcher.Launch("tutorial-methane", LaunchMode.PrepareArmed);
+                    A("launcher: PrepareArmed arms", m2 != null && runner2.IsArmed && !runner2.IsRunning);
+                    var m3 = launcher.Launch("tutorial-methane");
+                    A("launcher: legacy = FullStart", m3 != null && runner2.IsRunning);
+                }
+                finally { UnityEngine.Object.DestroyImmediate(lgo); }
+            }
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); UnityEngine.Object.DestroyImmediate(module); }
+    }
+
+    static void GatekeeperSuite()
+    {
+        string savedSelection = GameFlow.SelectedModuleId;
+        string tempPath = System.IO.Path.Combine(Application.temporaryCachePath, "gate_selftest.json");
+        void CleanTemp() { try { System.IO.File.Delete(tempPath); System.IO.File.Delete(tempPath + ".bak"); } catch { } }
+        CleanTemp();
+        try
+        {
+            // --- pure transition table -------------------------------------
+            var m = new GatekeeperModel();
+            A("gate: starts blocked", m.State == GateState.Blocked && !GatekeeperModel.DoorOpen(m.State));
+            A("gate: approach opens choice", m.Fire(GateEvent.Approach) && m.State == GateState.ModeChoice);
+            A("gate: illegal event refused", !m.Fire(GateEvent.CrossedThreshold) && m.State == GateState.ModeChoice);
+            A("gate: campaign explain", m.Fire(GateEvent.PickCampaign) && m.State == GateState.CampaignExplain);
+            A("gate: explain done", m.Fire(GateEvent.ExplainDone) && m.State == GateState.EpisodePick);
+
+            var svc = new ProgressionService(tempPath);
+            var flow = new ProgressionFlow(svc);
+            string firstPrelim = null;
+            foreach (var e in ExperimentCatalog.InPeriod(ExperimentPeriod.Prelim)) { firstPrelim = e.moduleId; break; }
+
+            A("gate: fresh tutorial playable", GatekeeperModel.FirstPlayableInPeriod(flow, ExperimentPeriod.Tutorial) == "tutorial-methane");
+            A("gate: fresh prelim locked", GatekeeperModel.FirstPlayableInPeriod(flow, ExperimentPeriod.Prelim) == null);
+
+            GatekeeperModel.EpisodeOptions(flow, out var labels, out var selectable);
+            A("gate: 4 episode rows", labels.Count == 4 && selectable.Count == 4);
+            A("gate: only tutorial selectable", selectable[0] && !selectable[1] && !selectable[2] && !selectable[3]);
+            A("gate: locked label marked", labels[1].Contains("(locked)"));
+
+            Func<string, bool> canSel = id => HubSelectController.CanSelect(flow, id);
+            Func<ExperimentPeriod, string> firstOf = p => GatekeeperModel.FirstPlayableInPeriod(flow, p);
+            A("gate: locked episode refused", !m.ChooseEpisode(ExperimentPeriod.Midterm, canSel, firstOf) && m.State == GateState.EpisodePick);
+            A("gate: tutorial episode chosen", m.ChooseEpisode(ExperimentPeriod.Tutorial, canSel, firstOf)
+                && m.State == GateState.CoatPrompt && m.SelectedModuleId == "tutorial-methane");
+
+            A("gate: coat then ready", m.Fire(GateEvent.Coated) && m.Fire(GateEvent.Ready) && m.State == GateState.Loading);
+            A("gate: loaded warns", m.Fire(GateEvent.Loaded) && m.State == GateState.ThresholdWarn && !GatekeeperModel.DoorOpen(m.State));
+            A("gate: cross before confirm refused", !m.Fire(GateEvent.CrossedThreshold));
+            A("gate: proceed arms door", m.Fire(GateEvent.ProceedConfirmed) && m.State == GateState.DoorArmed && GatekeeperModel.DoorOpen(m.State));
+            A("gate: walk-in runs", m.Fire(GateEvent.CrossedThreshold) && m.State == GateState.Running);
+            A("gate: return loop to blocked", m.Fire(GateEvent.ContinueAfterPass) && m.Fire(GateEvent.DebriefDone)
+                && m.Fire(GateEvent.TeleportDone) && m.State == GateState.UnlockAnnounce
+                && m.Fire(GateEvent.AnnounceDone) && m.State == GateState.Blocked);
+
+            svc.RecordResult("tutorial-methane", new ExperimentResult { grade = new GradeBreakdown { Total = 95 }, overallMastery = 0.95f, passed = true }, false);
+            A("gate: prelim unlocks after tutorial", GatekeeperModel.FirstPlayableInPeriod(flow, ExperimentPeriod.Prelim) == firstPrelim && firstPrelim != null);
+
+            var m2 = new GatekeeperModel();
+            m2.Fire(GateEvent.Approach); m2.Fire(GateEvent.PickLabTour);
+            A("gate: lab tour opens door", m2.State == GateState.LabTour && m2.IsLabTour && GatekeeperModel.DoorOpen(m2.State));
+            A("gate: re-approach from tour", m2.Fire(GateEvent.Approach) && m2.State == GateState.ModeChoice);
+
+            var m3 = new GatekeeperModel();
+            m3.Fire(GateEvent.Approach); m3.Fire(GateEvent.PickCampaign); m3.Fire(GateEvent.ExplainDone);
+            m3.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+            m3.Fire(GateEvent.Coated); m3.Fire(GateEvent.Ready); m3.Fire(GateEvent.Loaded);
+            m3.Fire(GateEvent.ProceedConfirmed); m3.Fire(GateEvent.CrossedThreshold);
+            A("gate: supply prompt", m3.Fire(GateEvent.SupplyExhausted) && m3.State == GateState.SupplyPrompt && GatekeeperModel.DoorOpen(m3.State));
+            A("gate: supply keep-trying", m3.Fire(GateEvent.Dismiss) && m3.State == GateState.Running);
+            m3.Fire(GateEvent.SupplyExhausted);
+            A("gate: supply restart reloads", m3.Fire(GateEvent.RestartConfirmed) && m3.State == GateState.Loading);
+
+            // --- choice panel component ------------------------------------
+            var pgo = new GameObject("panel");
+            try
+            {
+                var panel = pgo.AddComponent<ChoicePanelController>();
+                var root = new GameObject("Root"); root.transform.SetParent(pgo.transform);
+                var title = new GameObject("Title").AddComponent<TMPro.TextMeshProUGUI>(); title.transform.SetParent(root.transform);
+                var btns = new UnityEngine.UI.Button[3]; var lbls = new TMPro.TMP_Text[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    var bgo = new GameObject("B" + i); bgo.transform.SetParent(root.transform);
+                    btns[i] = bgo.AddComponent<UnityEngine.UI.Button>();
+                    var lgo = new GameObject("L" + i); lgo.transform.SetParent(bgo.transform);
+                    lbls[i] = lgo.AddComponent<TMPro.TextMeshProUGUI>();
+                }
+                panel.Bind(root, title, btns, lbls);
+                int chosen = -1; panel.OptionChosen += i => chosen = i;
+                panel.Show("Pick", new List<string> { "A", "B" }, new List<bool> { true, false });
+                A("panel: shows + trims options", panel.IsOpen && btns[0].gameObject.activeSelf && btns[1].gameObject.activeSelf && !btns[2].gameObject.activeSelf);
+                A("panel: labels + lock flags", panel.LabelAt(0) == "A" && panel.LabelAt(1) == "B" && btns[0].interactable && !btns[1].interactable);
+                panel.OnOption(1);
+                A("panel: option event", chosen == 1);
+                panel.Hide();
+                A("panel: hides", !panel.IsOpen);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(pgo); }
+
+            // --- trigger relay ----------------------------------------------
+            var rgo = new GameObject("relay");
+            try
+            {
+                var relay = rgo.AddComponent<PlayerTriggerRelay>();
+                int hits = 0;
+                relay.onPlayerEntered = new UnityEngine.Events.UnityEvent();
+                relay.onPlayerEntered.AddListener(() => hits++);
+                relay.SimulateEnter();
+                A("relay: fires", hits == 1);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(rgo); }
+
+            // --- mono integration: door gate drives armed -> walk-in start ---
+            var lib = AssetDatabase.LoadAssetAtPath<ExperimentLibrary>("Assets/PharmaSynth/ScriptableObjects/ExperimentLibrary.asset");
+            if (lib != null)
+            {
+                var ggo = new GameObject("gk");
+                var blocker = new GameObject("Blocker");
+                try
+                {
+                    var runner = ggo.AddComponent<ExperimentRunner>();
+                    var launcher = ggo.AddComponent<ExperimentLauncher>();
+                    launcher.SetLibrary(lib); launcher.SetRunner(runner);
+                    var gk = ggo.AddComponent<PharmeeGatekeeper>();
+                    gk.Bind(null, null, null, launcher, runner, blocker);
+                    A("gk: blocker on while blocked", blocker.activeSelf);
+                    gk.OnApproachTriggerEntered();
+                    gk.OnPanelOption(1);              // Campaign
+                    gk.OnPanelOption(0);              // Continue (explain)
+                    A("gk: at episode pick", gk.Model.State == GateState.EpisodePick);
+                    // deterministic pick (the panel path reads the real save file)
+                    gk.Model.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+                    gk.Model.Fire(GateEvent.Coated);  // simulated PPE
+                    gk.OnPanelOption(0);              // I'm ready -> Loading -> armed -> ThresholdWarn
+                    A("gk: armed after load", runner.IsArmed && gk.Model.State == GateState.ThresholdWarn);
+                    A("gk: door still blocked pre-confirm", blocker.activeSelf);
+                    gk.OnPanelOption(0);              // Proceed
+                    A("gk: door opens when armed", !blocker.activeSelf && gk.Model.State == GateState.DoorArmed);
+                    gk.OnThresholdTriggerEntered();   // walk in
+                    A("gk: walk-in starts run at 0s", runner.IsRunning && Near(runner.ElapsedSeconds, 0f) && gk.Model.State == GateState.Running);
+                }
+                finally { UnityEngine.Object.DestroyImmediate(ggo); UnityEngine.Object.DestroyImmediate(blocker); }
+            }
+        }
+        finally
+        {
+            GameFlow.SelectedModuleId = savedSelection;
+            CleanTemp();
+        }
+    }
+
+    static void UnlockReturnSuite()
+    {
+        // --- teleport math: camera lands exactly on the marker ---------------
+        var marker = new Vector3(-4.15f, 0.22f, 1.05f);
+        var rig = new Vector3(0f, 0.22f, 0f);
+        var cam = new Vector3(0.3f, 1.7f, 0.4f);
+        var p0 = TeleportMath.RigPositionFor(marker, 0f, rig, cam);
+        A("tp: rig offset (no yaw)", Near(p0.x, -4.45f) && Near(p0.z, 0.65f) && Near(p0.y, 0.22f));
+        A("tp: camera lands on marker", Near(p0.x + (cam.x - rig.x), marker.x) && Near(p0.z + (cam.z - rig.z), marker.z));
+        var p180 = TeleportMath.RigPositionFor(marker, 180f, rig, cam);
+        var offR = Quaternion.Euler(0f, 180f, 0f) * (cam - rig);
+        A("tp: yawed offset lands too", Near(p180.x + offR.x, marker.x) && Near(p180.z + offR.z, marker.z));
+        A("tp: rig yaw delta", Near(TeleportMath.RigYawFor(180f, 0f, 90f), 90f));
+
+        // --- unlock diff -------------------------------------------------------
+        string tempPath = System.IO.Path.Combine(Application.temporaryCachePath, "unlock_selftest.json");
+        void CleanTemp() { try { System.IO.File.Delete(tempPath); System.IO.File.Delete(tempPath + ".bak"); } catch { } }
+        CleanTemp();
+        try
+        {
+            var svc = new ProgressionService(tempPath);
+            var flow = new ProgressionFlow(svc);
+            var before = UnlockDiff.UnlockedSet(flow);
+            A("unlock: fresh set = tutorial only", before.Count == 1 && before.Contains("tutorial-methane"));
+            svc.RecordResult("tutorial-methane", new ExperimentResult { grade = new GradeBreakdown { Total = 95 }, overallMastery = 0.95f, passed = true }, false);
+            var newly = UnlockDiff.NewlyUnlocked(before, flow);
+            string firstPrelim = null;
+            foreach (var e in ExperimentCatalog.InPeriod(ExperimentPeriod.Prelim)) { firstPrelim = e.moduleId; break; }
+            A("unlock: tutorial pass unlocks first prelim", newly.Count == 1 && newly[0] == firstPrelim);
+            string line = UnlockDiff.AnnouncementFor(newly);
+            A("unlock: announcement names it", line.Contains("unlocked") && line.Contains(ExperimentCatalog.Get(firstPrelim).title));
+            A("unlock: empty fallback congratulates", !string.IsNullOrEmpty(UnlockDiff.AnnouncementFor(new List<string>())));
+
+            // --- mono: full continue-after-pass return loop (edit mode = immediate) ---
+            var lib = AssetDatabase.LoadAssetAtPath<ExperimentLibrary>("Assets/PharmaSynth/ScriptableObjects/ExperimentLibrary.asset");
+            if (lib != null)
+            {
+                string savedSelection = GameFlow.SelectedModuleId;
+                var ggo = new GameObject("gkret");
+                var blocker = new GameObject("Blocker2");
+                var rigGo = new GameObject("RigSim");
+                var markerGo = new GameObject("Marker");
+                var camGo = new GameObject("CamSim");
+                try
+                {
+                    rigGo.transform.position = new Vector3(2f, 0.22f, -3f);
+                    markerGo.transform.position = marker;
+                    markerGo.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                    var simCam = camGo.AddComponent<Camera>();
+                    camGo.transform.SetParent(rigGo.transform);
+                    camGo.transform.localPosition = new Vector3(0.2f, 1.5f, 0.1f);
+
+                    var runner = ggo.AddComponent<ExperimentRunner>();
+                    var launcher = ggo.AddComponent<ExperimentLauncher>();
+                    launcher.SetLibrary(lib); launcher.SetRunner(runner);
+                    var gk = ggo.AddComponent<PharmeeGatekeeper>();
+                    gk.Bind(null, null, null, launcher, runner, blocker);
+                    gk.BindReturn(markerGo.transform, rigGo.transform, simCam, null);
+
+                    // drive to Running
+                    gk.OnApproachTriggerEntered();
+                    gk.OnPanelOption(1); gk.OnPanelOption(0);
+                    gk.Model.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+                    gk.Model.Fire(GateEvent.Coated);
+                    gk.OnPanelOption(0);      // ready -> armed
+                    gk.OnPanelOption(0);      // proceed
+                    gk.OnThresholdTriggerEntered();
+                    A("return: running", gk.Model.State == GateState.Running && runner.IsRunning);
+
+                    gk.OnContinueAfterPass(); // edit mode: debrief+teleport+announce run immediately
+                    A("return: loop lands blocked", gk.Model.State == GateState.Blocked);
+                    A("return: door re-blocked", blocker.activeSelf);
+                    // camera (rig child) must now stand on the marker XZ
+                    Vector3 camWorld = camGo.transform.position;
+                    A("return: teleported to front door", Near(camWorld.x, marker.x, 0.05f) && Near(camWorld.z, marker.z, 0.05f));
+                }
+                finally
+                {
+                    GameFlow.SelectedModuleId = savedSelection;
+                    UnityEngine.Object.DestroyImmediate(ggo);
+                    UnityEngine.Object.DestroyImmediate(blocker);
+                    UnityEngine.Object.DestroyImmediate(camGo);
+                    UnityEngine.Object.DestroyImmediate(rigGo);
+                    UnityEngine.Object.DestroyImmediate(markerGo);
+                }
+            }
+        }
+        finally { CleanTemp(); }
+    }
+
+    static void LabMenuSuite()
+    {
+        A("labmenu: restart label running", LabMenuController.RestartConfirmText(true).Contains("attempt"));
+        A("labmenu: restart label idle", LabMenuController.RestartConfirmText(false).Contains("Reset"));
+        var go = new GameObject("labmenu");
+        try
+        {
+            var lm = go.AddComponent<LabMenuController>();
+            var settings = new GameObject("Settings"); settings.transform.SetParent(go.transform); settings.SetActive(false);
+            var confirm = go.AddComponent<ChoicePanelController>();
+            var root = new GameObject("CRoot"); root.transform.SetParent(go.transform);
+            confirm.Bind(root, null, null, null);
+            lm.Bind(settings, confirm, null, null, null);
+            lm.OnSettingsToggle();
+            A("labmenu: settings toggles on", settings.activeSelf);
+            lm.OnSettingsToggle();
+            A("labmenu: settings toggles off", !settings.activeSelf);
+            lm.OnQuitToMenu();
+            A("labmenu: quit opens confirm", confirm.IsOpen);
+            lm.OnConfirmOption(1);   // Stay
+            A("labmenu: cancel closes confirm", !confirm.IsOpen);
+            lm.OnQuitToMenu();
+            lm.OnConfirmOption(0);   // edit mode: scene-load path is play-guarded
+            A("labmenu: confirm closes too", !confirm.IsOpen);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); }
+    }
+
+    static void DepletionSuite()
+    {
+        var chem = ScriptableObject.CreateInstance<ChemicalData>();
+        chem.chemicalName = "selftest-depletion-chem";
+        var otherChem = ScriptableObject.CreateInstance<ChemicalData>();
+        otherChem.chemicalName = "selftest-unexpected-chem";
+        var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+        module.moduleId = "selftest-depletion";
+        module.graphTasks = new List<ExperimentTask> {
+            T("add-x", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure),
+        };
+        module.trackedSkills = new List<LabSkill> { LabSkill.Measuring };
+
+        var go = new GameObject("depletion");
+        var fullGo = GameObject.CreatePrimitive(PrimitiveType.Cube);   // LiquidPhysics requires a Renderer
+        var bottleGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            // --- capacity guard: rejected overflow fires LiquidRejected, NOT LiquidAdded
+            var full = fullGo.AddComponent<LiquidPhysics>();
+            full.maxVolume = 100f; full.currentLiquidVolume = 100f; full.currentChemical = chem;
+            bool added = false, rejected = false;
+            full.LiquidAdded += (c, a) => added = true;
+            full.LiquidRejected += (c, a) => rejected = true;
+            full.AddLiquid(chem, 50f);
+            A("deplete: overflow rejected", rejected && !added && Near(full.currentLiquidVolume, 100f));
+
+            // --- accumulation toward requiredMl
+            var runner = go.AddComponent<ExperimentRunner>();
+            runner.SetModule(module);
+            runner.StartExperiment();
+            // bindings live on the vessel's own GO so the monitor never counts it as supply
+            var vessel = fullGo.AddComponent<LiquidTaskBinding>();
+            vessel.SetVesselAndRunner(full, runner);
+            vessel.AddExpected(chem, "add-x", 50f);
+            vessel.HandleReagent(chem, 20f);
+            vessel.HandleReagent(chem, 20f);
+            A("deplete: below threshold pends", !runner.Graph.IsComplete("add-x") && Near(vessel.AccumulatedFor("add-x"), 40f));
+            vessel.HandleReagent(chem, 10f);
+            A("deplete: threshold completes", runner.Graph.IsComplete("add-x"));
+            vessel.HandleReagent(chem, 30f);   // extra pour after completion is ignored
+            A("deplete: no double-complete side effects", runner.MistakeCount == 0);
+            vessel.HandleReagent(otherChem, 10f);
+            A("deplete: wrong reagent still flagged", runner.MistakeCount == 1);
+
+            // legacy single-arg = full delivery regardless of threshold
+            runner.Retry();
+            var vessel2 = fullGo.AddComponent<LiquidTaskBinding>();
+            vessel2.SetVesselAndRunner(full, runner);
+            vessel2.AddExpected(chem, "add-x", 50f);
+            vessel2.HandleReagent(chem);
+            A("deplete: legacy call instant-completes", runner.Graph.IsComplete("add-x"));
+
+            // --- pure shortfall math
+            var needs = new List<ReagentSupplyMath.Need> {
+                new ReagentSupplyMath.Need { taskId = "add-x", chemicalName = "X", requiredMl = 50f, deliveredMl = 0f },
+                new ReagentSupplyMath.Need { taskId = "add-y", chemicalName = "Y", requiredMl = 50f, deliveredMl = 30f },
+                new ReagentSupplyMath.Need { taskId = "done-z", chemicalName = "Z", requiredMl = 50f, deliveredMl = 0f },
+            };
+            var avail = new Dictionary<string, float> { { "X", 30f }, { "Y", 25f }, { "Z", 0f } };
+            var shorts = ReagentSupplyMath.FindShortfalls(needs, id => id == "done-z", avail);
+            A("deplete: shortfall math", shorts.Count == 1 && shorts[0] == "add-x");
+            // (Y needs 20 more with 25 available -> fine; Z is complete -> excluded)
+            avail["X"] = 60f;
+            A("deplete: sufficient = clean", ReagentSupplyMath.FindShortfalls(needs, id => id == "done-z", avail).Count == 0);
+
+            // --- monitor end-to-end over live components
+            runner.Retry();
+            var monitor = go.AddComponent<ReagentSupplyMonitor>();
+            monitor.SetRunner(runner);
+            var vlp = bottleGo.AddComponent<LiquidPhysics>();   // reaction vessel body
+            var vessel3 = bottleGo.AddComponent<LiquidTaskBinding>();
+            vessel3.SetVesselAndRunner(vlp, runner);
+            vessel3.AddExpected(chem, "add-x", 50f);
+            var srcGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            try
+            {
+                var src = srcGo.AddComponent<LiquidPhysics>();
+                src.currentChemical = chem; src.currentLiquidVolume = 30f;   // not enough for 50
+                var starved = monitor.EvaluateNow();
+                A("deplete: monitor detects starvation", starved.Contains("add-x"));
+                src.currentLiquidVolume = 80f;
+                A("deplete: monitor clean when supplied", monitor.EvaluateNow().Count == 0);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(srcGo); }
+
+            // --- builder supply sizing: 2.5x need floor
+            A("deplete: supply autosize floor", Mathf.Max(120f, 50f * 2.5f) == 125f);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(go);
+            UnityEngine.Object.DestroyImmediate(fullGo);
+            UnityEngine.Object.DestroyImmediate(bottleGo);
+            UnityEngine.Object.DestroyImmediate(module);
+            UnityEngine.Object.DestroyImmediate(chem);
+            UnityEngine.Object.DestroyImmediate(otherChem);
+        }
+    }
+
+    static void RealSizeSuite()
+    {
+        A("size: table count", RealSizes.Count == 42);
+        var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
+        if (lib != null)
+        {
+            var so = new SerializedObject(lib);
+            var prefabs = so.FindProperty("prefabs");
+            bool all = prefabs != null;
+            if (prefabs != null)
+                for (int i = 0; i < prefabs.arraySize; i++)
+                {
+                    var el = prefabs.GetArrayElementAtIndex(i).objectReferenceValue as GameObject;
+                    if (el != null && !RealSizes.TryGet(el.name, out _)) { all = false; _log.Add("missing RealSizes: " + el.name); }
+                }
+            A("size: every library prefab covered", all);
+        }
+        A("size: factor math", Near(RealSizes.UniformScaleFactor(new Vector3(0.05f, 0.02f, 0.32f), 0.16f), 0.5f));
+        A("size: degenerate guarded", Near(RealSizes.UniformScaleFactor(Vector3.zero, 0.16f), 1f));
+    }
+
+    static void PharmeeAliveSuite()
+    {
+        // Jitter: deterministic, bounded, non-constant
+        var j1 = FloatBob.JitterOffset(3.7f, 2.3f, 0.012f);
+        var j2 = FloatBob.JitterOffset(3.7f, 2.3f, 0.012f);
+        var j3 = FloatBob.JitterOffset(5.1f, 2.3f, 0.012f);
+        A("alive: jitter deterministic", (j1 - j2).magnitude < 1e-6f);
+        A("alive: jitter bounded", Mathf.Abs(j1.x) <= 0.012f && Mathf.Abs(j1.y) <= 0.012f && Mathf.Abs(j1.z) <= 0.012f);
+        A("alive: jitter varies", (j1 - j3).magnitude > 1e-5f);
+        A("alive: zero amplitude = zero", FloatBob.JitterOffset(3.7f, 2.3f, 0f) == Vector3.zero);
+
+        // Anchor picking: nearest valid, min-distance, hysteresis
+        var anchors = new List<Vector3> { new Vector3(0, 0, 0), new Vector3(3, 0, 0), new Vector3(6, 0, 0) };
+        var player = new Vector3(0.5f, 0, 0);
+        int pick = PharmeeMoveSolver.PickAnchor(player, anchors, 1.2f, -1, 0.75f);
+        A("alive: skips crowding anchor", pick == 1);                                  // anchor 0 is 0.5m away -> too close
+        int sticky = PharmeeMoveSolver.PickAnchor(new Vector3(4.6f, 0, 0), anchors, 1.2f, 1, 0.75f);
+        A("alive: hysteresis holds", sticky == 1);                                     // anchor2 only 0.2m closer -> stay
+        int swap = PharmeeMoveSolver.PickAnchor(new Vector3(7.5f, 0, 0), anchors, 1.2f, 1, 0.75f);
+        A("alive: clear winner swaps", swap == 2);                                     // anchor2 3m closer -> move
+        A("alive: all crowded stays", PharmeeMoveSolver.PickAnchor(Vector3.zero, new List<Vector3> { new Vector3(0.3f, 0, 0) }, 1.2f, 0, 0.75f) == 0);
+
+        // Step: clamped + exact landing
+        var step = PharmeeMoveSolver.Step(Vector3.zero, new Vector3(10, 0, 0), 0.8f, 0.5f);
+        A("alive: step clamped", Near(step.x, 0.4f));
+        A("alive: step lands", PharmeeMoveSolver.Step(new Vector3(9.99f, 0, 0), new Vector3(10, 0, 0), 0.8f, 1f) == new Vector3(10, 0, 0));
+
+        // Mover drives FloatBob home toward the anchor while running
+        var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+        module.graphTasks = new List<ExperimentTask> { T("a", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure) };
+        module.trackedSkills = new List<LabSkill> { LabSkill.Measuring };
+        var go = new GameObject("mover");
+        var playerGo = new GameObject("playerSim");
+        var a1 = new GameObject("a1"); var a2 = new GameObject("a2");
+        try
+        {
+            a1.transform.position = new Vector3(4f, 0, 0);
+            a2.transform.position = new Vector3(-4f, 0, 0);
+            playerGo.transform.position = new Vector3(2.5f, 1.6f, 0);   // 1.5m from a1 (outside min dist)
+            var runner = go.AddComponent<ExperimentRunner>();
+            runner.SetModule(module);
+            runner.StartExperiment();
+            var bob = go.AddComponent<FloatBob>();
+            bob.SetHome(new Vector3(0f, 1.05f, 0f));
+            var mover = go.AddComponent<PharmeeMover>();
+            mover.Bind(runner, bob, playerGo.transform, new[] { a1.transform, a2.transform });
+            for (int i = 0; i < 20; i++) mover.TickSolve(0.5f);   // 10s of glide
+            A("alive: mover approaches player-side anchor", (bob.Home - new Vector3(4f, 1.05f, 0f)).magnitude < 0.2f);
+            runner.Finish(1f);
+            for (int i = 0; i < 30; i++) mover.TickSolve(0.5f);
+            A("alive: mover returns home when idle", (bob.Home - new Vector3(0f, 1.05f, 0f)).magnitude < 0.2f);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(go);
+            UnityEngine.Object.DestroyImmediate(playerGo);
+            UnityEngine.Object.DestroyImmediate(a1);
+            UnityEngine.Object.DestroyImmediate(a2);
+            UnityEngine.Object.DestroyImmediate(module);
+        }
     }
 
     static void ChemVisualSuite()
