@@ -330,6 +330,7 @@ public class PharmeeGatekeeper : MonoBehaviour
         playerRig.SetPositionAndRotation(newPos,
             Quaternion.Euler(0f, TeleportMath.RigYawFor(markerYaw, rigYaw, camYaw), 0f));
         if (hudRig != null) hudRig.SnapToCamera();
+        if (SpawnBurstFX.Instance != null) SpawnBurstFX.Instance.PlayAtPlayer();   // cyan materialize
     }
 
     private void AnnounceUnlocks()

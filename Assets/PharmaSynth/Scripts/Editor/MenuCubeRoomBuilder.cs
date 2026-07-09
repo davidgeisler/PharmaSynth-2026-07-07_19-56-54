@@ -16,9 +16,10 @@ public static class MenuCubeRoomBuilder
     const float Height = 3.2f;   // Y (floor at 0)
     const float Thick = 0.16f;   // wall thickness
 
-    static readonly Color BaseCol = new Color(0.07f, 0.09f, 0.13f);   // deep blue-grey
-    static readonly Color TrimEmis = new Color(0.12f, 0.85f, 1f) * 2.2f;
-    static readonly Color PanelEmis = new Color(0.10f, 0.70f, 1f) * 1.1f;
+    static readonly Color BaseCol = new Color(0.06f, 0.08f, 0.12f);   // deep blue-grey
+    static readonly Color TrimEmis = new Color(0.15f, 0.9f, 1f) * 2.6f;
+    static readonly Color PanelEmis = new Color(0.10f, 0.72f, 1f) * 1.2f;
+    static readonly Color GridEmis = new Color(0.12f, 0.82f, 1f) * 1.5f;
 
     [MenuItem("Tools/PharmaSynth/Build Menu Cube Room")]
     public static void Build()
@@ -44,6 +45,7 @@ public static class MenuCubeRoomBuilder
         var floorMat = Lit("MenuCube_Floor", new Color(0.05f, 0.07f, 0.11f), 0.6f, 0.1f);
         var trimMat = Emissive("MenuCube_Trim", new Color(0.02f, 0.05f, 0.08f), TrimEmis);
         var panelMat = Emissive("MenuCube_Panel", new Color(0.03f, 0.06f, 0.10f), PanelEmis);
+        var gridMat = Emissive("MenuCube_Grid", new Color(0.02f, 0.05f, 0.08f), GridEmis);
 
         var root = new GameObject("MenuCubeRoom");
         root.transform.position = c;
@@ -76,6 +78,10 @@ public static class MenuCubeRoomBuilder
         Box(root, "Panel_W", new Vector3(-Width * 0.5f + 0.09f, 1.5f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
         Box(root, "Panel_E", new Vector3(Width * 0.5f - 0.09f, 1.5f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
 
+        // --- holographic neon frames on every wall + a floor grid ------------
+        NeonFrames(root, gridMat);
+        FloorGrid(root, gridMat);
+
         // --- glowing floor launch-pad under the spawn ------------------------
         var pad = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         pad.name = "LaunchPad";
@@ -86,12 +92,50 @@ public static class MenuCubeRoomBuilder
         pad.GetComponent<Renderer>().sharedMaterial = Emissive("MenuCube_Pad", new Color(0.04f, 0.09f, 0.13f), new Color(0.08f, 0.6f, 0.9f) * 0.8f);
 
         // --- soft cyan fill lights -------------------------------------------
-        AddLight(root, "Fill_1", new Vector3(-1.5f, Height - 0.5f, 1.2f), new Color(0.6f, 0.9f, 1f), 12f, 6f);
-        AddLight(root, "Fill_2", new Vector3(1.5f, Height - 0.5f, -1.2f), new Color(0.5f, 0.85f, 1f), 10f, 6f);
-        AddLight(root, "Key", new Vector3(0f, Height - 0.4f, -1.6f), new Color(0.8f, 0.95f, 1f), 14f, 7f);
+        AddLight(root, "Fill_1", new Vector3(-1.5f, Height - 0.5f, 1.2f), new Color(0.6f, 0.9f, 1f), 16f, 7f);
+        AddLight(root, "Fill_2", new Vector3(1.5f, Height - 0.5f, -1.2f), new Color(0.5f, 0.88f, 1f), 14f, 7f);
+        AddLight(root, "Key", new Vector3(0f, Height - 0.4f, -1.6f), new Color(0.85f, 0.96f, 1f), 18f, 8f);
 
         EditorUtility.SetDirty(root);
         Debug.Log("<color=#4CD07D>[MenuCubeRoom] built at " + c.ToString("F2") + " (sealed cube, MenuRoom hidden)</color>");
+    }
+
+    /// A glowing cyan frame (border + centre line) inset on every wall, sitting
+    /// just off the surface toward the room — reads as a holographic panel grid.
+    static void NeonFrames(GameObject root, Material mat)
+    {
+        const float inset = 0.45f, t = 0.035f, off = Thick * 0.5f + 0.04f;   // sit proud of the wall's inner face
+        float wIn = Width - inset * 2f, hIn = Height - inset * 2f, dIn = Depth - inset * 2f;
+        float midY = Height * 0.5f;
+
+        foreach (int sgn in new[] { 1, -1 })   // North (+Z) / South (−Z): frame in the XY plane
+        {
+            float z = sgn * (Depth * 0.5f) - sgn * off;
+            Box(root, "Frame_NS", new Vector3(0, midY + hIn * 0.5f, z), new Vector3(wIn, t, t), mat);
+            Box(root, "Frame_NS", new Vector3(0, midY - hIn * 0.5f, z), new Vector3(wIn, t, t), mat);
+            Box(root, "Frame_NS", new Vector3(-wIn * 0.5f, midY, z), new Vector3(t, hIn, t), mat);
+            Box(root, "Frame_NS", new Vector3(wIn * 0.5f, midY, z), new Vector3(t, hIn, t), mat);
+            Box(root, "Frame_NS", new Vector3(0, midY, z), new Vector3(wIn, t, t), mat);   // centre line
+        }
+        foreach (int sgn in new[] { 1, -1 })   // East (+X) / West (−X): frame in the ZY plane
+        {
+            float x = sgn * (Width * 0.5f) - sgn * off;
+            Box(root, "Frame_EW", new Vector3(x, midY + hIn * 0.5f, 0), new Vector3(t, t, dIn), mat);
+            Box(root, "Frame_EW", new Vector3(x, midY - hIn * 0.5f, 0), new Vector3(t, t, dIn), mat);
+            Box(root, "Frame_EW", new Vector3(x, midY, -dIn * 0.5f), new Vector3(t, hIn, t), mat);
+            Box(root, "Frame_EW", new Vector3(x, midY, dIn * 0.5f), new Vector3(t, hIn, t), mat);
+            Box(root, "Frame_EW", new Vector3(x, midY, 0), new Vector3(t, t, dIn), mat);   // centre line
+        }
+    }
+
+    /// Thin cyan grid lines on the floor.
+    static void FloorGrid(GameObject root, Material mat)
+    {
+        const float t = 0.03f, y = 0.02f;
+        for (float z = -Depth * 0.5f + 1.2f; z < Depth * 0.5f - 0.5f; z += 1.2f)
+            Box(root, "Grid_X", new Vector3(0, y, z), new Vector3(Width - 0.5f, 0.012f, t), mat);
+        for (float x = -Width * 0.5f + 1.2f; x < Width * 0.5f - 0.5f; x += 1.2f)
+            Box(root, "Grid_Z", new Vector3(x, y, 0), new Vector3(t, 0.012f, Depth - 0.5f), mat);
     }
 
     // ---- helpers ------------------------------------------------------------

@@ -930,6 +930,11 @@ public static class PharmaSelfTests
         A("sfx: long move = many steps", StrideMath.Steps(ref acc, 3f, 0.75f) >= 4);
         A("sfx: no distance no steps", StrideMath.Steps(ref acc, 0f, 0.75f) == 0);
 
+        // Mirror avatar: foot point sits under the head at the floor (+offset), XZ kept.
+        var foot = PlayerAvatarRig.FootUnder(new Vector3(2f, 1.7f, -3f), 0.25f, 0.02f);
+        A("avatar: foot keeps XZ", Near(foot.x, 2f) && Near(foot.z, -3f));
+        A("avatar: foot sits on floor+offset", Near(foot.y, 0.27f));
+
         // Pharmee flight lean: proportional to speed, clamped, zero at rest.
         A("pharmee: lean scales with speed", Near(PharmeeAttitude.LeanFor(0.5f, 22f, 14f), 11f));
         A("pharmee: lean clamped", Near(PharmeeAttitude.LeanFor(3f, 22f, 14f), 14f));
