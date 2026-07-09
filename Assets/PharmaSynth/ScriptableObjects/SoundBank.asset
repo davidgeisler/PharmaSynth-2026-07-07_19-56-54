@@ -137,3 +137,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: a59af26b35ecf6b4dac2d1db68b4fb12, type: 3}
     category: 0
     volume: 0.5
+  - key: music-lab
+    clip: {fileID: 0}
+    category: 3
+    volume: 0.6

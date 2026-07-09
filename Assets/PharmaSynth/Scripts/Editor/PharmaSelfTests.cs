@@ -405,6 +405,18 @@ public static class PharmaSelfTests
             m3.Fire(GateEvent.SupplyExhausted);
             A("gate: supply restart reloads", m3.Fire(GateEvent.RestartConfirmed) && m3.State == GateState.Loading);
 
+            // HUD reset: force back to the Blocked entrance from any mid-flow state,
+            // clearing the chosen episode and firing a Transition to Blocked.
+            var m4 = new GatekeeperModel();
+            m4.Fire(GateEvent.Approach); m4.Fire(GateEvent.PickCampaign); m4.Fire(GateEvent.ExplainDone);
+            m4.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+            bool m4Blocked = false;
+            m4.Transition += (a, b) => { if (b == GateState.Blocked) m4Blocked = true; };
+            m4.ResetToBlocked();
+            A("gate: reset returns to blocked", m4.State == GateState.Blocked
+                && string.IsNullOrEmpty(m4.SelectedModuleId) && m4Blocked);
+            A("gate: welcome line present", !string.IsNullOrEmpty(new PharmeeGatekeeper.GateLines().welcome));
+
             // --- choice panel component ------------------------------------
             var pgo = new GameObject("panel");
             try
