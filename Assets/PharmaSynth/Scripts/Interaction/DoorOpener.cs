@@ -10,7 +10,6 @@ public class DoorOpener : MonoBehaviour
     [SerializeField] private float seconds = 0.8f;
 
     private Quaternion _closed, _open;
-    private Collider[] _cols;
     private bool _cached, _isOpen;
 
     public bool IsOpen => _isOpen;
@@ -29,19 +28,17 @@ public class DoorOpener : MonoBehaviour
         if (_cached || door == null) return;
         _closed = door.localRotation;
         _open = _closed * Quaternion.Euler(0f, openYaw, 0f);
-        _cols = door.GetComponentsInChildren<Collider>(true);
         _cached = true;
     }
 
-    /// Open/shut the doorway. Colliders switch immediately (the gate either
-    /// blocks or it doesn't); the visual swing animates over `seconds` at play.
+    /// Open/shut the doorway. The leaf's colliders stay ENABLED at all times —
+    /// the swing itself clears the doorway, and the open leaf remains a solid
+    /// panel against the wall (no phasing through it).
     public void SetOpen(bool open)
     {
         Cache();
         if (!_cached) return;
         _isOpen = open;
-        if (_cols != null)
-            foreach (var c in _cols) if (c != null) c.enabled = !open;
         if (!Application.isPlaying)
             door.localRotation = open ? _open : _closed;
     }
