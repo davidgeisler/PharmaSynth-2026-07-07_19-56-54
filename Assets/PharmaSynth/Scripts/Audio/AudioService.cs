@@ -90,6 +90,14 @@ public class AudioService : MonoBehaviour
         {
             src.clip = e.clip; src.loop = true; src.volume = mixer == null ? v : 1f; src.Play();
         }
+        else if (e.category == AudioCategory.Voice)
+        {
+            // Pharmee's beeps must NOT stack — a new line interrupts the current beep
+            // instead of piling PlayOneShots on top of each other (which got deafening).
+            src.loop = false; src.clip = e.clip;
+            src.volume = mixer == null ? v : Mathf.Clamp01(e.volume);
+            src.Play();
+        }
         else src.PlayOneShot(e.clip, mixer == null ? v : Mathf.Clamp01(e.volume));
     }
 

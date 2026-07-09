@@ -16,60 +16,60 @@ MonoBehaviour:
   - key: ui-click
     clip: {fileID: 8300000, guid: c0f66a59a4ad1604495fcb46f7c99f1e, type: 3}
     category: 0
-    volume: 0.7
+    volume: 0.5
   - key: ui-confirm
     clip: {fileID: 8300000, guid: f87c2485e8ea1274abfd5feee1479d75, type: 3}
     category: 0
-    volume: 0.8
+    volume: 0.55
   - key: task-complete
     clip: {fileID: 8300000, guid: db26d72367969624fa4ebc8c4d29f560, type: 3}
     category: 0
-    volume: 0.8
+    volume: 0.55
   - key: grade-pass
     clip: {fileID: 8300000, guid: f5e7cd5b45754934b8541cb9639e9a1e, type: 3}
     category: 0
-    volume: 0.9
+    volume: 0.6
   - key: ui-error
     clip: {fileID: 8300000, guid: 79375f8fcdf9bb442a0e737f42c4b734, type: 3}
     category: 0
-    volume: 0.7
+    volume: 0.5
   - key: grade-fail
     clip: {fileID: 8300000, guid: 3749c80899a4ddd47b99347b4fd86b6e, type: 3}
     category: 0
-    volume: 0.8
+    volume: 0.55
   - key: glass-clink
     clip: {fileID: 8300000, guid: 2fc99806b4d9ae54c8f24cdac3b96b57, type: 3}
     category: 0
-    volume: 0.8
+    volume: 0.5
   - key: glass-shatter
     clip: {fileID: 8300000, guid: c96e3e515236a704d98f07936012038d, type: 3}
     category: 0
-    volume: 0.9
+    volume: 0.6
   - key: alarm
     clip: {fileID: 8300000, guid: d223a84e8857800459e639a4c022692f, type: 3}
     category: 0
-    volume: 0.8
+    volume: 0.35
   - key: pharmee-greet
     clip: {fileID: 8300000, guid: 0893eac139e3e5d4d81dd15b6ee3d8dc, type: 3}
     category: 2
-    volume: 0.9
+    volume: 0.25
   - key: pharmee-instruct
     clip: {fileID: 8300000, guid: edbcd1773c2ca0c4696438340894aeb4, type: 3}
     category: 2
-    volume: 0.9
+    volume: 0.25
   - key: pharmee-celebrate
     clip: {fileID: 8300000, guid: 7815e767fd1101d43b291048ac16bde9, type: 3}
     category: 2
-    volume: 0.9
+    volume: 0.28
   - key: pharmee-warn
     clip: {fileID: 8300000, guid: 9909009e050ed4940a4100f6f021bfc0, type: 3}
     category: 2
-    volume: 0.9
+    volume: 0.3
   - key: ambient-lab
     clip: {fileID: 8300000, guid: b0f3070b9533b9544b03bf3f0cfa7cfe, type: 3}
     category: 1
-    volume: 0.4
+    volume: 0.04
   - key: music-menu
     clip: {fileID: 8300000, guid: 29341b26167872e439665e332a52f0d8, type: 3}
     category: 3
-    volume: 0.5
+    volume: 0.3

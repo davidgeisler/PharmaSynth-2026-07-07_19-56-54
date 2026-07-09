@@ -38,6 +38,7 @@ public static class PharmaSelfTests
         InteractionSuite();
         RealVerbSuite();
         PourReactionSuite();
+        TestReactionSuite();
         SceneBuilderSuite();
         SimRigSuite();
         PostLabSuite();
@@ -363,6 +364,42 @@ public static class PharmaSelfTests
             A("pour: unexpected reagent logs a WrongReagent mistake", runner.Mistakes.CountOf(LabErrorType.WrongReagent) >= 1);
         }
         finally { UnityEngine.Object.DestroyImmediate(rgo); UnityEngine.Object.DestroyImmediate(vgo2); }
+    }
+
+    static void TestReactionSuite()
+    {
+        // The confirmatory-test reactions read from Appendix C fire when the product
+        // sits in the vessel and the test reagent is added (product-seeded test vessel).
+        var reg = AssetDatabase.LoadAssetAtPath<ReactionRegistry>("Assets/PharmaSynth/ScriptableObjects/Reactions/MasterReactionRegistry.asset");
+        A("testrx: master registry loads", reg != null);
+        if (reg == null) return;
+
+        void Fires(string prodFile, string reagFile, string label, bool expectGas)
+        {
+            var prod = LoadChem(prodFile); var reag = LoadChem(reagFile);
+            if (prod == null || reag == null) { A("testrx: chems exist for " + label, false); return; }
+            var vgo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            try
+            {
+                var lp = vgo.AddComponent<LiquidPhysics>();
+                lp.mainRenderer = null; lp.precipitateRenderer = null;
+                lp.registry = reg; lp.currentChemical = prod; lp.currentLiquidVolume = 100f;
+                bool reacted = false; lp.ReactionOccurred += _ => reacted = true;
+                lp.AddLiquid(reag, 20f);
+                A("testrx: " + label + " fires a reaction", reacted);
+                if (expectGas)
+                {
+                    var rule = reg.FindReaction(prod, reag);
+                    A("testrx: " + label + " evolves gas + has observation",
+                        rule != null && rule.evolvesGas && !string.IsNullOrEmpty(rule.expectedObservation));
+                }
+            }
+            finally { UnityEngine.Object.DestroyImmediate(vgo); }
+        }
+
+        Fires("Chem_Benzamide", "Chem_SodiumNitrite", "benzamide + nitrite", true);
+        Fires("Chem_Acetanilide", "Chem_BromineWater", "acetanilide + bromine water", false);
+        Fires("Chem_Acetone", "Chem_SilverNitrate", "acetone + Tollens (negative)", false);
     }
 
     static void SceneBuilderSuite()
