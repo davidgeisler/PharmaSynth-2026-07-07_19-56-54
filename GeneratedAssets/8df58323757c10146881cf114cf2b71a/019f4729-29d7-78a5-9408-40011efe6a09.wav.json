@@ -1,0 +1,15 @@
+{
+    "asset": "8df58323757c10146881cf114cf2b71a",
+    "fileName": "019f4729-29d7-78a5-9408-40011efe6a09.wav",
+    "prompt": "Liquid boiling in a glass flask, soft rolling bubbles, gentle simmering water, close recording, steady continuous bubbling, seamless loop, no background noise",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 10.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

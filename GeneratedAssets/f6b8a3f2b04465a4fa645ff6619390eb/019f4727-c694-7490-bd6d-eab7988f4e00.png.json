@@ -1,0 +1,31 @@
+{
+    "asset": "f6b8a3f2b04465a4fa645ff6619390eb",
+    "fileName": "019f4727-c694-7490-bd6d-eab7988f4e00.png",
+    "prompt": "Blank chemical reagent bottle label design, clean vintage apothecary style, cream paper background with dark navy double border frame, empty central area for text, small decorative chemistry flask emblem at top, subtle aged paper texture, flat 2D label graphic, no text, no words",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 768,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

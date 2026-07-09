@@ -1,0 +1,15 @@
+{
+    "asset": "acdb72a91a1955442be52caab6802c62",
+    "fileName": "019f4729-a9cb-742b-b8c4-fa7bc455ff28.wav",
+    "prompt": "Glass stirring rod gently swirling liquid inside a glass beaker, soft circular liquid swish with faint glass clink, slow rhythmic stirring, close recording, no background noise",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 4.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

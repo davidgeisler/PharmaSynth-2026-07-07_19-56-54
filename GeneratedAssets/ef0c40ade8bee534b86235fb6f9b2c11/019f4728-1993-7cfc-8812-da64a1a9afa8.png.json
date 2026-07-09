@@ -1,0 +1,31 @@
+{
+    "asset": "ef0c40ade8bee534b86235fb6f9b2c11",
+    "fileName": "019f4728-1993-7cfc-8812-da64a1a9afa8.png",
+    "prompt": "Blank modern laboratory chemical label design, white background with bold safety-orange header band and thin black border, empty text area, small generic hazard diamond placeholder in corner, crisp flat vector style, clean minimal industrial lab aesthetic, flat 2D label graphic, no text, no words",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 768,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "asset": "62aa60165b3798a46a37047b1d8a897e",
+    "fileName": "019f4728-9174-7928-ad4c-52e9a1ce6d34.wav",
+    "prompt": "Gentle science laboratory room tone, soft air ventilation hum, faint HVAC whoosh, very quiet electrical equipment hum, calm and unobtrusive background ambience, seamless loop",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 20.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

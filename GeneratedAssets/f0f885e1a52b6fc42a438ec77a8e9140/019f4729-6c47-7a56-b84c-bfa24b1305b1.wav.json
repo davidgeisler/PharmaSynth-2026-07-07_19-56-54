@@ -1,0 +1,15 @@
+{
+    "asset": "f0f885e1a52b6fc42a438ec77a8e9140",
+    "fileName": "019f4729-6c47-7a56-b84c-bfa24b1305b1.wav",
+    "prompt": "Gas burner igniting with a small click and soft whoomph, then settling into a steady low blue flame hiss, laboratory bunsen burner, close recording, no background noise",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 6.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

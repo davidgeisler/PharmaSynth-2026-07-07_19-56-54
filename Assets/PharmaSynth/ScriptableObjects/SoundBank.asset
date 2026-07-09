@@ -66,10 +66,30 @@ MonoBehaviour:
     category: 2
     volume: 0.1
   - key: ambient-lab
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 62aa60165b3798a46a37047b1d8a897e, type: 3}
     category: 1
-    volume: 0.04
+    volume: 0.15
   - key: music-menu
     clip: {fileID: 8300000, guid: 29341b26167872e439665e332a52f0d8, type: 3}
     category: 3
     volume: 0.3
+  - key: pour
+    clip: {fileID: 8300000, guid: 4935c462a62dcc940b2ddeaaa0eb4d05, type: 3}
+    category: 0
+    volume: 0.5
+  - key: bubble
+    clip: {fileID: 8300000, guid: 8df58323757c10146881cf114cf2b71a, type: 3}
+    category: 0
+    volume: 0.45
+  - key: burner-ignite
+    clip: {fileID: 8300000, guid: f0f885e1a52b6fc42a438ec77a8e9140, type: 3}
+    category: 0
+    volume: 0.5
+  - key: stir
+    clip: {fileID: 8300000, guid: acdb72a91a1955442be52caab6802c62, type: 3}
+    category: 0
+    volume: 0.45
+  - key: footstep
+    clip: {fileID: 8300000, guid: 35700bb2c41da964e9d4a65355965e0f, type: 3}
+    category: 0
+    volume: 0.35

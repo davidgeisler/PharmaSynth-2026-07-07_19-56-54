@@ -1,0 +1,15 @@
+{
+    "asset": "4935c462a62dcc940b2ddeaaa0eb4d05",
+    "fileName": "019f4728-de1d-75a7-9c67-4b4c2de29c82.wav",
+    "prompt": "Liquid pouring from a glass bottle into a glass beaker, smooth steady trickle and glug, close-up clean recording, no background noise",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 4.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

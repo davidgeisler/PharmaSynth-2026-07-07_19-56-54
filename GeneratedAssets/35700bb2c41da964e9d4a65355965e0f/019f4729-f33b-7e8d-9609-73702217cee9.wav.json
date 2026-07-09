@@ -1,0 +1,15 @@
+{
+    "asset": "35700bb2c41da964e9d4a65355965e0f",
+    "fileName": "019f4729-f33b-7e8d-9609-73702217cee9.wav",
+    "prompt": "Single soft footstep on smooth laboratory vinyl floor, rubber-soled shoe, quiet indoor step, close recording, no background noise",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

@@ -11,9 +11,9 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 - [x] **Product-seeded test vessels per experiment** — DONE 2026-07-09: 8 layouts got a `TestTube_WithLiquid` vessel seeded with the product (Aspirin→salicylic for the FeCl3 phenol test, Benzoic, Acetanilide, Benzamide, Chloroform, Acetone, Ethanol, Wine→CO2 for limewater) and the `test-*` pour bindings moved onto it; Benzamide also gained the missing NaOH + NaNO2 reagent vials for its alkali/nitrous tests. `TestVesselSuite` (38 assertions) pins each seeded vessel, its bindings, AND that `MasterReactionRegistry.FindReaction(seed, reagent)` fires; plus every chemical any layout references must resolve through `SceneAssetLibrary`. *Exceptions: Methane = hand-built stage (own rig); ChemicalCompounding already pours ethanol into the test beaker first (functional as-is); Caffeine has no test rules yet (murexide — see next bullet). BenzoicAcid `test-ester` + Benzamide `test-acid` pours land on the seeded vessel but await their rules (next bullet).*
 - [ ] Remaining reaction rules — mostly DONE 2026-07-09: added `Test_AcetoneIodoform` (yellow ppt), `Test_BenzoateEster` (ester odour, `test-ester`), `Test_BenzamideAcid` (hydrolysis ppt, `test-acid`); registry now 20 rules, all verified firing via the seeded test vessels. *Still open: acetone **Schiff** (needs a Schiff-reagent `ChemicalData` + station wiring) and **caffeine murexide/melting-point** (needs `Chem_Caffeine` + murexide reagent + a test binding — currently station-only).*
 - [ ] **Methane verb polish**: mortar grind (prepare-mixture), splint flame-test visual, flame/bubble VFX.
-- [ ] Wine bespoke rubric (workmanship/appearance/presentation/documentation/flavour) — currently standard 6-category.
+- [x] Wine bespoke rubric — RESOLVED 2026-07-09 (client): keep the **standard 6-category rubric** for consistency with the other experiments; no bespoke wine categories. No code change needed.
 - [ ] Per-experiment ILO cards ×11 (intro-cutscene card art).
-- [ ] Data-sheet expected-yield ranges per experiment; **client decision:** does yield feed the grade? (Currently only quiz MCQs drive Documentation.)
+- [ ] Data-sheet expected-yield ranges per experiment (display/reference only). **Yield-in-grade RESOLVED 2026-07-09 (client): yield is a lab-record entry ONLY — it never feeds the grade** (not a manuscript grading category; quiz MCQs stay the sole Documentation driver).
 - [ ] `HazardZone` placement per experiment (hot surfaces, spills); `WeighingScaleController` wiring where weighing is graded. *(Glassware breakage + reagent spilling moved to the dedicated §2 penalties bullet.)*
 
 ## 2. Physics & interaction pass
@@ -29,9 +29,9 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 ## 3. Art & models
 
 - [ ] **Pharmee animation set** (idle-float/talk/gesture/celebrate/warn) + face-state materials + re-point `PharmeeFace.faceRenderer` at the screen mesh (still `Ears_Black_Matt_0`).
-- [ ] **Dr. Jimenez**: source/rig the real scientist model (budget = client decision) + build `ExaminerNPC` (assessment mode: observes, no hints). Primitive stand-in placed.
-- [ ] Real **fume hood** model (working `FumeHoodZone` + glass stand-in placed).
-- [ ] **Clean reagent-label textures** (16 chemicals + apparatus; never copy garbled storyboard labels).
+- [ ] **Dr. Jimenez**: model ON HOLD (client may supply their own — decision 2026-07-09); `ExaminerNPC` behaviour work can proceed against the primitive stand-in.
+- [ ] Real **fume hood** model — reference image generated (`Art/Generated/Models/FumeHood_Ref.png`); **image→3D blocked by an MCP bug** (Tripo needs `referenceImageInstanceId`, but this project's 64-bit instance IDs lose precision in JSON transit). **Manual 30-s step for the user: select FumeHood_Ref.png in the AI panel → Generate 3D Model → save to `Art/Generated/Models/`.** Then: retopo if heavy, swap into `FumeHoodZone` stand-in.
+- [ ] **Clean reagent-label textures** — base designs DONE 2026-07-09 (`Art/Generated/Labels/LabelBase_Apothecary.png` + `LabelBase_Modern.png`, both text-free by design). Next: pick ONE style (user call), then an editor script composites the 16 chemical names + hazard notes as crisp TMP/GUI text onto the base and applies to bottle materials — never AI typography.
 - [ ] PPE completion: gloves + goggles as clickable items like the coat; coat visibly ON the player (worn visual / mirror reflection); glove material swap on hands.
 - [ ] Wrist-watch 3D model (primitive canvas today) + gesture tune on-device.
 - [ ] Fermentation set (vessels, airlocks ×3, balloon), wine bottle + glass, tea/caffeine props, separatory funnel (check pack first), WASTE bin.
@@ -43,9 +43,9 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 
 ## 4. Audio (infrastructure + CC0 base DONE)
 
-- [ ] Gentle lab **ambient loop** (helicopter clip removed; `ambient-lab` key is empty on purpose).
-- [ ] Pour / bubble / boil / **burner-ignite** SFX (keys exist, no clips; Kenney has no liquid — try OpenGameArt CC0).
-- [ ] **Action & apparatus SFX set** (user request 2026-07-09): footsteps while walking (thumbstick locomotion), grab pick-up + release, drop clatter per material (glass clink / metal / wood — hook `GrabPhysicsPolicy` release + collision impulse), stir/mix swirl, **reaction cue** (fizz/effervescence when a `ReactionRule` fires, driven by its `ReactionOutcome`), **mixture-complete chime** (distinct from the task toast), burner sustained roar under heating, boil rolling-bubble loop at `TemperatureSim` target, crystallise shimmer, filtration drip, gas-collection hiss, glass shatter (pairs with the breakage bullet in §2), PPE coat rustle on don, door swing creak, socket snap-in click. Wire through `SoundBank` keys + `AudioService`; all CC0.
+- [x] Gentle lab **ambient loop** — DONE 2026-07-09: AI-generated soft ventilation hum (`Audio/Generated/ambient-lab.wav`), wired at volume 0.15 (Ambient category). **Needs a listen in-editor.**
+- [x] Pour / bubble-boil / **burner-ignite** SFX — DONE 2026-07-09: AI-generated (ElevenLabs), wired to their SoundBank keys. **Needs a listen.**
+- [ ] **Action & apparatus SFX set** (user request 2026-07-09) — CLIPS STARTED: `stir` + `footstep` generated & wired as new SoundBank keys (AI budget approved). Still to generate: grab pick-up + release, drop clatter per material (glass clink exists / metal / wood), reaction fizz cue, mixture-complete chime, crystallise shimmer, filtration drip, gas hiss, PPE rustle, door creak, socket click. Then the **trigger hookups**: footsteps ↔ locomotion, drop clatter ↔ `GrabPhysicsPolicy`/collision impulse, stir ↔ vessel swirl, boil loop ↔ `TemperatureSim` at target, reaction cue ↔ `ReactionRule` fired, shatter already wired via `BreakableGlassware`.
 - [ ] Optional: AudioMixer groups + duck Pharmee voice under SFX.
 
 ## 5. UI & flow
@@ -71,7 +71,8 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 
 - [ ] Chemistry sign-offs: Benzoic Acid benzaldehyde route, Acetanilide acylating agent (acetyl chloride vs safer anhydride), Benzamide nitrite typo, confirmatory-test outcomes.
 - [ ] **Scoring-weight sign-off** (hard W2 exit criterion — still open).
-- [ ] Yield-in-grade decision (§1); Dr. Jimenez budget; analytics-descope confirmation.
+- [x] Yield-in-grade decision — RESOLVED: record-only (§1). Breakage policy — RESOLVED: lose points + shelf replacement everywhere incl. exams, never a forced restart (matches implementation). Wine rubric — RESOLVED: standard 6 categories.
+- [ ] Dr. Jimenez budget/model — **ON HOLD: the client may supply their own model of him**; keep the primitive stand-in until then. Analytics-descope confirmation still open.
 
 ## 8. Process
 
