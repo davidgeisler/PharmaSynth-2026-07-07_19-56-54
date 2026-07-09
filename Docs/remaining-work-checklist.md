@@ -18,8 +18,8 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 
 ## 2. Physics & interaction pass
 
-- [ ] **Physics-attributes / resting-pose audit for ALL items** (user request 2026-07-09, task #78): correct Rigidbody gravity/mass, non-degenerate colliders, plausible resting orientation (a glass rod lies on its side, never balances upright; nothing floats). Drop-test sweep of every `Eq_*`/`Prop_*`/`Reagent_*` + builder-spawned prop; author per-item default orientations (companion table to `RealSizes`); kinematic-on-shelf vs dynamic-on-grab policy.
-- [ ] XRI **sockets** at stations/racks (props snap into place) + **drop respawn** (kill-Z + idle return-to-home).
+- [x] **Physics-attributes / resting-pose audit for ALL items** (user request 2026-07-09, task #78) — DONE 2026-07-09: `PhysicsProfiles` table (42 items: mass + resting pose, companion to `RealSizes`), `GrabPhysicsPolicy` (kinematic-on-shelf → dynamic-on-release), builder applies profiles + rest-pose rotation; concave MeshColliders convexified (PhysX rejects them on dynamic bodies — 5 items fell through the world before the fix); degenerate flat-tool colliders padded. Verified: **Tools ▸ PharmaSynth ▸ Physics Audit (Drop Test)** 42/42 settle plausibly, **(Report)** clean (both re-runnable; + **(Fix Scene Items)** applied & scene saved). Suite 385 → 412.
+- [ ] XRI **sockets** at stations/racks (props snap into place). *(The **drop respawn** half — kill-Z + idle return-to-home — is DONE: `DropRespawn` on every builder-spawned prop, re-freezes to shelf policy on arrival.)*
 - [ ] Teleport anchors at each workstation (only the floor `TeleportationArea` exists).
 - [ ] Refine crude convex hulls on tall apparatus (tripod, retort stand, burner).
 - [ ] XRI interaction-layer audit (everything on default layers; sockets/hands need masks).

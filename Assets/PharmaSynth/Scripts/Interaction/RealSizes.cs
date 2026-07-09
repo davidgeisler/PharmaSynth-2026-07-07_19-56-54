@@ -55,6 +55,7 @@ public static class RealSizes
     };
 
     public static int Count => Table.Count;
+    public static IEnumerable<string> Names => Table.Keys;
 
     public static bool TryGet(string prefabName, out float longestMeters)
         => Table.TryGetValue(prefabName ?? "", out longestMeters);

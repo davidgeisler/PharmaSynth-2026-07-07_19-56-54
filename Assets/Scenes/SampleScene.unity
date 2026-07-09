@@ -128,8 +128,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 2001115435}
     m_Modifications:
     - target: {fileID: 2741791251698359492, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
+      propertyPath: m_Mass
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741791251698359492, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741791251698359492, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741791251698359492, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5187334452825983003, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
       propertyPath: m_LocalScale.x
@@ -194,6 +206,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5527831679276077729, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1932814}
+    - targetCorrespondingSourceObject: {fileID: 5527831679276077729, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1932820}
   m_SourcePrefab: {fileID: 100100000, guid: 4d2dbaec82a28a141a531f6265720cab, type: 3}
 --- !u!4 &1932812 stripped
 Transform:
@@ -221,6 +236,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1932820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &4157953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -230,8 +257,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 830919477492184997, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
+      propertyPath: m_Mass
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 830919477492184997, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 830919477492184997, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 830919477492184997, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2276436975829003201, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
       propertyPath: m_LocalScale.x
@@ -296,6 +335,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2276436975829235681, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4157956}
+    - targetCorrespondingSourceObject: {fileID: 2276436975829235681, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4157962}
   m_SourcePrefab: {fileID: 100100000, guid: d3c594960bf34564cb6225552c1fbd51, type: 3}
 --- !u!4 &4157954 stripped
 Transform:
@@ -323,6 +365,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &4157962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4157955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &11578952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -332,8 +386,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Mass
+      value: 0.045
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_Name
@@ -406,6 +472,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 580563149}
+    - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 580563156}
   m_SourcePrefab: {fileID: 100100000, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
 --- !u!4 &11578953 stripped
 Transform:
@@ -999,8 +1068,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Mass
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3991317928100763845, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: currentChemical
@@ -1066,6 +1147,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323049, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323051, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1073,6 +1162,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 692210476}
+    - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 692210483}
   m_SourcePrefab: {fileID: 100100000, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
 --- !u!4 &56461269 stripped
 Transform:
@@ -1273,8 +1365,20 @@ PrefabInstance:
       value: Eq_Motar
       objectReference: {fileID: 0}
     - target: {fileID: 5626176338367346316, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
+      propertyPath: m_Mass
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626176338367346316, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626176338367346316, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5626176338367346316, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1283,6 +1387,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1446311782125078012, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 83833540}
+    - targetCorrespondingSourceObject: {fileID: 1446311782125078012, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 83833546}
   m_SourcePrefab: {fileID: 100100000, guid: 06dad6cf60784934b96716a67d1f0b4f, type: 3}
 --- !u!4 &83833538 stripped
 Transform:
@@ -1310,6 +1417,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &83833546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83833539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &85515511 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6561513797701893627, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -2388,8 +2507,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 6672708475917092515, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6672708475917092515, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6672708475917092515, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6672708475917092515, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8811316454620903115, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
       propertyPath: m_Name
@@ -2454,6 +2585,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8811316454620903115, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 147280722}
+    - targetCorrespondingSourceObject: {fileID: 8811316454620903115, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 147280728}
   m_SourcePrefab: {fileID: 100100000, guid: 57046e69df9aefe4c9ec597fd9daf8cd, type: 3}
 --- !u!4 &147280720 stripped
 Transform:
@@ -2481,6 +2615,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &147280728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147280721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &148391549
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,8 +2865,20 @@ PrefabInstance:
       value: Eq_TestTubeRack
       objectReference: {fileID: 0}
     - target: {fileID: 7849594048293513598, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
+      propertyPath: m_Mass
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7849594048293513598, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7849594048293513598, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7849594048293513598, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2729,6 +2887,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1153644010876566313, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
       insertIndex: -1
       addedObject: {fileID: 159662418}
+    - targetCorrespondingSourceObject: {fileID: 1153644010876566313, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 159662424}
   m_SourcePrefab: {fileID: 100100000, guid: f2226e7e217b1d34c8d5202b66064540, type: 3}
 --- !u!4 &159662416 stripped
 Transform:
@@ -2756,6 +2917,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &159662424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159662417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &162562983
 GameObject:
   m_ObjectHideFlags: 0
@@ -3945,8 +4118,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7314177922552717594, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
+      propertyPath: m_Mass
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314177922552717594, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314177922552717594, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314177922552717594, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3955,6 +4140,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5291864882818893, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
       insertIndex: -1
       addedObject: {fileID: 203858279}
+    - targetCorrespondingSourceObject: {fileID: 5291864882818893, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 203858286}
+    - targetCorrespondingSourceObject: {fileID: 5291864882818893, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 203858285}
   m_SourcePrefab: {fileID: 100100000, guid: 7327e3aa2fc7e5f49b780c9cb7d98305, type: 3}
 --- !u!4 &203858277 stripped
 Transform:
@@ -3982,6 +4173,39 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &203858285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203858278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
+--- !u!65 &203858286
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203858278}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.013914047, y: 0.006, z: 0.16179557}
+  m_Center: {x: 0, y: 0.0023451233, z: 0.08089723}
 --- !u!1 &208684824
 GameObject:
   m_ObjectHideFlags: 0
@@ -4765,8 +4989,20 @@ PrefabInstance:
       value: Eq_TestTubeBrush
       objectReference: {fileID: 0}
     - target: {fileID: 7627661626601993428, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627661626601993428, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627661626601993428, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627661626601993428, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4775,6 +5011,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5740249104875109180, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
       insertIndex: -1
       addedObject: {fileID: 243577006}
+    - targetCorrespondingSourceObject: {fileID: 5740249104875109180, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 243577011}
   m_SourcePrefab: {fileID: 100100000, guid: eee733fd854f16f42b4d2b86e5d6a977, type: 3}
 --- !u!4 &243577004 stripped
 Transform:
@@ -4802,6 +5041,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &243577011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243577005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &258239515
 GameObject:
   m_ObjectHideFlags: 0
@@ -4982,8 +5233,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Mass
+      value: 0.045
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_Name
@@ -5056,6 +5319,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1365720436}
+    - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1365720443}
   m_SourcePrefab: {fileID: 100100000, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
 --- !u!4 &270500095 stripped
 Transform:
@@ -5765,8 +6031,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5778,6 +6056,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2602365144058767407, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 329768148}
+    - targetCorrespondingSourceObject: {fileID: 2602365144058767407, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 329768154}
   m_SourcePrefab: {fileID: 100100000, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
 --- !u!4 &329768140 stripped
 Transform:
@@ -5819,6 +6100,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &329768154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329768141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &336295958 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3017150298652565747, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -6521,8 +6814,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Mass
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3991317928100763845, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: currentChemical
@@ -6588,6 +6893,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323049, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323051, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6595,6 +6908,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 370792789}
+    - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 370792796}
   m_SourcePrefab: {fileID: 100100000, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
 --- !u!4 &370792782 stripped
 Transform:
@@ -6617,6 +6933,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &370792796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301271214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &388901547 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7605501948640976652, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -6873,8 +7201,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3797769140135284746, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
+      propertyPath: m_Mass
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797769140135284746, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797769140135284746, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3797769140135284746, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6883,6 +7223,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3757654604925479251, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 393891583}
+    - targetCorrespondingSourceObject: {fileID: 3757654604925479251, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 393891589}
   m_SourcePrefab: {fileID: 100100000, guid: 059edc5de6cb6af45af5310f625c325b, type: 3}
 --- !u!4 &393891581 stripped
 Transform:
@@ -6910,6 +7253,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &393891589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393891582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -7073,8 +7428,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Mass
+      value: 0.045
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_Name
@@ -7147,6 +7514,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2131053553}
+    - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2131053560}
   m_SourcePrefab: {fileID: 100100000, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
 --- !u!4 &463053479 stripped
 Transform:
@@ -8692,6 +9062,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &580563156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580563142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &580626884
 GameObject:
   m_ObjectHideFlags: 0
@@ -10245,6 +10627,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &692210483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692210469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &696505936
 GameObject:
   m_ObjectHideFlags: 0
@@ -10599,8 +10993,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Mass
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3991317928100763845, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: currentChemical
@@ -10666,6 +11072,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323049, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323051, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10673,6 +11087,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 754528722}
+    - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 754528729}
   m_SourcePrefab: {fileID: 100100000, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
 --- !u!4 &719244098 stripped
 Transform:
@@ -11029,8 +11446,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Mass
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1729066925773023119, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: currentChemical
@@ -11103,6 +11532,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1926698536}
+    - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1926698543}
   m_SourcePrefab: {fileID: 100100000, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
 --- !u!4 &737140342 stripped
 Transform:
@@ -11118,8 +11550,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 148655811618323361, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
+      propertyPath: m_Mass
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 148655811618323361, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 148655811618323361, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 148655811618323361, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2235382057588576508, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
       propertyPath: m_Name
@@ -11184,6 +11628,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2235382057588576508, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 744456451}
+    - targetCorrespondingSourceObject: {fileID: 2235382057588576508, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 744456457}
   m_SourcePrefab: {fileID: 100100000, guid: 73f0df561a9344546bc68f1f5fdf6f8d, type: 3}
 --- !u!4 &744456449 stripped
 Transform:
@@ -11211,6 +11658,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &744456457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744456450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &747063089
 GameObject:
   m_ObjectHideFlags: 0
@@ -11597,6 +12056,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &754528729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754528715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &757155458
 GameObject:
   m_ObjectHideFlags: 0
@@ -12436,8 +12907,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 2153337660271273236, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+      propertyPath: m_Mass
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 2153337660271273236, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2153337660271273236, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2153337660271273236, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3682657625690491062, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
       propertyPath: m_Name
@@ -12502,6 +12985,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3682657625690491062, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
       insertIndex: -1
       addedObject: {fileID: 809961525}
+    - targetCorrespondingSourceObject: {fileID: 3682657625690491062, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 809961532}
+    - targetCorrespondingSourceObject: {fileID: 3682657625690491062, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 809961531}
   m_SourcePrefab: {fileID: 100100000, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
 --- !u!4 &809961523 stripped
 Transform:
@@ -12529,6 +13018,39 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &809961531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809961524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
+--- !u!65 &809961532
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809961524}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.15, y: 0.006, z: 0.15}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &813429457
 GameObject:
   m_ObjectHideFlags: 0
@@ -12628,8 +13150,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 2001115435}
     m_Modifications:
     - target: {fileID: 4519321505842744082, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
+      propertyPath: m_Mass
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519321505842744082, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519321505842744082, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519321505842744082, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6812681166788253202, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
       propertyPath: m_Name
@@ -12694,6 +13228,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6812681166788253202, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 813817887}
+    - targetCorrespondingSourceObject: {fileID: 6812681166788253202, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 813817893}
   m_SourcePrefab: {fileID: 100100000, guid: 0573e10f775b2a94c845db921994d3c9, type: 3}
 --- !u!4 &813817885 stripped
 Transform:
@@ -12721,6 +13258,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &813817893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813817886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &815012162
 GameObject:
   m_ObjectHideFlags: 0
@@ -13931,8 +14480,20 @@ PrefabInstance:
       value: Prop_collection-tube
       objectReference: {fileID: 0}
     - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_Mass
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13944,6 +14505,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4720703275320426481, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 854644898}
+    - targetCorrespondingSourceObject: {fileID: 4720703275320426481, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 854644904}
   m_SourcePrefab: {fileID: 100100000, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
 --- !u!4 &854644890 stripped
 Transform:
@@ -13985,6 +14549,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &854644904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854644891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &866533179
 GameObject:
   m_ObjectHideFlags: 0
@@ -14219,8 +14795,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Mass
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 43641246650369175, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3991317928100763845, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       propertyPath: currentChemical
@@ -14286,6 +14874,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323049, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359063746189323051, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14293,6 +14889,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1128496331}
+    - targetCorrespondingSourceObject: {fileID: 5359063746187216267, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1128496338}
   m_SourcePrefab: {fileID: 100100000, guid: 1b75ec3fd10b80149b05a294c62c35d3, type: 3}
 --- !u!4 &892083335 stripped
 Transform:
@@ -15401,8 +16000,20 @@ PrefabInstance:
       value: Eq_CrucibleTongs
       objectReference: {fileID: 0}
     - target: {fileID: 5684574216382061705, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
+      propertyPath: m_Mass
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5684574216382061705, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5684574216382061705, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5684574216382061705, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15411,6 +16022,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3062601812510400600, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 959175108}
+    - targetCorrespondingSourceObject: {fileID: 3062601812510400600, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 959175111}
   m_SourcePrefab: {fileID: 100100000, guid: 942349196b44f6043ae5c49f8bf4289f, type: 3}
 --- !u!4 &959175106 stripped
 Transform:
@@ -15438,6 +16052,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &959175111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959175107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &959673591 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 470579350051575463, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -15994,8 +16620,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 610518056961879168, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
+      propertyPath: m_Mass
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 610518056961879168, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 610518056961879168, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 610518056961879168, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3065270662261303481, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
       propertyPath: m_Name
@@ -16060,6 +16698,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3065270662261303481, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1011918163}
+    - targetCorrespondingSourceObject: {fileID: 3065270662261303481, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1011918169}
   m_SourcePrefab: {fileID: 100100000, guid: f2b04e69ac06f7943aa3a6dbd4f4b074, type: 3}
 --- !u!4 &1011918161 stripped
 Transform:
@@ -16087,6 +16728,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1011918169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011918162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1017353485
 GameObject:
   m_ObjectHideFlags: 0
@@ -17412,6 +18065,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1128496338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128496324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1132733847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17429,8 +18094,20 @@ PrefabInstance:
       value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Mass
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_Name
@@ -17495,6 +18172,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1132733855}
+    - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1132733862}
   m_SourcePrefab: {fileID: 100100000, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
 --- !u!4 &1132733848 stripped
 Transform:
@@ -17517,6 +18197,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1132733862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645302008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1137746317
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17526,8 +18218,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Mass
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1729066925773023119, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: currentChemical
@@ -17600,6 +18304,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1137746325}
+    - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1137746332}
   m_SourcePrefab: {fileID: 100100000, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
 --- !u!4 &1137746318 stripped
 Transform:
@@ -17622,6 +18329,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1137746332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945638304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1139251946
 GameObject:
   m_ObjectHideFlags: 0
@@ -18623,8 +19342,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518758306445590831, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18633,6 +19364,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2602365144058767407, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1191960996}
+    - targetCorrespondingSourceObject: {fileID: 2602365144058767407, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1191961002}
   m_SourcePrefab: {fileID: 100100000, guid: 9d13dfc587ba56145bfd8a0443c247ae, type: 3}
 --- !u!4 &1191960994 stripped
 Transform:
@@ -18660,6 +19394,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1191961002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191960995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1207396398
 GameObject:
   m_ObjectHideFlags: 0
@@ -19285,8 +20031,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Mass
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1729066925773023119, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: currentChemical
@@ -19359,6 +20117,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1233756882}
+    - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1233756889}
   m_SourcePrefab: {fileID: 100100000, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
 --- !u!4 &1233756875 stripped
 Transform:
@@ -19381,6 +20142,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1233756889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295033012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!64 &1235734470
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19904,8 +20677,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_Mass
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19914,6 +20699,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3270718037383223014, guid: 443a36348494db740b96f35df605d5fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1255174945}
+    - targetCorrespondingSourceObject: {fileID: 3270718037383223014, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1255174951}
   m_SourcePrefab: {fileID: 100100000, guid: 443a36348494db740b96f35df605d5fc, type: 3}
 --- !u!4 &1255174943 stripped
 Transform:
@@ -19941,6 +20729,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1255174951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255174944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1258208007
 GameObject:
   m_ObjectHideFlags: 0
@@ -20229,8 +21029,20 @@ PrefabInstance:
       value: Prop_burner
       objectReference: {fileID: 0}
     - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_Mass
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20242,6 +21054,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1259378086605964606, guid: 465994603984f0446839feec11efdb8e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1275800019}
+    - targetCorrespondingSourceObject: {fileID: 1259378086605964606, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1275800025}
   m_SourcePrefab: {fileID: 100100000, guid: 465994603984f0446839feec11efdb8e, type: 3}
 --- !u!4 &1275800011 stripped
 Transform:
@@ -20283,6 +21098,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1275800025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275800012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1280214877
 GameObject:
   m_ObjectHideFlags: 0
@@ -20901,8 +21728,20 @@ PrefabInstance:
       value: Eq_Balance
       objectReference: {fileID: 0}
     - target: {fileID: 6566832828723998448, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
+      propertyPath: m_Mass
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566832828723998448, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566832828723998448, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566832828723998448, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20911,6 +21750,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 175768407928913200, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1355251466}
+    - targetCorrespondingSourceObject: {fileID: 175768407928913200, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1355251472}
   m_SourcePrefab: {fileID: 100100000, guid: a2280f0dd44a9b647bdc2671fac6e03a, type: 3}
 --- !u!4 &1355251464 stripped
 Transform:
@@ -20938,6 +21780,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1355251472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355251465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1364255003
 GameObject:
   m_ObjectHideFlags: 0
@@ -21096,6 +21950,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1365720443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365720429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1376773230 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9057270888466011904, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -24983,8 +25849,20 @@ PrefabInstance:
       value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Mass
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_Name
@@ -25049,6 +25927,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1582045301}
+    - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1582045308}
   m_SourcePrefab: {fileID: 100100000, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
 --- !u!4 &1582045294 stripped
 Transform:
@@ -25071,6 +25952,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1582045308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358101793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1584590506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25379,9 +26272,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prop_reagent-jar
       objectReference: {fileID: 0}
+    - target: {fileID: 2376319320836678249, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2376319320836678251, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6385014326523246218, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6385014326523246218, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6385014326523246218, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6385014326523246218, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25393,6 +26306,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2376319320834575561, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1591271187}
+    - targetCorrespondingSourceObject: {fileID: 2376319320834575561, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1591271193}
   m_SourcePrefab: {fileID: 100100000, guid: f1fbe234e394c8f4e830305adcffdaf1, type: 3}
 --- !u!4 &1591271179 stripped
 Transform:
@@ -25434,6 +26350,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1591271193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591271180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1594215350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25451,8 +26379,20 @@ PrefabInstance:
       value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Mass
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_Name
@@ -25517,6 +26457,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1594215358}
+    - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1594215365}
   m_SourcePrefab: {fileID: 100100000, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
 --- !u!4 &1594215351 stripped
 Transform:
@@ -25539,6 +26482,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1594215365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545037103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1603182503
 GameObject:
   m_ObjectHideFlags: 0
@@ -26933,8 +27888,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 2001115435}
     m_Modifications:
     - target: {fileID: 5297149968842724087, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
+      propertyPath: m_Mass
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297149968842724087, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297149968842724087, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5297149968842724087, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8402288489039905822, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
       propertyPath: m_LocalScale.x
@@ -26992,6 +27959,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eq_RetortStand
       objectReference: {fileID: 0}
+    - target: {fileID: 8402288489046242974, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26999,6 +27970,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8402288489039943742, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1701046900}
+    - targetCorrespondingSourceObject: {fileID: 8402288489039943742, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1701046906}
   m_SourcePrefab: {fileID: 100100000, guid: 698d52766ebb64845b63fcdde1f0a47d, type: 3}
 --- !u!4 &1701046898 stripped
 Transform:
@@ -27026,6 +28000,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1701046906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701046899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1712043954 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 802802875517393862, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -27118,8 +28104,20 @@ PrefabInstance:
       value: Eq_EvaporatingDish
       objectReference: {fileID: 0}
     - target: {fileID: 8149857933939784940, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
+      propertyPath: m_Mass
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149857933939784940, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149857933939784940, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149857933939784940, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27128,6 +28126,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1688567593056066689, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1718842169}
+    - targetCorrespondingSourceObject: {fileID: 1688567593056066689, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1718842175}
   m_SourcePrefab: {fileID: 100100000, guid: 1f25a2114ae6e7b41ad2b09f4dfaa5a9, type: 3}
 --- !u!4 &1718842167 stripped
 Transform:
@@ -27155,6 +28156,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1718842175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718842168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1732448915
 GameObject:
   m_ObjectHideFlags: 0
@@ -27799,8 +28812,20 @@ PrefabInstance:
       value: Eq_Dropper
       objectReference: {fileID: 0}
     - target: {fileID: 3802291548172511948, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
+      propertyPath: m_Mass
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802291548172511948, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802291548172511948, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802291548172511948, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27809,6 +28834,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2273910820379036667, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1764491880}
+    - targetCorrespondingSourceObject: {fileID: 2273910820379036667, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1764491886}
   m_SourcePrefab: {fileID: 100100000, guid: 5d7fdc68bc284914fbfdcad3a5abff1b, type: 3}
 --- !u!4 &1764491878 stripped
 Transform:
@@ -27836,6 +28864,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1764491886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764491879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!21 &1765762380
 Material:
   serializedVersion: 8
@@ -28529,8 +29569,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Mass
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 416838474590303457, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1729066925773023119, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       propertyPath: currentChemical
@@ -28603,6 +29655,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1824840550}
+    - targetCorrespondingSourceObject: {fileID: 2866325348300555821, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1824840557}
   m_SourcePrefab: {fileID: 100100000, guid: 3a27e022fff4fe84abbc7c017fd870fe, type: 3}
 --- !u!4 &1824840543 stripped
 Transform:
@@ -28625,6 +29680,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1824840557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815954834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!64 &1827880138
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29415,8 +30482,20 @@ PrefabInstance:
       value: Eq_WatchGlass
       objectReference: {fileID: 0}
     - target: {fileID: 8589385077828571969, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
+      propertyPath: m_Mass
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589385077828571969, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589385077828571969, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589385077828571969, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29425,6 +30504,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2582447071662842644, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1866820282}
+    - targetCorrespondingSourceObject: {fileID: 2582447071662842644, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1866820288}
   m_SourcePrefab: {fileID: 100100000, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
 --- !u!4 &1866820280 stripped
 Transform:
@@ -29452,6 +30534,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1866820288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866820281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1870263299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29517,8 +30611,20 @@ PrefabInstance:
       value: Eq_Pestle
       objectReference: {fileID: 0}
     - target: {fileID: 8004290009413567163, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
+      propertyPath: m_Mass
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004290009413567163, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004290009413567163, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004290009413567163, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29527,6 +30633,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6713333358817235844, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1870263302}
+    - targetCorrespondingSourceObject: {fileID: 6713333358817235844, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1870263308}
   m_SourcePrefab: {fileID: 100100000, guid: 63f2ac897cc75b041a2a380b94e0827b, type: 3}
 --- !u!4 &1870263300 stripped
 Transform:
@@ -29554,6 +30663,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1870263308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870263301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1873345307
 GameObject:
   m_ObjectHideFlags: 0
@@ -29968,8 +31089,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4889168025383437270, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889168025383437270, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889168025383437270, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889168025383437270, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29978,6 +31111,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 554190900922759368, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1907553054}
+    - targetCorrespondingSourceObject: {fileID: 554190900922759368, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1907553060}
   m_SourcePrefab: {fileID: 100100000, guid: afef68004be6c2b4fbd971b221f07238, type: 3}
 --- !u!4 &1907553052 stripped
 Transform:
@@ -30005,6 +31141,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1907553060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907553053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1911754267
 GameObject:
   m_ObjectHideFlags: 0
@@ -30281,8 +31429,20 @@ PrefabInstance:
       value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Mass
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1108960383123285592, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       propertyPath: m_Name
@@ -30347,6 +31507,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1918216191}
+    - targetCorrespondingSourceObject: {fileID: 7767991836912355076, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1918216198}
   m_SourcePrefab: {fileID: 100100000, guid: 06521a6259a894d48b2f20690d1dccce, type: 3}
 --- !u!4 &1918216184 stripped
 Transform:
@@ -30369,6 +31532,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1918216198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529415931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1919698544 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1664297678838416544, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -30417,6 +31592,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1926698543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926698529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1939021844
 GameObject:
   m_ObjectHideFlags: 0
@@ -30624,8 +31811,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 975124049681415147, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
+      propertyPath: m_Mass
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 975124049681415147, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975124049681415147, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975124049681415147, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3707269265304426337, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
       propertyPath: m_Name
@@ -30690,6 +31889,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3707269265304426337, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1939048239}
+    - targetCorrespondingSourceObject: {fileID: 3707269265304426337, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1939048245}
   m_SourcePrefab: {fileID: 100100000, guid: 22afeacf35fbf0d45afb7770ece0e47c, type: 3}
 --- !u!4 &1939048237 stripped
 Transform:
@@ -30717,6 +31919,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1939048245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939048238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1941177395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30770,8 +31984,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_Mass
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081937909548622218, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30783,6 +32009,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3270718037383223014, guid: 443a36348494db740b96f35df605d5fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1941177404}
+    - targetCorrespondingSourceObject: {fileID: 3270718037383223014, guid: 443a36348494db740b96f35df605d5fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1941177410}
   m_SourcePrefab: {fileID: 100100000, guid: 443a36348494db740b96f35df605d5fc, type: 3}
 --- !u!4 &1941177396 stripped
 Transform:
@@ -30824,6 +32053,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1941177410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941177397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1962834257
 GameObject:
   m_ObjectHideFlags: 0
@@ -31182,8 +32423,20 @@ PrefabInstance:
       value: Eq_IronRing
       objectReference: {fileID: 0}
     - target: {fileID: 4930549472341364737, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
+      propertyPath: m_Mass
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930549472341364737, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930549472341364737, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930549472341364737, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31192,6 +32445,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3528343686820590266, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972106803}
+    - targetCorrespondingSourceObject: {fileID: 3528343686820590266, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1972106809}
   m_SourcePrefab: {fileID: 100100000, guid: cf757189f76a6d24cba1322dd40243b7, type: 3}
 --- !u!4 &1972106801 stripped
 Transform:
@@ -31219,6 +32475,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1972106809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972106802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1001 &1972348369
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31284,8 +32552,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4430623014328300651, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
+      propertyPath: m_Mass
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430623014328300651, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430623014328300651, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430623014328300651, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31294,6 +32574,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1984455909807126924, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972348372}
+    - targetCorrespondingSourceObject: {fileID: 1984455909807126924, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1972348378}
   m_SourcePrefab: {fileID: 100100000, guid: ad52ca398f1ec5041a74841a546ae88b, type: 3}
 --- !u!4 &1972348370 stripped
 Transform:
@@ -31321,6 +32604,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1972348378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972348371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1972653857
 GameObject:
   m_ObjectHideFlags: 0
@@ -31627,8 +32922,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 7604614534207492814, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604614534207492814, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604614534207492814, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604614534207492814, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7705168072765257492, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
       propertyPath: m_Name
@@ -31693,6 +33000,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7705168072765257492, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1976658250}
+    - targetCorrespondingSourceObject: {fileID: 7705168072765257492, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1976658256}
   m_SourcePrefab: {fileID: 100100000, guid: eafede6b8b0acfc46942fbcd743ed447, type: 3}
 --- !u!4 &1976658248 stripped
 Transform:
@@ -31720,6 +33030,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &1976658256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976658249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &1987834689
 GameObject:
   m_ObjectHideFlags: 0
@@ -31800,8 +33122,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1558393013}
     m_Modifications:
     - target: {fileID: 6006150435523012917, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
+      propertyPath: m_Mass
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006150435523012917, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006150435523012917, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006150435523012917, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6622832333254013718, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
       propertyPath: m_Name
@@ -31866,6 +33200,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6622832333254013718, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2002881132}
+    - targetCorrespondingSourceObject: {fileID: 6622832333254013718, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2002881138}
   m_SourcePrefab: {fileID: 100100000, guid: e37701bef09a0e940b6679c5d3d7a8d7, type: 3}
 --- !u!4 &2002881130 stripped
 Transform:
@@ -31893,6 +33230,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2002881138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002881131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2003294856
 GameObject:
   m_ObjectHideFlags: 0
@@ -32576,8 +33925,20 @@ PrefabInstance:
       value: Eq_GraduatedCylinder_50mL
       objectReference: {fileID: 0}
     - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_Mass
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278660766978669622, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32586,6 +33947,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4720703275320426481, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2025786403}
+    - targetCorrespondingSourceObject: {fileID: 4720703275320426481, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2025786409}
   m_SourcePrefab: {fileID: 100100000, guid: 896845c9595437e4fa9a1ed4379092b9, type: 3}
 --- !u!4 &2025786401 stripped
 Transform:
@@ -32613,6 +33977,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2025786409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025786402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2035697295 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2201120084841098838, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -32705,8 +34081,20 @@ PrefabInstance:
       value: Eq_BunsenBurner
       objectReference: {fileID: 0}
     - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_Mass
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042951742200709021, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32715,6 +34103,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1259378086605964606, guid: 465994603984f0446839feec11efdb8e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2060925982}
+    - targetCorrespondingSourceObject: {fileID: 1259378086605964606, guid: 465994603984f0446839feec11efdb8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2060925988}
   m_SourcePrefab: {fileID: 100100000, guid: 465994603984f0446839feec11efdb8e, type: 3}
 --- !u!4 &2060925980 stripped
 Transform:
@@ -32742,6 +34133,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2060925988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060925981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2075476171
 GameObject:
   m_ObjectHideFlags: 0
@@ -32840,8 +34243,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1280214878}
     m_Modifications:
     - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Mass
+      value: 0.045
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 656959935483106860, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       propertyPath: m_Name
@@ -32914,6 +34329,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2109068612}
+    - targetCorrespondingSourceObject: {fileID: 3620650690898710797, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2109068619}
   m_SourcePrefab: {fileID: 100100000, guid: 6a924f41e72bbc547b041eee699b021b, type: 3}
 --- !u!4 &2109068605 stripped
 Transform:
@@ -32936,6 +34354,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2109068619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567493490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2121291177 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6727850659719791535, guid: 70b989489405b6f4da587631e978a478, type: 3}
@@ -32984,6 +34414,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2131053560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131053546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2137001746
 GameObject:
   m_ObjectHideFlags: 0
@@ -33171,9 +34613,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eq_Funnel
       objectReference: {fileID: 0}
+    - target: {fileID: 3775639516757873731, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534272549757723733, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
+      propertyPath: m_Mass
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534272549757723733, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6534272549757723733, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6534272549757723733, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33182,6 +34640,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3775639516755786467, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2143815804}
+    - targetCorrespondingSourceObject: {fileID: 3775639516755786467, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2143815810}
   m_SourcePrefab: {fileID: 100100000, guid: 74d4f532e0482fc4a8f74ecece77681a, type: 3}
 --- !u!4 &2143815802 stripped
 Transform:
@@ -33209,6 +34670,18 @@ MonoBehaviour:
   showDistance: 2
   heightOffset: 0.14
   fontSize: 5.5
+--- !u!114 &2143815810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143815803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab7a214c507b0544b6591a7e6c65dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrabPhysicsPolicy
 --- !u!1 &2147411997
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,6 +58,7 @@ public static class PharmaSelfTests
         LabMenuSuite();
         DepletionSuite();
         RealSizeSuite();
+        PhysicsProfileSuite();
         PharmeeAliveSuite();
         LibrarySuite();
         ContentSuite();
@@ -717,6 +718,89 @@ public static class PharmaSelfTests
         }
         A("size: factor math", Near(RealSizes.UniformScaleFactor(new Vector3(0.05f, 0.02f, 0.32f), 0.16f), 0.5f));
         A("size: degenerate guarded", Near(RealSizes.UniformScaleFactor(Vector3.zero, 0.16f), 1f));
+    }
+
+    static void PhysicsProfileSuite()
+    {
+        // Table stays in lockstep with RealSizes: same items, none missing.
+        A("phys: table lockstep with RealSizes", PhysicsProfiles.Count == RealSizes.Count);
+        bool allProfiled = true;
+        foreach (var n in RealSizes.Names)
+            if (!PhysicsProfiles.TryGet(n, out _)) { allProfiled = false; _log.Add("missing PhysicsProfile: " + n); }
+        A("phys: every sized item profiled", allProfiled);
+
+        bool massesSane = true;
+        foreach (var n in PhysicsProfiles.Names)
+        {
+            PhysicsProfiles.TryGet(n, out var p);
+            if (p.massKg <= 0.005f || p.massKg > 6f) { massesSane = false; _log.Add("implausible mass: " + n + " = " + p.massKg); }
+        }
+        A("phys: masses plausible", massesSane);
+
+        // Pose math: a Y-long rod is laid down (its long axis ends horizontal)…
+        var lie = PhysicsProfiles.RestRotation(RestPose.LieLongAxis, new Vector3(0.02f, 0.3f, 0.02f));
+        A("phys: rod laid on its side", Mathf.Abs((lie * Vector3.up).y) < 0.01f);
+        // …while an already-horizontal rod and upright items are untouched.
+        A("phys: lying rod untouched", PhysicsProfiles.RestRotation(RestPose.LieLongAxis, new Vector3(0.3f, 0.02f, 0.02f)) == Quaternion.identity);
+        A("phys: upright untouched", PhysicsProfiles.RestRotation(RestPose.Upright, new Vector3(0.02f, 0.3f, 0.02f)) == Quaternion.identity);
+        // Flat tools: thinnest axis ends vertical.
+        var flat = PhysicsProfiles.RestRotation(RestPose.Flat, new Vector3(0.01f, 0.15f, 0.10f));
+        A("phys: flat tool face-down", Mathf.Abs((flat * Vector3.right).y) > 0.99f);
+        A("phys: flat already down untouched", PhysicsProfiles.RestRotation(RestPose.Flat, new Vector3(0.15f, 0.01f, 0.10f)) == Quaternion.identity);
+
+        // Resting plausibility (the drop test's verdict function).
+        A("phys: lying rod plausible", PhysicsProfiles.IsRestingPlausible(RestPose.LieLongAxis, new Vector3(0.3f, 0.02f, 0.02f)));
+        A("phys: balancing rod implausible", !PhysicsProfiles.IsRestingPlausible(RestPose.LieLongAxis, new Vector3(0.02f, 0.3f, 0.02f)));
+        A("phys: face-down gauze plausible", PhysicsProfiles.IsRestingPlausible(RestPose.Flat, new Vector3(0.15f, 0.01f, 0.10f)));
+        A("phys: on-edge gauze implausible", !PhysicsProfiles.IsRestingPlausible(RestPose.Flat, new Vector3(0.01f, 0.15f, 0.10f)));
+
+        // Degenerate-collider guard.
+        A("phys: paper-thin collider flagged", PhysicsProfiles.IsDegenerate(new Vector3(0.004f, 0.1f, 0.1f)));
+        A("phys: normal collider passes", !PhysicsProfiles.IsDegenerate(new Vector3(0.01f, 0.1f, 0.1f)));
+
+        // EnsurePhysics + release policy on a live object (edit-mode Bind seam).
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var rb = PhysicsProfiles.EnsurePhysics(go, "GlassRod");
+            A("phys: spawns kinematic with profile mass", rb != null && rb.isKinematic && rb.useGravity && Near(rb.mass, 0.03f));
+            var policy = go.AddComponent<GrabPhysicsPolicy>();
+            policy.Bind(rb, null);
+            A("phys: kinematic until released", !policy.IsDynamic);
+            policy.OnReleased();
+            A("phys: dynamic after release", policy.IsDynamic && !rb.isKinematic);
+
+            UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());
+            var added = PhysicsProfiles.EnsureCollider(go) as BoxCollider;
+            A("phys: collider-less item gets a box", added != null
+                && !PhysicsProfiles.IsDegenerate(Vector3.Scale(added.size, go.transform.lossyScale)));
+
+            // Concave mesh colliders are rejected by PhysX on dynamic bodies
+            // (items fell through the world in the drop test) → must convexify.
+            var meshGo = new GameObject("mc");
+            meshGo.transform.SetParent(go.transform, false);
+            var mc = meshGo.AddComponent<MeshCollider>();
+            mc.sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
+            mc.convex = false;
+            A("phys: concave colliders convexified", PhysicsProfiles.ConvexifyMeshColliders(go) == 1 && mc.convex);
+
+            // Drop respawn: kill-Z + idle return-to-home policy.
+            A("respawn: below kill-Z", DropRespawnMath.ShouldRespawn(-1.2f, -1f));
+            A("respawn: on bench safe", !DropRespawnMath.ShouldRespawn(0.9f, -1f));
+            A("respawn: abandoned item returns", DropRespawnMath.ShouldReturnHome(1.5f, 0f, false, 30f));
+            A("respawn: held item never returns", !DropRespawnMath.ShouldReturnHome(1.5f, 0f, true, 30f));
+            A("respawn: moving item waits", !DropRespawnMath.ShouldReturnHome(1.5f, 0.4f, false, 30f));
+            A("respawn: near home stays put", !DropRespawnMath.ShouldReturnHome(0.1f, 0f, false, 30f));
+            var dr = go.AddComponent<DropRespawn>();
+            dr.Bind(go.GetComponent<Rigidbody>(), null);
+            dr.SetHome(new Vector3(1f, 2f, 3f), Quaternion.identity);
+            go.transform.position = new Vector3(9f, -5f, 9f);
+            var rbDyn = go.GetComponent<Rigidbody>(); rbDyn.isKinematic = false;
+            dr.GoHome();
+            A("respawn: teleports home", (go.transform.position - new Vector3(1f, 2f, 3f)).magnitude < 1e-4f);
+            A("respawn: re-freezes to shelf policy", rbDyn.isKinematic);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); }
     }
 
     static void PharmeeAliveSuite()

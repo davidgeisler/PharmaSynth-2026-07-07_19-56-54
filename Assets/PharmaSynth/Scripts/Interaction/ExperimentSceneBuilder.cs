@@ -120,10 +120,14 @@ public class ExperimentSceneBuilder : MonoBehaviour
         var inst = Instantiate(prefab, stage);
         inst.name = "Prop_" + p.itemId;
         Normalise(inst, p.prefabName, p.targetHeight);
+        RestPoseFor(inst, p.prefabName);
         Seat(inst.transform, p.pos);
         var item = inst.GetComponent<LabItem>() ?? inst.AddComponent<LabItem>();
         item.itemId = p.itemId; item.displayName = p.displayName;
-        var rb = inst.GetComponent<Rigidbody>(); if (rb != null) rb.isKinematic = true;
+        PhysicsProfiles.EnsurePhysics(inst, p.prefabName);
+        inst.AddComponent<GrabPhysicsPolicy>();
+        var respawn = inst.AddComponent<DropRespawn>();
+        respawn.SetHome(inst.transform.position, inst.transform.rotation);
         if (p.pourable)
         {
             var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
@@ -154,7 +158,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         inst.name = "Vessel_" + v.prefabName;
         Normalise(inst, v.prefabName, v.targetHeight);
         Seat(inst.transform, v.pos);
-        var rb = inst.GetComponent<Rigidbody>(); if (rb != null) rb.isKinematic = true;
+        PhysicsProfiles.EnsurePhysics(inst, v.prefabName);   // vessels stay kinematic (no release policy)
         var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
         lp.registry = registry;
         if (!string.IsNullOrEmpty(v.startChemical))
@@ -211,6 +215,15 @@ public class ExperimentSceneBuilder : MonoBehaviour
             g.transform.localScale = Vector3.one * RealSizes.UniformScaleFactor(size, target);
         else
             g.transform.localScale = Vector3.one * (fallbackHeight / Mathf.Max(size.y, 0.01f));
+    }
+
+    /// Rotate a spawned item into its plausible resting pose (a spatula lies
+    /// flat, a glass rod on its side) BEFORE seating, so bounds-based seating
+    /// uses the rotated footprint.
+    private static void RestPoseFor(GameObject g, string prefabName)
+    {
+        if (!PhysicsProfiles.TryGet(prefabName, out var prof)) return;
+        g.transform.rotation = PhysicsProfiles.RestRotation(prof.pose, WB(g).size) * g.transform.rotation;
     }
 
     private static void Seat(Transform t, Vector3 pos)
