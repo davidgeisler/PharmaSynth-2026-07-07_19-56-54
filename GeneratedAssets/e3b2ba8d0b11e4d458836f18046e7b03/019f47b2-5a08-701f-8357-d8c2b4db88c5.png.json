@@ -1,0 +1,31 @@
+{
+    "asset": "e3b2ba8d0b11e4d458836f18046e7b03",
+    "fileName": "019f47b2-5a08-701f-8357-d8c2b4db88c5.png",
+    "prompt": "Full-body character concept of a friendly middle-aged male pharmacy professor, Dr. Jimenez: neat dark hair with grey streaks, glasses, white lab coat over a shirt and tie, dark trousers, ID badge, standing straight in a neutral A-pose, arms slightly away from body, front view, whole body visible head to shoes, studio lighting, plain light grey background, stylized semi-realistic game character",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 768,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

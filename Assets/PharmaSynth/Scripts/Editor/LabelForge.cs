@@ -112,7 +112,11 @@ public static class LabelForge
         finally { Object.DestroyImmediate(root); }
     }
 
-    /// Label quad proud of the bottle surface, facing the room aisle.
+    /// Curved label band hugging the bottle (user 2026-07-10: flat quads read
+    /// as pasted nameplates). Thin tubes get NO label — the proximity tag
+    /// already names them and a plate overpowers the glass.
+    const float MinLabelRadius = 0.016f;
+
     static void MountQuad(Transform bottle, Material mat)
     {
         var old = bottle.Find("NameLabel");
@@ -122,20 +126,67 @@ public static class LabelForge
         Bounds b = rs[0].bounds;
         foreach (var r in rs) b.Encapsulate(r.bounds);
 
+        float radius = Mathf.Max(b.extents.x, b.extents.z);
+        if (radius < MinLabelRadius) return;                     // thin tube: skip
+
         Vector3 outward = new Vector3(0.2f, 0f, -2.5f) - bottle.position;   // toward the room
         outward.y = 0f; outward = outward.normalized;
 
-        var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.name = "NameLabel";
-        Object.DestroyImmediate(quad.GetComponent<Collider>());
-        quad.transform.SetParent(bottle, true);
-        float w = Mathf.Min(b.size.x, b.size.z) * 0.8f;
-        quad.transform.localScale = Vector3.one;   // reset, then set world size via lossy compensation
-        var ls = quad.transform.lossyScale;
-        quad.transform.localScale = new Vector3(w / Mathf.Max(ls.x, 1e-4f), (b.size.y * 0.5f) / Mathf.Max(ls.y, 1e-4f), 1f);
-        quad.transform.position = b.center + outward * (Mathf.Max(b.extents.x, b.extents.z) + 0.004f) - new Vector3(0f, b.size.y * 0.05f, 0f);
-        quad.transform.rotation = Quaternion.LookRotation(-outward);        // Quad face (-Z) toward the room
-        quad.GetComponent<MeshRenderer>().sharedMaterial = mat;
+        var band = new GameObject("NameLabel", typeof(MeshFilter), typeof(MeshRenderer));
+        band.transform.SetParent(bottle, true);
+        band.GetComponent<MeshFilter>().sharedMesh = ArcMesh();
+        band.GetComponent<MeshRenderer>().sharedMaterial = mat;
+
+        // Body radius (not the cap/neck): sample at the label's height where
+        // possible — approximated as 92% of the widest extent, +2 mm clearance.
+        float bandRadius = radius * 0.92f + 0.002f;
+        float bandHeight = Mathf.Min(b.size.y * 0.42f, bandRadius * 2.4f);
+        band.transform.localScale = Vector3.one;
+        var ls = band.transform.lossyScale;
+        band.transform.localScale = new Vector3(bandRadius / Mathf.Max(ls.x, 1e-4f),
+                                                bandHeight / Mathf.Max(ls.y, 1e-4f),
+                                                bandRadius / Mathf.Max(ls.z, 1e-4f));
+        band.transform.position = new Vector3(b.center.x, b.center.y - b.size.y * 0.08f, b.center.z);
+        band.transform.rotation = Quaternion.LookRotation(-outward);        // arc centre (-Z) toward the room
+    }
+
+    static Mesh _arc;
+
+    /// Shared unit arc mesh: radius 1, height 1, 140° facing -Z. Saved as an
+    /// asset so scene references survive; scaled per bottle by the transform.
+    static Mesh ArcMesh()
+    {
+        string path = OutDir + "/LabelArc.asset";
+        if (_arc == null) _arc = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+        if (_arc != null) return _arc;
+
+        const int SEG = 16;
+        const float ARC = 140f * Mathf.Deg2Rad;
+        var verts = new Vector3[(SEG + 1) * 2];
+        var uvs = new Vector2[verts.Length];
+        var norms = new Vector3[verts.Length];
+        var tris = new int[SEG * 6];
+        for (int i = 0; i <= SEG; i++)
+        {
+            float a = -ARC * 0.5f + ARC * i / SEG;
+            float x = Mathf.Sin(a), z = -Mathf.Cos(a);
+            verts[i * 2] = new Vector3(x, -0.5f, z);
+            verts[i * 2 + 1] = new Vector3(x, 0.5f, z);
+            float u = (float)i / SEG;
+            uvs[i * 2] = new Vector2(u, 0f);
+            uvs[i * 2 + 1] = new Vector2(u, 1f);
+            norms[i * 2] = norms[i * 2 + 1] = new Vector3(x, 0f, z);
+        }
+        for (int i = 0; i < SEG; i++)
+        {
+            // Wound so faces point OUTWARD (away from the bottle axis).
+            int v = i * 2, t = i * 6;
+            tris[t] = v; tris[t + 1] = v + 1; tris[t + 2] = v + 2;
+            tris[t + 3] = v + 1; tris[t + 4] = v + 3; tris[t + 5] = v + 2;
+        }
+        _arc = new Mesh { name = "LabelArc", vertices = verts, uv = uvs, normals = norms, triangles = tris };
+        AssetDatabase.CreateAsset(_arc, path);
+        return _arc;
     }
 }
 #endif

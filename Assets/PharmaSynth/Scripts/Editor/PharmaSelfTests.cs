@@ -918,6 +918,11 @@ public static class PharmaSelfTests
         A("sfx: long move = many steps", StrideMath.Steps(ref acc, 3f, 0.75f) >= 4);
         A("sfx: no distance no steps", StrideMath.Steps(ref acc, 0f, 0.75f) == 0);
 
+        // Pharmee flight lean: proportional to speed, clamped, zero at rest.
+        A("pharmee: lean scales with speed", Near(PharmeeAttitude.LeanFor(0.5f, 22f, 14f), 11f));
+        A("pharmee: lean clamped", Near(PharmeeAttitude.LeanFor(3f, 22f, 14f), 14f));
+        A("pharmee: no lean at rest", Near(PharmeeAttitude.LeanFor(0f, 22f, 14f), 0f));
+
         // Sim-loop audio: verb → SoundBank key mapping, and safe without clips.
         A("sfx: heat loops bubble", SimLoopAudio.KeyFor(StationSim.Heat) == "bubble");
         A("sfx: filter loops drip", SimLoopAudio.KeyFor(StationSim.Filter) == "filter-drip");

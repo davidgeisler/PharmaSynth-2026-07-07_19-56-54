@@ -1,0 +1,31 @@
+{
+    "asset": "3683c0679f1dea241a8f15e40bc90c95",
+    "fileName": "019f47b3-952b-742c-a994-7bb5b33d9192.png",
+    "prompt": "Product photo of a futuristic sci-fi smartwatch with a dark rounded-square face, thin glowing cyan ring around the screen, white and grey band, three-quarter view, whole object visible, studio lighting, plain light grey background",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

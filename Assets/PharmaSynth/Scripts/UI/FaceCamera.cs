@@ -43,6 +43,11 @@ public class FaceCamera : MonoBehaviour
             if (!_haveInitial) { _initial = transform.rotation; _haveInitial = true; }
             // Spin the authored pose around world-up only → stays upright, just turns.
             Vector3 f0 = _initial * Vector3.forward; f0.y = 0f;
+            // Models imported with a 90° axis fix (Pharmee's glb) have a VERTICAL
+            // authored forward — flattening it degenerates to zero and the yaw
+            // never applied (he stared at one wall forever). Fall back to the
+            // authored up-axis, which such imports point horizontally.
+            if (f0.sqrMagnitude < 1e-4f) { f0 = _initial * Vector3.up; f0.y = 0f; }
             Vector3 want = faceTowardCamera ? (_cam.position - transform.position)
                                             : (transform.position - _cam.position);
             want.y = 0f;

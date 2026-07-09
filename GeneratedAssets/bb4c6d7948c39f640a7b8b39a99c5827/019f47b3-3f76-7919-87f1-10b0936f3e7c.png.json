@@ -1,0 +1,31 @@
+{
+    "asset": "bb4c6d7948c39f640a7b8b39a99c5827",
+    "fileName": "019f47b3-3f76-7919-87f1-10b0936f3e7c.png",
+    "prompt": "Product photo of a single blue nitrile laboratory glove, lying flat palm up, fingers slightly spread, whole object visible, studio lighting, plain light grey background",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

@@ -28,8 +28,19 @@ public class WristWatchController : MonoBehaviour
     [Header("Fallback input")]
     [SerializeField] private InputActionReference toggleAction;            // button/thumbstick fallback
 
+    [Header("Holo checklist (large panel — the user's headline feature)")]
+    [SerializeField] private GameObject holoPanel;      // world-space holographic board
+    [SerializeField] private TMP_Text holoTitle;
+    [SerializeField] private TMP_Text holoBody;
+    [SerializeField] private float holoDistance = 1.15f;
+    [SerializeField] private float holoHeightOffset = -0.05f;
+
     private bool _gestureVisible;
     private bool _manualVisible;
+    private bool _lastShow;
+
+    public void BindHolo(GameObject panel, TMP_Text title, TMP_Text body)
+    { holoPanel = panel; holoTitle = title; holoBody = body; }
 
     private void OnEnable()
     {
@@ -64,6 +75,28 @@ public class WristWatchController : MonoBehaviour
         bool show = _gestureVisible || _manualVisible;
         if (panel != null && panel.activeSelf != show) panel.SetActive(show);
         if (show && summaryText != null) summaryText.text = BuildSummary(runner);
+
+        // Large holographic procedures board: appears in front of the player on
+        // the same gesture, listing the full phase-grouped checklist.
+        if (show && !_lastShow) PlaceHolo();
+        _lastShow = show;
+        if (holoPanel != null && holoPanel.activeSelf != show) holoPanel.SetActive(show);
+        if (show && runner != null)
+        {
+            if (holoTitle != null) holoTitle.text = runner.Module != null ? runner.Module.moduleTitle : "Procedures";
+            if (holoBody != null && runner.Graph != null)
+                holoBody.text = TabletChecklistController.BuildChecklistText(runner.Graph);
+        }
+    }
+
+    /// Park the holo board in front of the player's face, upright, readable.
+    private void PlaceHolo()
+    {
+        if (holoPanel == null || headTransform == null) return;
+        Vector3 fwd = headTransform.forward; fwd.y = 0f;
+        fwd = fwd.sqrMagnitude < 1e-4f ? Vector3.forward : fwd.normalized;
+        holoPanel.transform.position = headTransform.position + fwd * holoDistance + Vector3.up * holoHeightOffset;
+        holoPanel.transform.rotation = Quaternion.LookRotation(fwd);   // +Z away → UI reads correctly
     }
 
     public static string BuildSummary(ExperimentRunner runner)
