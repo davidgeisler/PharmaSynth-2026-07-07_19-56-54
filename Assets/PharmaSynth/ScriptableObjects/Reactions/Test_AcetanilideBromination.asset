@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d4ee08956b0bd944979aca8e60416a0, type: 3}
-  m_Name: Draft_BenzoateFeCl3
+  m_Name: Test_AcetanilideBromination
   m_EditorClassIdentifier: Assembly-CSharp::ReactionRule
-  inputChemicalA: {fileID: 11400000, guid: 9d55f320c4f116f41a2ac51f08ae18f1, type: 2}
-  inputChemicalB: {fileID: 11400000, guid: b4ffe5e1b40c7944fb638a72d0adb098, type: 2}
-  resultLiquid: {fileID: 11400000, guid: 9d55f320c4f116f41a2ac51f08ae18f1, type: 2}
+  inputChemicalA: {fileID: 11400000, guid: 681a555f71cface45bc96fcbcd4b3d7f, type: 2}
+  inputChemicalB: {fileID: 11400000, guid: e80077a411304ea4cbcaa8d77726ba01, type: 2}
+  resultLiquid: {fileID: 11400000, guid: 681a555f71cface45bc96fcbcd4b3d7f, type: 2}
   resultPrecipitate: {fileID: 0}
-  hasPrecipitate: 1
+  hasPrecipitate: 0
   minTemperatureC: 0
-  outcome: 3
+  outcome: 1
   evolvesGas: 0
-  expectedObservation: Buff / salmon precipitate confirms benzoate (standard FeCl3
-    test).
+  expectedObservation: "Bromine water is decolorised to a yellow solution \u2014
+    bromination (manual Exp 5)."

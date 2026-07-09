@@ -62,11 +62,11 @@ MonoBehaviour:
     fillChemical: Glacial Acetic Acid
   - prefabName: Vial_Brown
     itemId: add-acylating
-    displayName: Acetic Anhydride
+    displayName: Acetyl Chloride
     pos: {x: -1.25, y: 0.91, z: -1.95}
     targetHeight: 0.16
     pourable: 1
-    fillChemical: Acetic Anhydride
+    fillChemical: Acetyl Chloride
   - prefabName: Vial_Brown
     itemId: test-bromination
     displayName: Bromine Water
@@ -115,7 +115,7 @@ MonoBehaviour:
       taskId: measure-aniline
     - reagentChemical: Glacial Acetic Acid
       taskId: add-acetic
-    - reagentChemical: Acetic Anhydride
+    - reagentChemical: Acetyl Chloride
       taskId: add-acylating
     - reagentChemical: Bromine Water
       taskId: test-bromination

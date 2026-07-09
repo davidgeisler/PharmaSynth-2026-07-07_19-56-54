@@ -20,5 +20,5 @@ MonoBehaviour:
   minTemperatureC: 0
   outcome: 1
   evolvesGas: 0
-  expectedObservation: 'DRAFT (confirm vs manual): purple KMnO4 fades as ethanol
-    is oxidised.'
+  expectedObservation: Purple KMnO4 is decolorised as the alcohol is oxidised (manual
+    Exp 2, rate-of-oxidation).

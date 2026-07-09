@@ -55,6 +55,7 @@ public class GradeScreenController : MonoBehaviour
         if (passedVisuals != null) passedVisuals.SetActive(r.passed);
         if (failedVisuals != null) failedVisuals.SetActive(!r.passed);
         if (continueButton != null) continueButton.SetActive(r.passed); // gate: can't advance until passed
+        if (AudioService.Instance != null) AudioService.Instance.Play(r.passed ? "grade-pass" : "grade-fail");
     }
 
     public void Hide() { if (root != null) root.SetActive(false); }

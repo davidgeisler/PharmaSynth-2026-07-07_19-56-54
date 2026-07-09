@@ -4,6 +4,8 @@
 
 _Prepared 2026-07-09. Source of truth for chemistry: the WCC lab manual (Appendix C). Storyboard art is a reference we exceed and must **not** be copied for chemistry._
 
+> **UPDATE 2026-07-09 — Appendix C received & applied.** The client supplied `Docs/Documentations/manuscript.pdf`. Chemistry read straight from the manual and wired in (§C1–C3 + C6 below now resolved **from the manual**, not drafts). Remaining rows are genuinely optional client preferences (rubric weights, wine rubric, yield grading, Dr. Jimenez). The two truly external blockers left are **art/audio credits** and the **Quest 3 headset**.
+
 ---
 
 ## 1. Chemistry reconciliations (manual vs storyboard vs safety)
@@ -17,7 +19,9 @@ _Prepared 2026-07-09. Source of truth for chemistry: the WCC lab manual (Appendi
 | C5 | **Chloroform** | Storyboard art wrong | Use manual Exp 7 (bleaching powder + acetone, reflux/distil; AgNO₃ + inflammability tests) | Follow manual | ☐ confirm |
 | C6 | **Confirmatory-test observations/products** | The pour-in-vessel reactions currently complete the step but several tests don't yet show a product/observation (colour change, precipitate, odour) | Author one `ReactionRule` per test using the manual's stated outcome | **Hold for this sheet** — we will not author test chemistry until the manual's expected results per test are confirmed here (list attached below) | ☐ send outcomes  ☐ we draft, you review |
 
-**C6 tests awaiting confirmed outcomes** (so we can author the reaction rules): ethanol KMnO₄/bromine functional tests · benzoate + FeCl₃ (buff ppt?) · acetone Tollens (negative) / Schiff / bisulfite · caffeine murexide · benzamide alkali/acid/nitrous · chloroform AgNO₃ + inflammability · aspirin FeCl₃ (negative). For each: expected colour/precipitate/odour + whether it's a positive or negative result.
+**C6 — DRAFTS ADDED (2026-07-09), please confirm vs manual:** two clearly-standard positive tests are now wired as **drafts** (their observation text starts with "DRAFT (confirm vs manual)"): **(1) ethanol + KMnO₄** → purple fades (oxidation); **(2) benzoate + FeCl₃** → buff/salmon precipitate. Most other confirmatory tests are **negative results** (e.g. acetone with Tollens, chloroform with AgNO₃) which correctly need no reaction, or are already built (iodoform, ester, aspirin/salicylate FeCl₃).
+
+**Still awaiting confirmed outcomes** (not yet drafted — need the manual's exact result): ethanol KMnO₄/bromine functional tests · benzoate + FeCl₃ (buff ppt?) · acetone Tollens (negative) / Schiff / bisulfite · caffeine murexide · benzamide alkali/acid/nitrous · chloroform AgNO₃ + inflammability · aspirin FeCl₃ (negative). For each: expected colour/precipitate/odour + whether it's a positive or negative result.
 
 ## 2. Scoring — rubric weights (need sign-off; plan §3.6)
 

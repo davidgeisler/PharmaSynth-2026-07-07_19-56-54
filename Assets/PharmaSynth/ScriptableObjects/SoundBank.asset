@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96817787860758a41b4e0ac21cbb9f90, type: 3}
+  m_Name: SoundBank
+  m_EditorClassIdentifier: Assembly-CSharp::SoundBank
+  entries:
+  - key: ui-click
+    clip: {fileID: 8300000, guid: c0f66a59a4ad1604495fcb46f7c99f1e, type: 3}
+    category: 0
+    volume: 0.7
+  - key: ui-confirm
+    clip: {fileID: 8300000, guid: f87c2485e8ea1274abfd5feee1479d75, type: 3}
+    category: 0
+    volume: 0.8
+  - key: task-complete
+    clip: {fileID: 8300000, guid: db26d72367969624fa4ebc8c4d29f560, type: 3}
+    category: 0
+    volume: 0.8
+  - key: grade-pass
+    clip: {fileID: 8300000, guid: f5e7cd5b45754934b8541cb9639e9a1e, type: 3}
+    category: 0
+    volume: 0.9
+  - key: ui-error
+    clip: {fileID: 8300000, guid: 79375f8fcdf9bb442a0e737f42c4b734, type: 3}
+    category: 0
+    volume: 0.7
+  - key: grade-fail
+    clip: {fileID: 8300000, guid: 3749c80899a4ddd47b99347b4fd86b6e, type: 3}
+    category: 0
+    volume: 0.8
+  - key: glass-clink
+    clip: {fileID: 8300000, guid: 2fc99806b4d9ae54c8f24cdac3b96b57, type: 3}
+    category: 0
+    volume: 0.8
+  - key: glass-shatter
+    clip: {fileID: 8300000, guid: c96e3e515236a704d98f07936012038d, type: 3}
+    category: 0
+    volume: 0.9
+  - key: alarm
+    clip: {fileID: 8300000, guid: d223a84e8857800459e639a4c022692f, type: 3}
+    category: 0
+    volume: 0.8
+  - key: pharmee-greet
+    clip: {fileID: 8300000, guid: 0893eac139e3e5d4d81dd15b6ee3d8dc, type: 3}
+    category: 2
+    volume: 0.9
+  - key: pharmee-instruct
+    clip: {fileID: 8300000, guid: edbcd1773c2ca0c4696438340894aeb4, type: 3}
+    category: 2
+    volume: 0.9
+  - key: pharmee-celebrate
+    clip: {fileID: 8300000, guid: 7815e767fd1101d43b291048ac16bde9, type: 3}
+    category: 2
+    volume: 0.9
+  - key: pharmee-warn
+    clip: {fileID: 8300000, guid: 9909009e050ed4940a4100f6f021bfc0, type: 3}
+    category: 2
+    volume: 0.9
+  - key: ambient-lab
+    clip: {fileID: 8300000, guid: b0f3070b9533b9544b03bf3f0cfa7cfe, type: 3}
+    category: 1
+    volume: 0.4
+  - key: music-menu
+    clip: {fileID: 8300000, guid: 29341b26167872e439665e332a52f0d8, type: 3}
+    category: 3
+    volume: 0.5

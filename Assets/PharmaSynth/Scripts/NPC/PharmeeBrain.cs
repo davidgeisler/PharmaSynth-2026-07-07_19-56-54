@@ -130,6 +130,19 @@ public class PharmeeBrain : MonoBehaviour
         LastExpression = face;
         _face?.SetExpression(face);
         if (narration != null) narration.Say(line, lineSeconds);
+        // Pharmee's robotic "voice" — a beep per mood (no-op if no AudioService/clip).
+        if (AudioService.Instance != null) AudioService.Instance.Play(BeepKey(state));
+    }
+
+    private static string BeepKey(PharmeeState s)
+    {
+        switch (s)
+        {
+            case PharmeeState.Warning: return "pharmee-warn";
+            case PharmeeState.Celebrating: return "pharmee-celebrate";
+            case PharmeeState.Greeting: return "pharmee-greet";
+            default: return "pharmee-instruct";
+        }
     }
 
     private string WarnLineFor(LabErrorType type)

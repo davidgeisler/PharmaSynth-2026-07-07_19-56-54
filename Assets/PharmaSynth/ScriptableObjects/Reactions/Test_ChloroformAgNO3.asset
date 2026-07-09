@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d4ee08956b0bd944979aca8e60416a0, type: 3}
-  m_Name: Draft_BenzoateFeCl3
+  m_Name: Test_ChloroformAgNO3
   m_EditorClassIdentifier: Assembly-CSharp::ReactionRule
-  inputChemicalA: {fileID: 11400000, guid: 9d55f320c4f116f41a2ac51f08ae18f1, type: 2}
-  inputChemicalB: {fileID: 11400000, guid: b4ffe5e1b40c7944fb638a72d0adb098, type: 2}
-  resultLiquid: {fileID: 11400000, guid: 9d55f320c4f116f41a2ac51f08ae18f1, type: 2}
+  inputChemicalA: {fileID: 11400000, guid: 72739e5d7ed8c37438a4124730da0006, type: 2}
+  inputChemicalB: {fileID: 11400000, guid: 45aa22e5e97871740afb9dabe6c960af, type: 2}
+  resultLiquid: {fileID: 11400000, guid: 72739e5d7ed8c37438a4124730da0006, type: 2}
   resultPrecipitate: {fileID: 0}
   hasPrecipitate: 1
-  minTemperatureC: 0
+  minTemperatureC: 50
   outcome: 3
   evolvesGas: 0
-  expectedObservation: Buff / salmon precipitate confirms benzoate (standard FeCl3
-    test).
+  expectedObservation: White precipitate (AgCl) forms on warming with alcoholic silver
+    nitrate (manual Exp 7).
