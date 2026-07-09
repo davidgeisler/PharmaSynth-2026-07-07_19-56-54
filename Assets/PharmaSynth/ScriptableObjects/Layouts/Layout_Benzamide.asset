@@ -109,6 +109,22 @@ MonoBehaviour:
     pourable: 0
     fillChemical: 
     supplyMl: 0
+  - prefabName: Vial_Brown
+    itemId: test-alkali
+    displayName: Sodium Hydroxide
+    pos: {x: -1.25, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Sodium Hydroxide
+    supplyMl: 0
+  - prefabName: Vial_Brown
+    itemId: test-nitrous
+    displayName: Sodium Nitrite
+    pos: {x: -0.95, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Sodium Nitrite
+    supplyMl: 0
   vessels:
   - prefabName: Beaker_500mL
     displayName: Reaction Beaker
@@ -122,6 +138,18 @@ MonoBehaviour:
     - reagentChemical: Benzoyl Chloride
       taskId: add-benzoyl
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Product Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Benzamide
+    bindings:
     - reagentChemical: Hydrochloric Acid 6N
       taskId: test-acid
+      requiredMl: 50
+    - reagentChemical: Sodium Hydroxide
+      taskId: test-alkali
+      requiredMl: 50
+    - reagentChemical: Sodium Nitrite
+      taskId: test-nitrous
       requiredMl: 50

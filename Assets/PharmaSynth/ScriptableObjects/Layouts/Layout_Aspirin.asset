@@ -94,6 +94,12 @@ MonoBehaviour:
     - reagentChemical: Acetic Anhydride
       taskId: add-anhydride
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Product Test Tube (FeCl3)
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Salicylic Acid
+    bindings:
     - reagentChemical: Ferric Chloride 10%
       taskId: test-fecl3
       requiredMl: 50

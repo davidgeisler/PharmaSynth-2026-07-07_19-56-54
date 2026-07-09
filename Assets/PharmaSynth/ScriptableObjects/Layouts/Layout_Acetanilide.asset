@@ -130,6 +130,12 @@ MonoBehaviour:
     - reagentChemical: Acetyl Chloride
       taskId: add-acylating
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Bromination Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Acetanilide
+    bindings:
     - reagentChemical: Bromine Water
       taskId: test-bromination
       requiredMl: 50

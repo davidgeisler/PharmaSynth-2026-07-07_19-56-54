@@ -59,6 +59,7 @@ public static class PharmaSelfTests
         DepletionSuite();
         RealSizeSuite();
         PhysicsProfileSuite();
+        TestVesselSuite();
         PharmeeAliveSuite();
         LibrarySuite();
         ContentSuite();
@@ -803,6 +804,72 @@ public static class PharmaSelfTests
         finally { UnityEngine.Object.DestroyImmediate(go); }
     }
 
+    /// Product-seeded test vessels (§1): every experiment's confirmatory-test
+    /// pour must land in a vessel already holding the product, so the registry
+    /// rule fires and the colour/ppt/gas observation actually shows.
+    static void TestVesselSuite()
+    {
+        var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
+        var reg = AssetDatabase.LoadAssetAtPath<ReactionRegistry>("Assets/PharmaSynth/ScriptableObjects/Reactions/MasterReactionRegistry.asset");
+        A("testvessel: library + registry load", lib != null && reg != null);
+        if (lib == null || reg == null) return;
+
+        var cases = new (string file, string seed, string[] reagents)[]
+        {
+            ("Layout_Aspirin",      "Salicylic Acid", new[] { "Ferric Chloride 10%" }),
+            ("Layout_BenzoicAcid",  "Benzoic Acid",   new[] { "Ferric Chloride 10%", "Sulfuric Acid" }),
+            ("Layout_Acetanilide",  "Acetanilide",    new[] { "Bromine Water" }),
+            ("Layout_Benzamide",    "Benzamide",      new[] { "Sodium Hydroxide", "Sodium Nitrite", "Hydrochloric Acid 6N" }),
+            ("Layout_Chloroform",   "Chloroform",     new[] { "Silver Nitrate" }),
+            ("Layout_Acetone",      "Acetone",        new[] { "Silver Nitrate", "Sodium Hypochlorite" }),
+            ("Layout_EthylAlcohol", "Ethanol",        new[] { "Sodium Hypochlorite", "Glacial Acetic Acid" }),
+            ("Layout_WineMaking",   "Carbon Dioxide", new[] { "Limewater" }),
+        };
+        foreach (var c in cases)
+        {
+            var layout = AssetDatabase.LoadAssetAtPath<ExperimentLayout>(
+                "Assets/PharmaSynth/ScriptableObjects/Layouts/" + c.file + ".asset");
+            ExperimentLayout.Vessel tv = null;
+            if (layout != null)
+                foreach (var v in layout.vessels) if (v.startChemical == c.seed) tv = v;
+            A("testvessel: " + c.file + " seeded vessel", tv != null);
+            if (tv == null) continue;
+            var seedChem = lib.GetChemical(c.seed);
+            A("testvessel: " + c.file + " seed in library", seedChem != null);
+            foreach (var reagent in c.reagents)
+            {
+                bool bound = false;
+                foreach (var b in tv.bindings) if (b.reagentChemical == reagent) bound = true;
+                A("testvessel: " + c.file + " binds " + reagent, bound);
+                var rChem = lib.GetChemical(reagent);
+                A("testvessel: " + c.file + " rule fires (" + reagent + ")",
+                    seedChem != null && rChem != null && reg.FindReaction(seedChem, rChem) != null);
+            }
+        }
+
+        // Every chemical any layout references must resolve through the library,
+        // or the builder seeds/fills silently fail at stage-build time.
+        bool allResolve = true;
+        void Need(string chem, string where)
+        {
+            if (!string.IsNullOrEmpty(chem) && lib.GetChemical(chem) == null)
+            { allResolve = false; _log.Add("library missing chemical: " + chem + " (" + where + ")"); }
+        }
+        foreach (var guid in AssetDatabase.FindAssets("t:ExperimentLayout",
+                     new[] { "Assets/PharmaSynth/ScriptableObjects/Layouts" }))
+        {
+            var layout = AssetDatabase.LoadAssetAtPath<ExperimentLayout>(AssetDatabase.GUIDToAssetPath(guid));
+            if (layout == null) continue;
+            foreach (var p in layout.props) if (p.pourable) Need(p.fillChemical, layout.name);
+            foreach (var v in layout.vessels)
+            {
+                Need(v.startChemical, layout.name);
+                foreach (var b in v.bindings) Need(b.reagentChemical, layout.name);
+            }
+        }
+        A("testvessel: all layout chemicals resolve", allResolve);
+    }
+
     static void PharmeeAliveSuite()
     {
         // Jitter: deterministic, bounded, non-constant
@@ -1124,7 +1191,7 @@ public static class PharmaSelfTests
             builder.SetRefs(runner, lib, reg, new List<ExperimentLayout> { lay });
 
             int n = builder.Build("prelim-ethyl-alcohol");
-            A("builder: spawns 9 roots (2 stations + 6 props + 1 vessel)", n == 9);
+            A("builder: spawns 10 roots (2 stations + 6 props + 2 vessels)", n == 10);
             A("builder: 2 task stations built", bgo.GetComponentsInChildren<ExperimentTaskStation>().Length == 2);
             A("builder: props carry LabItem ids", bgo.GetComponentsInChildren<LabItem>().Length == 6);
 

@@ -111,6 +111,12 @@ MonoBehaviour:
     - reagentChemical: Brown Sugar
       taskId: prepare-must
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: CO2 Collection Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Carbon Dioxide
+    bindings:
     - reagentChemical: Limewater
       taskId: confirm-co2
       requiredMl: 50

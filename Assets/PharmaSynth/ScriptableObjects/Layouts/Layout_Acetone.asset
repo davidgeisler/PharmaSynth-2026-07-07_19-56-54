@@ -136,6 +136,12 @@ MonoBehaviour:
     targetHeight: 0.22
     startChemical: 
     bindings:
+  - prefabName: TestTube_WithLiquid
+    displayName: Product Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Acetone
+    bindings:
     - reagentChemical: Silver Nitrate
       taskId: test-tollens
       requiredMl: 50

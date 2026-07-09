@@ -8,18 +8,19 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 
 ## 1. Per-experiment content wiring
 
-- [ ] **Product-seeded test vessels per experiment** — 17 manual-accurate confirmatory-test `ReactionRule`s exist, but layouts pour test reagents into the main vessel; each experiment needs a product-seeded test vessel so colours/ppt/gas observations actually show. *(Data done; scene wiring open.)*
-- [ ] Remaining reaction rules: ethanol functional-group tests (P1), acetone Tollen's/Schiff details, caffeine, wine limewater chain.
+- [x] **Product-seeded test vessels per experiment** — DONE 2026-07-09: 8 layouts got a `TestTube_WithLiquid` vessel seeded with the product (Aspirin→salicylic for the FeCl3 phenol test, Benzoic, Acetanilide, Benzamide, Chloroform, Acetone, Ethanol, Wine→CO2 for limewater) and the `test-*` pour bindings moved onto it; Benzamide also gained the missing NaOH + NaNO2 reagent vials for its alkali/nitrous tests. `TestVesselSuite` (38 assertions) pins each seeded vessel, its bindings, AND that `MasterReactionRegistry.FindReaction(seed, reagent)` fires; plus every chemical any layout references must resolve through `SceneAssetLibrary`. *Exceptions: Methane = hand-built stage (own rig); ChemicalCompounding already pours ethanol into the test beaker first (functional as-is); Caffeine has no test rules yet (murexide — see next bullet). BenzoicAcid `test-ester` + Benzamide `test-acid` pours land on the seeded vessel but await their rules (next bullet).*
+- [ ] Remaining reaction rules — mostly DONE 2026-07-09: added `Test_AcetoneIodoform` (yellow ppt), `Test_BenzoateEster` (ester odour, `test-ester`), `Test_BenzamideAcid` (hydrolysis ppt, `test-acid`); registry now 20 rules, all verified firing via the seeded test vessels. *Still open: acetone **Schiff** (needs a Schiff-reagent `ChemicalData` + station wiring) and **caffeine murexide/melting-point** (needs `Chem_Caffeine` + murexide reagent + a test binding — currently station-only).*
 - [ ] **Methane verb polish**: mortar grind (prepare-mixture), splint flame-test visual, flame/bubble VFX.
 - [ ] Wine bespoke rubric (workmanship/appearance/presentation/documentation/flavour) — currently standard 6-category.
 - [ ] Per-experiment ILO cards ×11 (intro-cutscene card art).
 - [ ] Data-sheet expected-yield ranges per experiment; **client decision:** does yield feed the grade? (Currently only quiz MCQs drive Documentation.)
-- [ ] `HazardZone` placement per experiment (hot surfaces, spills); `BreakableGlassware` on glass props (drop → shatter → cleanup task); `WeighingScaleController` wiring where weighing is graded.
+- [ ] `HazardZone` placement per experiment (hot surfaces, spills); `WeighingScaleController` wiring where weighing is graded. *(Glassware breakage + reagent spilling moved to the dedicated §2 penalties bullet.)*
 
 ## 2. Physics & interaction pass
 
 - [x] **Physics-attributes / resting-pose audit for ALL items** (user request 2026-07-09, task #78) — DONE 2026-07-09: `PhysicsProfiles` table (42 items: mass + resting pose, companion to `RealSizes`), `GrabPhysicsPolicy` (kinematic-on-shelf → dynamic-on-release), builder applies profiles + rest-pose rotation; concave MeshColliders convexified (PhysX rejects them on dynamic bodies — 5 items fell through the world before the fix); degenerate flat-tool colliders padded. Verified: **Tools ▸ PharmaSynth ▸ Physics Audit (Drop Test)** 42/42 settle plausibly, **(Report)** clean (both re-runnable; + **(Fix Scene Items)** applied & scene saved). Suite 385 → 412.
 - [ ] XRI **sockets** at stations/racks (props snap into place). *(The **drop respawn** half — kill-Z + idle return-to-home — is DONE: `DropRespawn` on every builder-spawned prop, re-freezes to shelf policy on arrival.)*
+- [ ] **Spill & breakage mishandling penalties** (user request 2026-07-09): (a) **spilling** — a pourable reagent bottle that lands tipped past ~60° or falls off the bench SPILLS: spilled ml deducted from its finite supply (starvation → the existing restart-prompt path), puddle decal + Pharmee comment + cleanup wipe task, `MistakeLog` sanitation hit; (b) **breakage** — glassware falling from above a break threshold (~0.5 m onto a hard surface; impulse-based) SHATTERS: shatter VFX/SFX, `MistakeLog` materials-handling penalty against the Materials & PPE rubric, and the item is lost — `DropRespawn` delivers a fresh replacement to the shelf after a beat (client can veto replacements for exam periods). Which items are breakable (glass yes; metal/wood tools no) and their thresholds live alongside `PhysicsProfiles`; extend the `BreakableGlassware` stub. Grade-visible: repeated mishandling should be able to cost a pass.
 - [ ] Teleport anchors at each workstation (only the floor `TeleportationArea` exists).
 - [ ] Refine crude convex hulls on tall apparatus (tripod, retort stand, burner).
 - [ ] XRI interaction-layer audit (everything on default layers; sockets/hands need masks).
@@ -44,6 +45,7 @@ Everything still to do before the **2026-08-31** turnover, consolidated **2026-0
 
 - [ ] Gentle lab **ambient loop** (helicopter clip removed; `ambient-lab` key is empty on purpose).
 - [ ] Pour / bubble / boil / **burner-ignite** SFX (keys exist, no clips; Kenney has no liquid — try OpenGameArt CC0).
+- [ ] **Action & apparatus SFX set** (user request 2026-07-09): footsteps while walking (thumbstick locomotion), grab pick-up + release, drop clatter per material (glass clink / metal / wood — hook `GrabPhysicsPolicy` release + collision impulse), stir/mix swirl, **reaction cue** (fizz/effervescence when a `ReactionRule` fires, driven by its `ReactionOutcome`), **mixture-complete chime** (distinct from the task toast), burner sustained roar under heating, boil rolling-bubble loop at `TemperatureSim` target, crystallise shimmer, filtration drip, gas-collection hiss, glass shatter (pairs with the breakage bullet in §2), PPE coat rustle on don, door swing creak, socket snap-in click. Wire through `SoundBank` keys + `AudioService`; all CC0.
 - [ ] Optional: AudioMixer groups + duck Pharmee voice under SFX.
 
 ## 5. UI & flow

@@ -90,7 +90,9 @@ public class ExperimentHudController : MonoBehaviour
     {
         float shown = DisplayedProgress(_graphProgress, _mistakes, mistakeProgressPenalty);
         if (progressFill != null) progressFill.fillAmount = shown;
-        if (progressText != null) progressText.text = "Progress " + FormatPercent(shown);
+        // Percent only — the pill has its own static "Progress" label; the
+        // prefixed copy wrapped and overflowed the value rect.
+        if (progressText != null) progressText.text = FormatPercent(shown);
     }
 
     private void ShowToast(string msg)

@@ -88,6 +88,12 @@ MonoBehaviour:
     - reagentChemical: Yeast
       taskId: ferment
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Distillate Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Ethanol
+    bindings:
     - reagentChemical: Sodium Hypochlorite
       taskId: test-iodoform
       requiredMl: 50

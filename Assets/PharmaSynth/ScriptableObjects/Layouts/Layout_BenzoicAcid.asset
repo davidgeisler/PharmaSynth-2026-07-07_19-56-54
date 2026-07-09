@@ -113,6 +113,12 @@ MonoBehaviour:
     - reagentChemical: Hydrochloric Acid 6N
       taskId: acidify
       requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Benzoate Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Benzoic Acid
+    bindings:
     - reagentChemical: Ferric Chloride 10%
       taskId: test-fecl3
       requiredMl: 50
