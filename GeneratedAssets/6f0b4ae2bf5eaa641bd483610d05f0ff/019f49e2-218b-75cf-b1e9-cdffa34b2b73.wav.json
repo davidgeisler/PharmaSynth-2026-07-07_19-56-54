@@ -1,0 +1,15 @@
+{
+    "asset": "6f0b4ae2bf5eaa641bd483610d05f0ff",
+    "fileName": "019f49e2-218b-75cf-b1e9-cdffa34b2b73.wav",
+    "prompt": "A soft cautionary robot alert: a gentle descending two-note electronic warble, mild warning tone, not alarming, cute sci-fi assistant. No music.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

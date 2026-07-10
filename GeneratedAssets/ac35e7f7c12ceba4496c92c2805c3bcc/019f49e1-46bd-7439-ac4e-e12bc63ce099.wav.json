@@ -1,0 +1,15 @@
+{
+    "asset": "ac35e7f7c12ceba4496c92c2805c3bcc",
+    "fileName": "019f49e1-46bd-7439-ac4e-e12bc63ce099.wav",
+    "prompt": "A short friendly cute robot chirp: a quick rising two-note electronic blip, warm and welcoming, retro sci-fi assistant voice. No music.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

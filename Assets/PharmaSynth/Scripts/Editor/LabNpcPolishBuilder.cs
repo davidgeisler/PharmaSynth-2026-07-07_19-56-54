@@ -154,12 +154,10 @@ public static class LabNpcPolishBuilder
         }
         foreach (var host in humHosts)
         {
-            if (host.GetComponent<ProximityHum>() == null)
-            {
-                var hum = host.AddComponent<ProximityHum>();
-                hum.Bind("ambient-lab", 0.5f);
-                EditorUtility.SetDirty(host);
-            }
+            var hum = host.GetComponent<ProximityHum>();
+            if (hum == null) hum = host.AddComponent<ProximityHum>();
+            hum.Bind("ac-hum", 0.5f);      // dedicated AC compressor loop (was ambient-lab)
+            EditorUtility.SetDirty(host);
             hums++;
         }
         Debug.Log("[NpcPolish] proximity hums on " + hums + " host(s): "

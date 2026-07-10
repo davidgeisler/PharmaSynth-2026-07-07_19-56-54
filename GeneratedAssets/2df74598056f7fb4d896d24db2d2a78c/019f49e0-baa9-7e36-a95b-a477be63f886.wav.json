@@ -1,0 +1,15 @@
+{
+    "asset": "2df74598056f7fb4d896d24db2d2a78c",
+    "fileName": "019f49e0-baa9-7e36-a95b-a477be63f886.wav",
+    "prompt": "A glass beaker shattering as it hits a hard laboratory floor: a sharp initial smash followed by small glass shards tinkling and scattering. Dry, close-up, no music, no reverb.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.5,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

@@ -38,33 +38,33 @@ MonoBehaviour:
     category: 0
     volume: 0.55
   - key: glass-clink
-    clip: {fileID: 8300000, guid: 2fc99806b4d9ae54c8f24cdac3b96b57, type: 3}
+    clip: {fileID: 8300000, guid: 0c4df12511f12ac46af00b886c2f13dc, type: 3}
     category: 0
     volume: 0.5
   - key: glass-shatter
-    clip: {fileID: 8300000, guid: c96e3e515236a704d98f07936012038d, type: 3}
+    clip: {fileID: 8300000, guid: 2df74598056f7fb4d896d24db2d2a78c, type: 3}
     category: 0
-    volume: 0.6
+    volume: 0.65
   - key: alarm
     clip: {fileID: 8300000, guid: d223a84e8857800459e639a4c022692f, type: 3}
     category: 0
     volume: 0.35
   - key: pharmee-greet
-    clip: {fileID: 8300000, guid: 0893eac139e3e5d4d81dd15b6ee3d8dc, type: 3}
+    clip: {fileID: 8300000, guid: ac35e7f7c12ceba4496c92c2805c3bcc, type: 3}
     category: 2
-    volume: 0.08
+    volume: 0.35
   - key: pharmee-instruct
-    clip: {fileID: 8300000, guid: edbcd1773c2ca0c4696438340894aeb4, type: 3}
+    clip: {fileID: 8300000, guid: b91476751ddb1824eb1b70ce59f54772, type: 3}
     category: 2
-    volume: 0.08
+    volume: 0.3
   - key: pharmee-celebrate
-    clip: {fileID: 8300000, guid: 7815e767fd1101d43b291048ac16bde9, type: 3}
+    clip: {fileID: 8300000, guid: a25f153828412524284c08689cd96ecb, type: 3}
     category: 2
-    volume: 0.09
+    volume: 0.4
   - key: pharmee-warn
-    clip: {fileID: 8300000, guid: 9909009e050ed4940a4100f6f021bfc0, type: 3}
+    clip: {fileID: 8300000, guid: 6f0b4ae2bf5eaa641bd483610d05f0ff, type: 3}
     category: 2
-    volume: 0.1
+    volume: 0.4
   - key: ambient-lab
     clip: {fileID: 8300000, guid: 62aa60165b3798a46a37047b1d8a897e, type: 3}
     category: 1
@@ -141,3 +141,7 @@ MonoBehaviour:
     clip: {fileID: 0}
     category: 3
     volume: 0.6
+  - key: ac-hum
+    clip: {fileID: 8300000, guid: 149cd8e8d76a7f446abc355258e97086, type: 3}
+    category: 1
+    volume: 0.5

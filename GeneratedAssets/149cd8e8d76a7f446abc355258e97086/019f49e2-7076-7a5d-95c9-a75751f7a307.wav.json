@@ -1,0 +1,15 @@
+{
+    "asset": "149cd8e8d76a7f446abc355258e97086",
+    "fileName": "019f49e2-7076-7a5d-95c9-a75751f7a307.wav",
+    "prompt": "A steady quiet HVAC air-conditioner compressor hum: a low continuous mechanical drone with faint airflow, seamless, no fluctuation, room ambience.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 6.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

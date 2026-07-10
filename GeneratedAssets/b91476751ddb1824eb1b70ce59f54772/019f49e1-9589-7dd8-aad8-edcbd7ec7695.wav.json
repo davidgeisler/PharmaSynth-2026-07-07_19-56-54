@@ -1,0 +1,15 @@
+{
+    "asset": "b91476751ddb1824eb1b70ce59f54772",
+    "fileName": "019f49e1-9589-7dd8-aad8-edcbd7ec7695.wav",
+    "prompt": "A short neutral robot blip: a single soft electronic beep, calm and informative, cute sci-fi assistant. No music.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.0,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}

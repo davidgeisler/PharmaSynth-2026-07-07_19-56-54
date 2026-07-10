@@ -1,0 +1,15 @@
+{
+    "asset": "a25f153828412524284c08689cd96ecb",
+    "fileName": "019f49e1-e9b6-7661-bc03-e3ecb03347aa.wav",
+    "prompt": "A happy cheerful robot jingle: a quick ascending sparkly electronic arpeggio, celebratory success chime, cute sci-fi assistant. No music bed.",
+    "negativePrompt": "",
+    "model": "elevenlabs-sound-effects-v2",
+    "modelName": "ElevenLabs Sound Effects V2",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "duration": 1.2000000476837159,
+    "autoTrim": false,
+    "hasReference": false,
+    "voice": ""
+}
