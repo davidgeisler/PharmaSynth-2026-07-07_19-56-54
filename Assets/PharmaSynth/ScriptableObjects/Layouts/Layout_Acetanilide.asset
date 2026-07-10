@@ -17,32 +17,32 @@ MonoBehaviour:
   - taskId: heat-bath
     label: 5. Heat water bath
     requiredItemId: heat-bath
-    pos: {x: -1.1, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -3.790166}
     sim: 1
     simTargetC: 85
   - taskId: ice-crystallise
     label: 6. Ice crystallise
     requiredItemId: ice-crystallise
-    pos: {x: -1.1, y: 0.91, z: -4}
+    pos: {x: -0.65308976, y: 0.91, z: -3.790166}
     sim: 2
     simTargetC: 85
   - taskId: filter-wash
     label: 7. Filter & wash
     requiredItemId: filter-wash
-    pos: {x: -1.1, y: 0.91, z: -4.6}
+    pos: {x: -1.2530897, y: 0.91, z: -3.790166}
     sim: 3
     simTargetC: 85
   - taskId: test-hydrolysis
     label: 8. Hydrolysis test
     requiredItemId: test-hydrolysis
-    pos: {x: -1.9, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -2.9901662}
     sim: 0
     simTargetC: 85
   props:
   - prefabName: Vial_Brown
     itemId: prep-hcl
     displayName: HCl 6N
-    pos: {x: -2.15, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -2.740166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Hydrochloric Acid 6N
@@ -50,7 +50,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: measure-aniline
     displayName: Aniline
-    pos: {x: -1.85, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.040166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Aniline
@@ -58,7 +58,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: add-acetic
     displayName: Glacial Acetic Acid
-    pos: {x: -1.55, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.340166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Glacial Acetic Acid
@@ -66,7 +66,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: add-acylating
     displayName: Acetyl Chloride
-    pos: {x: -1.25, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.640166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Acetyl Chloride
@@ -74,7 +74,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: test-bromination
     displayName: Bromine Water
-    pos: {x: -0.95, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.940166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Bromine Water
@@ -82,7 +82,7 @@ MonoBehaviour:
   - prefabName: BunsenBurner
     itemId: heat-bath
     displayName: Bunsen Burner
-    pos: {x: -2.05, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -2.840166}
     targetHeight: 0.22
     pourable: 0
     fillChemical: 
@@ -90,7 +90,7 @@ MonoBehaviour:
   - prefabName: WatchGlass
     itemId: ice-crystallise
     displayName: Watch Glass
-    pos: {x: -1.75, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.140166}
     targetHeight: 0.12
     pourable: 0
     fillChemical: 
@@ -98,7 +98,7 @@ MonoBehaviour:
   - prefabName: Funnel
     itemId: filter-wash
     displayName: Funnel
-    pos: {x: -1.45, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.440166}
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
@@ -106,7 +106,7 @@ MonoBehaviour:
   - prefabName: TestTube
     itemId: test-hydrolysis
     displayName: Test Tube
-    pos: {x: -1.15, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.7401662}
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
@@ -114,7 +114,7 @@ MonoBehaviour:
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Reaction Flask
-    pos: {x: -1.4, y: 0.91, z: -2.6}
+    pos: {x: 0.74691033, y: 0.91, z: -3.4901662}
     targetHeight: 0.22
     startChemical: 
     bindings:
@@ -132,7 +132,7 @@ MonoBehaviour:
       requiredMl: 50
   - prefabName: TestTube_WithLiquid
     displayName: Bromination Test Tube
-    pos: {x: -1.1, y: 0.91, z: -2.45}
+    pos: {x: 0.8969102, y: 0.91, z: -3.790166}
     targetHeight: 0.13
     startChemical: Acetanilide
     bindings:

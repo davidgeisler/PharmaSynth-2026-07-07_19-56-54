@@ -7,8 +7,20 @@ using System.Collections.Generic;
 public class ProgressionFlow
 {
     private readonly ProgressionService _service;
+    private readonly bool _unlockAll;
 
-    public ProgressionFlow(ProgressionService service) { _service = service; }
+    public ProgressionFlow(ProgressionService service) : this(service, false) { }
+
+    /// unlockAll opens every experiment/period without faking passes — demo
+    /// sessions use it so panelists can jump anywhere (pass state stays honest,
+    /// so unlock announcements don't fire spuriously).
+    public ProgressionFlow(ProgressionService service, bool unlockAll)
+    { _service = service; _unlockAll = unlockAll; }
+
+    /// The runtime factory: folds in whether this is a demo session. Scene code
+    /// should use this instead of the constructor.
+    public static ProgressionFlow Create(ProgressionService service)
+        => new ProgressionFlow(service, DemoSession.Active);
 
     /// An experiment is unlocked if its catalog prerequisite has been passed
     /// (or it has none). Unknown ids are treated as locked.
@@ -16,6 +28,7 @@ public class ProgressionFlow
     {
         var entry = ExperimentCatalog.Get(moduleId);
         if (entry == null) return false;
+        if (_unlockAll) return true;
         return _service.IsUnlocked(moduleId, entry.prerequisiteModuleId);
     }
 
@@ -47,6 +60,7 @@ public class ProgressionFlow
     /// period (Tutorial) is always open.
     public bool IsPeriodUnlocked(ExperimentPeriod period)
     {
+        if (_unlockAll) return true;
         foreach (ExperimentPeriod p in System.Enum.GetValues(typeof(ExperimentPeriod)))
         {
             if (p >= period) break;

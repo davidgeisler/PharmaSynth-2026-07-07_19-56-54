@@ -1,0 +1,31 @@
+{
+    "asset": "3a4d27e5f71b3434898859352cdee4fc",
+    "fileName": "019f4df8-f50d-75b1-9a17-1c0b6f7cbaa4.png",
+    "prompt": "A laboratory separatory funnel: pear-shaped clear glass funnel with a ground glass stopper on top and a glass stopcock tap at the narrow bottom stem, standing upright. Single object, centered, plain flat white background, even studio lighting, product photo, no text.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

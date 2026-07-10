@@ -1,0 +1,1138 @@
+{
+    "lines": [
+        {
+            "id": "48d82c5747edd805",
+            "speaker": "Pharmee",
+            "text": "Welcome back to the lab! I'm Pharmee — follow your tablet and I'll be right here.",
+            "chars": 81
+        },
+        {
+            "id": "87b4f553feaa21f6",
+            "speaker": "Pharmee",
+            "text": "Suited up and ready? Let's synthesise something great today!",
+            "chars": 60
+        },
+        {
+            "id": "161352a8e0629799",
+            "speaker": "Pharmee",
+            "text": "Great to see you! Take it step by step and check your wrist for the procedure.",
+            "chars": 78
+        },
+        {
+            "id": "f7f39b8264feea78",
+            "speaker": "Pharmee",
+            "text": "Lab's all yours. Work safe, work smart, and call on me anytime.",
+            "chars": 63
+        },
+        {
+            "id": "aafc1fe0a77a1d80",
+            "speaker": "Pharmee",
+            "text": "Nice work!",
+            "chars": 10
+        },
+        {
+            "id": "f80bc24b068d85c0",
+            "speaker": "Pharmee",
+            "text": "Perfect.",
+            "chars": 8
+        },
+        {
+            "id": "a5cf209a2e69ae01",
+            "speaker": "Pharmee",
+            "text": "That's the way!",
+            "chars": 15
+        },
+        {
+            "id": "b57d4fe4c7a48a47",
+            "speaker": "Pharmee",
+            "text": "Excellent technique.",
+            "chars": 20
+        },
+        {
+            "id": "e347e8cf5cd4d3a4",
+            "speaker": "Pharmee",
+            "text": "Spot on.",
+            "chars": 8
+        },
+        {
+            "id": "129a6d2a36d58199",
+            "speaker": "Pharmee",
+            "text": "You're getting the hang of this!",
+            "chars": 32
+        },
+        {
+            "id": "e9723c785bbe83c7",
+            "speaker": "Pharmee",
+            "text": "Cleanly done.",
+            "chars": 13
+        },
+        {
+            "id": "0a3380bf52f0e1b4",
+            "speaker": "Pharmee",
+            "text": "Outstanding! Experiment complete — beautiful synthesis!",
+            "chars": 55
+        },
+        {
+            "id": "8bcf205d18807ea4",
+            "speaker": "Pharmee",
+            "text": "You nailed it! That's textbook lab work.",
+            "chars": 40
+        },
+        {
+            "id": "fd284f97bbc7bf7f",
+            "speaker": "Pharmee",
+            "text": "Brilliant! Your product looks great and your method was sound.",
+            "chars": 62
+        },
+        {
+            "id": "a7bbbea93ff95eab",
+            "speaker": "Pharmee",
+            "text": "Success! Dr. Jimenez will be impressed with that one.",
+            "chars": 53
+        },
+        {
+            "id": "283c06cb9e223986",
+            "speaker": "Pharmee",
+            "text": "Good effort — review the steps and give it another go. You've got this!",
+            "chars": 71
+        },
+        {
+            "id": "25c24c4752f4be24",
+            "speaker": "Pharmee",
+            "text": "Almost there. Check where it slipped and try once more.",
+            "chars": 55
+        },
+        {
+            "id": "4ca153a3bcef0b3e",
+            "speaker": "Pharmee",
+            "text": "Don't worry, every chemist reworks a prep. Let's run it again.",
+            "chars": 62
+        },
+        {
+            "id": "410e0ef5dd0d01d6",
+            "speaker": "Pharmee",
+            "text": "So close! Tighten up the tricky steps and you'll pass next time.",
+            "chars": 64
+        },
+        {
+            "id": "e5a920c692b9ad7f",
+            "speaker": "Pharmee",
+            "text": "Take your time — precision beats speed in here.",
+            "chars": 47
+        },
+        {
+            "id": "93622e836da55dab",
+            "speaker": "Pharmee",
+            "text": "Remember to keep your goggles on while you work.",
+            "chars": 48
+        },
+        {
+            "id": "5d2e5f168eb7e20b",
+            "speaker": "Pharmee",
+            "text": "Reagents run low, so pour only what the step needs.",
+            "chars": 51
+        },
+        {
+            "id": "bff101822f578e29",
+            "speaker": "Pharmee",
+            "text": "Your wrist checklist updates as you go — glance at it anytime.",
+            "chars": 62
+        },
+        {
+            "id": "ae4b50dd13c88636",
+            "speaker": "Pharmee",
+            "text": "The fume hood is there for the smelly stuff. Use it!",
+            "chars": 52
+        },
+        {
+            "id": "2374a86ccaabf06f",
+            "speaker": "Pharmee",
+            "text": "Doing great. Steady hands.",
+            "chars": 26
+        },
+        {
+            "id": "bc49e3ca45651332",
+            "speaker": "Pharmee",
+            "text": "If a bottle runs dry, I can reset the period for you.",
+            "chars": 53
+        },
+        {
+            "id": "0fa1b85955bd28e4",
+            "speaker": "Pharmee",
+            "text": "Hmm, that isn't the reagent this step needs — check your tablet.",
+            "chars": 64
+        },
+        {
+            "id": "f2106b9a3d2eeb2f",
+            "speaker": "Pharmee",
+            "text": "Wrong bottle! Look again at the procedure for the right reagent.",
+            "chars": 64
+        },
+        {
+            "id": "e7615d7e354d532b",
+            "speaker": "Pharmee",
+            "text": "That's not it. The step calls for a different chemical.",
+            "chars": 55
+        },
+        {
+            "id": "7d51534b02745b14",
+            "speaker": "Pharmee",
+            "text": "Let's not skip ahead — finish the current step first.",
+            "chars": 53
+        },
+        {
+            "id": "30e078ed547bd5a1",
+            "speaker": "Pharmee",
+            "text": "One step at a time; that one comes later.",
+            "chars": 41
+        },
+        {
+            "id": "0704cc13a8f36134",
+            "speaker": "Pharmee",
+            "text": "Hold on — complete what's in front of you before moving on.",
+            "chars": 59
+        },
+        {
+            "id": "bea73249e738cd57",
+            "speaker": "Pharmee",
+            "text": "Careful — it's overheating! Ease off the heat.",
+            "chars": 46
+        },
+        {
+            "id": "e498f44b30b77557",
+            "speaker": "Pharmee",
+            "text": "Too hot! Back off the burner before it boils over.",
+            "chars": 50
+        },
+        {
+            "id": "d5c835813448d2aa",
+            "speaker": "Pharmee",
+            "text": "Watch the temperature — lower the flame.",
+            "chars": 40
+        },
+        {
+            "id": "cd2881337681aabe",
+            "speaker": "Pharmee",
+            "text": "Safety first! Mind the hazard and keep your PPE on.",
+            "chars": 51
+        },
+        {
+            "id": "82101088a0773c62",
+            "speaker": "Pharmee",
+            "text": "Easy — handle the glassware gently, please.",
+            "chars": 43
+        },
+        {
+            "id": "cf4331149f5ced0f",
+            "speaker": "Pharmee",
+            "text": "Careful there. Let's keep the bench clean and safe.",
+            "chars": 51
+        },
+        {
+            "id": "1c222c985fe25814",
+            "speaker": "Pharmee",
+            "text": "Mind that spill — clean as you go.",
+            "chars": 34
+        },
+        {
+            "id": "ed5d0bbc1efc7f41",
+            "speaker": "Pharmee",
+            "text": "Welcome to the lab! Let's take a quick tour so you feel right at home before any graded work.",
+            "chars": 93
+        },
+        {
+            "id": "4bd9fb620ef83cfa",
+            "speaker": "Pharmee",
+            "text": "Flick your wrist face-up and glance at it — your holographic procedures board lays out every step of the experiment, live.",
+            "chars": 122
+        },
+        {
+            "id": "4fe543e1c72d6d5d",
+            "speaker": "Pharmee",
+            "text": "The bench in front of you is your main workspace: prepare reagents, run your reactions, and handle glassware here.",
+            "chars": 114
+        },
+        {
+            "id": "f9ed92621fb0fd06",
+            "speaker": "Pharmee",
+            "text": "Over there is the equipment cabinet — open it and pick the apparatus your tablet calls for.",
+            "chars": 91
+        },
+        {
+            "id": "95edb505a8a2a15c",
+            "speaker": "Pharmee",
+            "text": "The reagent shelf holds your chemicals. Take only what each step needs — the bottles are limited!",
+            "chars": 97
+        },
+        {
+            "id": "58f45c4a4492e204",
+            "speaker": "Pharmee",
+            "text": "Flick your wrist anytime for the live checklist, and watch the progress bar and timer up top to track how you're doing.",
+            "chars": 119
+        },
+        {
+            "id": "7fc391c4e7391fbd",
+            "speaker": "Pharmee",
+            "text": "The Settings button up top lets you tune audio, text size and comfort options whenever you like.",
+            "chars": 96
+        },
+        {
+            "id": "b78daf0dac8d397c",
+            "speaker": "Pharmee",
+            "text": "Follow the glowing markers to each step. Poke me whenever you're ready to take on a graded campaign!",
+            "chars": 100
+        },
+        {
+            "id": "2c20bd9ce57ed562",
+            "speaker": "Pharmee",
+            "text": "Excellent — every test is complete! Dr. Jimenez will review your work now. Let's head over to him.",
+            "chars": 98
+        },
+        {
+            "id": "679f9faa6de06a6a",
+            "speaker": "Pharmee",
+            "text": "That's the last test done! Time for your assessment review — Dr. Jimenez is waiting.",
+            "chars": 84
+        },
+        {
+            "id": "90e8866c0ff6715e",
+            "speaker": "Pharmee",
+            "text": "All tests finished — wonderful work! Off to Dr. Jimenez for your documentation and review.",
+            "chars": 90
+        },
+        {
+            "id": "358930c7fa739a18",
+            "speaker": "Pharmee",
+            "text": "Congratulations on completing the assessment and the quiz!",
+            "chars": 58
+        },
+        {
+            "id": "9079559d6e2a50c5",
+            "speaker": "Pharmee",
+            "text": "Assessment complete — quiz and all. Well done making it through!",
+            "chars": 64
+        },
+        {
+            "id": "e3de7cdfc2c2cbda",
+            "speaker": "Pharmee",
+            "text": "That's a full experiment, tests, and documentation finished. Great job!",
+            "chars": 71
+        },
+        {
+            "id": "1b125efaad89304d",
+            "speaker": "Jimenez",
+            "text": "I am Dr. Jimenez. I will be observing this assessment. Proceed.",
+            "chars": 63
+        },
+        {
+            "id": "e0fc2642d11f6fdc",
+            "speaker": "Jimenez",
+            "text": "This is a graded exercise. Work carefully — I am watching your technique.",
+            "chars": 73
+        },
+        {
+            "id": "3d8cfe1d11ae81ff",
+            "speaker": "Jimenez",
+            "text": "Begin when ready. I evaluate method, safety, and results.",
+            "chars": 57
+        },
+        {
+            "id": "66db675d8e5fcd49",
+            "speaker": "Jimenez",
+            "text": "Mind your procedure.",
+            "chars": 20
+        },
+        {
+            "id": "bb1327b15e566976",
+            "speaker": "Jimenez",
+            "text": "I'm noting your technique.",
+            "chars": 26
+        },
+        {
+            "id": "c1d29edee704ff42",
+            "speaker": "Jimenez",
+            "text": "Observe your safety protocol.",
+            "chars": 29
+        },
+        {
+            "id": "10fb2af524877021",
+            "speaker": "Jimenez",
+            "text": "Efficiency counts toward your grade.",
+            "chars": 36
+        },
+        {
+            "id": "9f13b7e0aefe4759",
+            "speaker": "Jimenez",
+            "text": "Precision, please.",
+            "chars": 18
+        },
+        {
+            "id": "30f8087665ca6007",
+            "speaker": "Jimenez",
+            "text": "I expect proper use of the fume hood.",
+            "chars": 37
+        },
+        {
+            "id": "d9ab290dd5f2c4b1",
+            "speaker": "Jimenez",
+            "text": "Keep your workspace orderly.",
+            "chars": 28
+        },
+        {
+            "id": "9714ac89eafc8eff",
+            "speaker": "Jimenez",
+            "text": "Well done reaching this stage. Before your grade is final, you will document your work.",
+            "chars": 87
+        },
+        {
+            "id": "662c006adf56d816",
+            "speaker": "Jimenez",
+            "text": "Answer the questions on the tablet. Your documentation counts toward your final grade. Begin.",
+            "chars": 93
+        },
+        {
+            "id": "f8e84f6ef8932c38",
+            "speaker": "Jimenez",
+            "text": "Take your time — accuracy over speed. The tablet is ready for you.",
+            "chars": 66
+        },
+        {
+            "id": "77dd282d726d49ee",
+            "speaker": "Jimenez",
+            "text": "A commendable performance. Your technique meets the standard.",
+            "chars": 61
+        },
+        {
+            "id": "9c875d80b7b149fc",
+            "speaker": "Jimenez",
+            "text": "Satisfactory work. Your method was sound and your record is complete.",
+            "chars": 69
+        },
+        {
+            "id": "e7cd8bc62d82ff8f",
+            "speaker": "Jimenez",
+            "text": "You have met the requirements of this assessment. Well executed.",
+            "chars": 64
+        },
+        {
+            "id": "3906e0ea6bc7e24e",
+            "speaker": "Jimenez",
+            "text": "Precise and orderly. I am marking this assessment as passed.",
+            "chars": 60
+        },
+        {
+            "id": "13ad1309f64f8697",
+            "speaker": "Jimenez",
+            "text": "Not yet to standard. Review your procedure and attempt it again.",
+            "chars": 64
+        },
+        {
+            "id": "ec6a69cd2083533e",
+            "speaker": "Jimenez",
+            "text": "Your record shows gaps. Repeat the exercise with more care.",
+            "chars": 59
+        },
+        {
+            "id": "fadd47edf0c11a6d",
+            "speaker": "Jimenez",
+            "text": "This attempt falls short of the requirement. I expect better on your retry.",
+            "chars": 75
+        },
+        {
+            "id": "00f6abf3dc62695c",
+            "speaker": "Pharmee",
+            "text": "A flawless run — truly impressive work.",
+            "chars": 39
+        },
+        {
+            "id": "75c45939b29a756d",
+            "speaker": "Pharmee",
+            "text": "A strong performance — you clearly know your way around this lab.",
+            "chars": 65
+        },
+        {
+            "id": "a9da301e45bc880d",
+            "speaker": "Pharmee",
+            "text": "A solid pass — keep practising and the tricky steps will feel natural.",
+            "chars": 70
+        },
+        {
+            "id": "d587bc421d5ff3bb",
+            "speaker": "Pharmee",
+            "text": "Hold on! You can't enter the lab just yet. What would you like to do today?",
+            "chars": 75
+        },
+        {
+            "id": "041b3092a9afc5a1",
+            "speaker": "Pharmee",
+            "text": "Lab Tour it is! Roam freely and try the tools and reagents. Come back to me when you want to take on a campaign.",
+            "chars": 112
+        },
+        {
+            "id": "3cb63c5c1f95111e",
+            "speaker": "Pharmee",
+            "text": "The Campaign takes you through the class periods. Pass every experiment with 90% or better to unlock the next. Ready to pick your episode?",
+            "chars": 138
+        },
+        {
+            "id": "2c458b2099f2e088",
+            "speaker": "Pharmee",
+            "text": "Which episode will it be?",
+            "chars": 25
+        },
+        {
+            "id": "e0465e048575d5d1",
+            "speaker": "Pharmee",
+            "text": "That episode is still locked — clear the earlier ones first!",
+            "chars": 60
+        },
+        {
+            "id": "7bd214c625eb1dbd",
+            "speaker": "Pharmee",
+            "text": "Safety first! Gear up at the locker — lab coat, goggles, AND gloves — before we begin.",
+            "chars": 86
+        },
+        {
+            "id": "f81215ea32749ed5",
+            "speaker": "Pharmee",
+            "text": "All geared up! Are you prepared to begin?",
+            "chars": 41
+        },
+        {
+            "id": "32501fcf5d6d4343",
+            "speaker": "Pharmee",
+            "text": "The period will start as soon as you walk in. Step through when you're ready!",
+            "chars": 77
+        },
+        {
+            "id": "7260b7fe0125449d",
+            "speaker": "Pharmee",
+            "text": "Congratulations! You handled that experiment brilliantly. Let's head back outside.",
+            "chars": 82
+        },
+        {
+            "id": "eac365028f841dbe",
+            "speaker": "Pharmee",
+            "text": "Oh no — there isn't enough reagent left to finish the experiment. We'll have to restart the period.",
+            "chars": 99
+        },
+        {
+            "id": "3a565f6431a3983f",
+            "speaker": "Pharmee",
+            "text": "Welcome to the lab! I'm Pharmee. Come talk to me at the door whenever you're ready to begin.",
+            "chars": 92
+        },
+        {
+            "id": "28df8dd14b0b55e1",
+            "speaker": "Pharmee",
+            "text": "Welcome! Let's take a quick tour. The bench in the middle is your main workspace — walk around and I'll point out the rest as you reach them.",
+            "chars": 141
+        },
+        {
+            "id": "a762096c36290729",
+            "speaker": "Pharmee",
+            "text": "This bench is your main workspace. Flick your wrist face-up and glance at it — your holographic procedures board appears with every step, live. The progress bar and timer up top track your pace.",
+            "chars": 194
+        },
+        {
+            "id": "6077a0c99e38a635",
+            "speaker": "Pharmee",
+            "text": "The equipment cabinet — open it and pick the apparatus your procedures board calls for. Flick your wrist anytime to check the next step.",
+            "chars": 136
+        },
+        {
+            "id": "ab297a5604809415",
+            "speaker": "Pharmee",
+            "text": "The reagent shelf holds your chemicals — take only what each step needs. And Settings up top lets you tune audio, text size and comfort whenever you like.",
+            "chars": 154
+        },
+        {
+            "id": "1794511ecb78d5fa",
+            "speaker": "Pharmee",
+            "text": "That's the tour! Follow the glowing markers during a run, and poke me whenever you're ready to take on a graded campaign.",
+            "chars": 121
+        },
+        {
+            "id": "ac504160511173a0",
+            "speaker": "Pharmee",
+            "text": "Here's what you'll be able to do by the end of this session:",
+            "chars": 60
+        },
+        {
+            "id": "e373fef9120ab3d9",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize methane gas by heating sodium acetate with soda lime.",
+            "chars": 77
+        },
+        {
+            "id": "1ffc0b8f41932bb4",
+            "speaker": "Pharmee",
+            "text": "Objective 2: Determine its identity through the flame test.",
+            "chars": 59
+        },
+        {
+            "id": "31e4e2aef4259d58",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Write chemical reactions involved in some organic compounds such as alcohols, aldehydes, ketones, carboxylic acids and esters.",
+            "chars": 139
+        },
+        {
+            "id": "011b4c8f69f57b86",
+            "speaker": "Pharmee",
+            "text": "Objective 2: Differentiate tests for different organic compounds.",
+            "chars": 65
+        },
+        {
+            "id": "0965be010312555d",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize ethyl alcohol.",
+            "chars": 38
+        },
+        {
+            "id": "9da997fd5ba2776b",
+            "speaker": "Pharmee",
+            "text": "Objective 2: Determine its identity through chemical tests.",
+            "chars": 59
+        },
+        {
+            "id": "b69563ffe0c2269e",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize benzoic acid.",
+            "chars": 37
+        },
+        {
+            "id": "7d533b7b8e205b7e",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize acetanilide.",
+            "chars": 36
+        },
+        {
+            "id": "6be18c51963160b8",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize acetone.",
+            "chars": 32
+        },
+        {
+            "id": "ef0d00296f507b76",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize chloroform.",
+            "chars": 35
+        },
+        {
+            "id": "53751ab98c5b72be",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize benzamide.",
+            "chars": 34
+        },
+        {
+            "id": "b4c79bc687370d8b",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Synthesize aspirin — acetylsalicylic acid — from salicylic acid.",
+            "chars": 77
+        },
+        {
+            "id": "74fbf2e5f54d51bd",
+            "speaker": "Pharmee",
+            "text": "Objective 1: Extract and purify caffeine.",
+            "chars": 41
+        },
+        {
+            "id": "0d1999a17c58bd7b",
+            "speaker": "Pharmee",
+            "text": "Objective: Learn the basic methodology in preparation and synthesis of alcohol using the fermentation technique, with basic ingredients found in any household kitchen.",
+            "chars": 167
+        },
+        {
+            "id": "0a211d40ea21f34e",
+            "speaker": "Pharmee",
+            "text": "Those must never mix — that's releasing toxic fumes!",
+            "chars": 52
+        },
+        {
+            "id": "3032e700d8ae284b",
+            "speaker": "Pharmee",
+            "text": "That combination just ignited — oxidizers and flammables stay apart!",
+            "chars": 68
+        },
+        {
+            "id": "859e8f9ef69ef4c0",
+            "speaker": "Pharmee",
+            "text": "Never pour into concentrated acid — it spatters violently!",
+            "chars": 58
+        },
+        {
+            "id": "4109655780039217",
+            "speaker": "Pharmee",
+            "text": "That mixture isn't in the procedure — watch what you combine.",
+            "chars": 61
+        },
+        {
+            "id": "c322472722bb0270",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Tutorial: Methane Synthesis!",
+            "chars": 62
+        },
+        {
+            "id": "b74d326466e04118",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Prelim: Chemical Compounding!",
+            "chars": 63
+        },
+        {
+            "id": "0d050d4db17bc21d",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Prelim: Ethyl Alcohol!",
+            "chars": 56
+        },
+        {
+            "id": "7801ccd69f0d78d9",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Midterm: Benzoic Acid!",
+            "chars": 56
+        },
+        {
+            "id": "d911da7812f00b95",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Midterm: Acetanilide!",
+            "chars": 55
+        },
+        {
+            "id": "dc3191975b8c7df7",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Midterm: Acetone!",
+            "chars": 51
+        },
+        {
+            "id": "604f0e786c7fc0ad",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Midterm: Chloroform!",
+            "chars": 54
+        },
+        {
+            "id": "3888832f8704ff91",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Final: Benzamide!",
+            "chars": 51
+        },
+        {
+            "id": "f78779cfb526359e",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Final: Aspirin!",
+            "chars": 49
+        },
+        {
+            "id": "e5e759f1564ccd2d",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Final: Caffeine!",
+            "chars": 50
+        },
+        {
+            "id": "066a0f11b843b9e4",
+            "speaker": "Pharmee",
+            "text": "You've unlocked a new experiment: Final: Wine Making!",
+            "chars": 53
+        },
+        {
+            "id": "cce24272de20e1b4",
+            "speaker": "Pharmee",
+            "text": "Great work back there! Come see me when you're ready for the next challenge.",
+            "chars": 76
+        },
+        {
+            "id": "72e20d5594ccc8e4",
+            "speaker": "Pharmee",
+            "text": "Hmm — that didn't go to plan.",
+            "chars": 29
+        },
+        {
+            "id": "c2312136869e8289",
+            "speaker": "Pharmee",
+            "text": "Aniline outside the hood, or the acylation ran too hot. Stay in the hood and warm gently.",
+            "chars": 89
+        },
+        {
+            "id": "5216888e335ab5c3",
+            "speaker": "Pharmee",
+            "text": "No harm done — that's what practice is for. Let's reset and try again.",
+            "chars": 70
+        },
+        {
+            "id": "7b768489dbb52fef",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Acetanilide.",
+            "chars": 33
+        },
+        {
+            "id": "558a1178462c837b",
+            "speaker": "Pharmee",
+            "text": "Acetylate aniline with acetyl chloride, then crystallise on ice and confirm the amide.",
+            "chars": 86
+        },
+        {
+            "id": "281a1e5b8ca83c3f",
+            "speaker": "Pharmee",
+            "text": "Check your data sheet on the tablet, then follow the glowing markers. I'll guide you.",
+            "chars": 85
+        },
+        {
+            "id": "3a47421ce2e66b6e",
+            "speaker": "Pharmee",
+            "text": "Preparations complete — nicely measured.",
+            "chars": 40
+        },
+        {
+            "id": "07b6df098219de83",
+            "speaker": "Pharmee",
+            "text": "Aniline is toxic and volatile — I've opened the fume hood. Keep this step inside it.",
+            "chars": 84
+        },
+        {
+            "id": "e8436f50b6bcf22f",
+            "speaker": "Pharmee",
+            "text": "On to the synthesis. Take your time and mind the order.",
+            "chars": 55
+        },
+        {
+            "id": "0f1738d7e2269be3",
+            "speaker": "Pharmee",
+            "text": "Outstanding work!",
+            "chars": 17
+        },
+        {
+            "id": "8e3077c9b6725f6e",
+            "speaker": "Pharmee",
+            "text": "Fine white plates of acetanilide, and the bromination test confirms it. Well handled!",
+            "chars": 85
+        },
+        {
+            "id": "3d29d08cb959235d",
+            "speaker": "Pharmee",
+            "text": "Your results are recorded. Dr. Jimenez will be impressed.",
+            "chars": 57
+        },
+        {
+            "id": "ed4c1b48de0ff5bc",
+            "speaker": "Pharmee",
+            "text": "You collected the wrong fraction or overheated the salts. Hold the cut right at 56 degrees.",
+            "chars": 91
+        },
+        {
+            "id": "f3d61d27996345b9",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Acetone.",
+            "chars": 29
+        },
+        {
+            "id": "d6f3dbfaa54eb078",
+            "speaker": "Pharmee",
+            "text": "Dry-distil the acetate salts and collect the fraction that comes over at 56 degrees.",
+            "chars": 84
+        },
+        {
+            "id": "fe2d8265692317be",
+            "speaker": "Pharmee",
+            "text": "The calcium and sodium acetates are mixed and packed. Heat evenly so the tube doesn't crack.",
+            "chars": 92
+        },
+        {
+            "id": "e59fd2c38ea83623",
+            "speaker": "Pharmee",
+            "text": "A volatile distillate, negative Tollen's, positive iodoform — that's acetone!",
+            "chars": 77
+        },
+        {
+            "id": "a639f3732a774a67",
+            "speaker": "Pharmee",
+            "text": "The water bath overheated and charred the batch — a classic aspirin mistake. Keep it low and slow.",
+            "chars": 98
+        },
+        {
+            "id": "ebb047f166027d94",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Aspirin.",
+            "chars": 29
+        },
+        {
+            "id": "d8dba3be28c317eb",
+            "speaker": "Pharmee",
+            "text": "Acetylate salicylic acid with acetic anhydride, then crystallise on ice and Buchner-filter.",
+            "chars": 91
+        },
+        {
+            "id": "41c1244e71961bac",
+            "speaker": "Pharmee",
+            "text": "Salicylic acid is weighed with the anhydride and acid catalyst. Warm the bath GENTLY.",
+            "chars": 85
+        },
+        {
+            "id": "3ad91de580686fa3",
+            "speaker": "Pharmee",
+            "text": "No purple with ferric chloride — the phenol is fully acetylated. Pure aspirin!",
+            "chars": 78
+        },
+        {
+            "id": "ca31d3ad6b9d85b2",
+            "speaker": "Pharmee",
+            "text": "The flask warmed up or benzoyl chloride went in too fast. Keep it iced and gentle.",
+            "chars": 82
+        },
+        {
+            "id": "20e67d192b85e5ef",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Benzamide.",
+            "chars": 31
+        },
+        {
+            "id": "dc9cd7d7d26177b0",
+            "speaker": "Pharmee",
+            "text": "Add benzoyl chloride to chilled ammonia, isolate the crystals, and confirm the amide.",
+            "chars": 85
+        },
+        {
+            "id": "765d227e4c49e451",
+            "speaker": "Pharmee",
+            "text": "The ammonia is on ice. Benzoyl chloride is corrosive — add it dropwise and keep it cold.",
+            "chars": 88
+        },
+        {
+            "id": "918189182d7302ae",
+            "speaker": "Pharmee",
+            "text": "White benzamide crystals, and hydrolysis frees ammonia just as it should. Excellent.",
+            "chars": 84
+        },
+        {
+            "id": "e00b85d049f9bd57",
+            "speaker": "Pharmee",
+            "text": "The oxidation stalled or the crystals came out impure. Give the permanganate time to fully react.",
+            "chars": 97
+        },
+        {
+            "id": "b60749bb4d323d2d",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Benzoic Acid.",
+            "chars": 34
+        },
+        {
+            "id": "40375c575e789aec",
+            "speaker": "Pharmee",
+            "text": "Oxidise benzaldehyde with dilute permanganate, filter the MnO2, acidify, then recrystallise.",
+            "chars": 92
+        },
+        {
+            "id": "8de695b492b851a3",
+            "speaker": "Pharmee",
+            "text": "Benzaldehyde and the 0.1% permanganate are ready. Warm gently until the violet colour fades.",
+            "chars": 92
+        },
+        {
+            "id": "fb2ff22879c57efa",
+            "speaker": "Pharmee",
+            "text": "Bright white crystals, sharp melting point — beautifully pure benzoic acid.",
+            "chars": 75
+        },
+        {
+            "id": "921b4356a55bf480",
+            "speaker": "Pharmee",
+            "text": "The layers were mixed up or the sublimation ran too hot. Separate carefully and heat gently.",
+            "chars": 92
+        },
+        {
+            "id": "dcd77049e4f4b5ad",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Caffeine from Tea.",
+            "chars": 39
+        },
+        {
+            "id": "cbe9e2621971b18b",
+            "speaker": "Pharmee",
+            "text": "Extract caffeine from tea with sodium carbonate and solvent, then purify by sublimation.",
+            "chars": 88
+        },
+        {
+            "id": "7310133eeee3b233",
+            "speaker": "Pharmee",
+            "text": "The tea is brewed with base. Handle the dichloromethane in the hood during extraction.",
+            "chars": 86
+        },
+        {
+            "id": "f3ae0d55875b3a50",
+            "speaker": "Pharmee",
+            "text": "Glistening white caffeine needles, sharp melting point, positive murexide test. Beautiful.",
+            "chars": 90
+        },
+        {
+            "id": "eaa080397db1e6d5",
+            "speaker": "Pharmee",
+            "text": "A test result was misread or a reagent was off. Re-check each observation carefully.",
+            "chars": 84
+        },
+        {
+            "id": "cbc5f0585e897b31",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Chemical Compounding.",
+            "chars": 42
+        },
+        {
+            "id": "eb7a9243ee3acfe3",
+            "speaker": "Pharmee",
+            "text": "Identify ethanol's functional group with combustion, sodium, bromine-water and permanganate tests.",
+            "chars": 98
+        },
+        {
+            "id": "5a1d8e3ebae81506",
+            "speaker": "Pharmee",
+            "text": "Your reagents are lined up. Keep the sodium away from water until the test itself.",
+            "chars": 82
+        },
+        {
+            "id": "b7c77a4e7080492b",
+            "speaker": "Pharmee",
+            "text": "Every test read true — you classified the compound correctly.",
+            "chars": 61
+        },
+        {
+            "id": "35fec635bd79026f",
+            "speaker": "Pharmee",
+            "text": "The addition was too fast or the distillation ran dry. Dropwise and patient wins this one.",
+            "chars": 90
+        },
+        {
+            "id": "730f117ba40e28bd",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Chloroform.",
+            "chars": 32
+        },
+        {
+            "id": "ae5334e45c8306b5",
+            "speaker": "Pharmee",
+            "text": "Run the haloform reaction: bleaching powder with acetone, reflux, then distil the chloroform.",
+            "chars": 93
+        },
+        {
+            "id": "7212cec9513e7782",
+            "speaker": "Pharmee",
+            "text": "Bleaching powder is suspended and the acetone-water mix is in the funnel. Add it drop by drop.",
+            "chars": 94
+        },
+        {
+            "id": "9f37fe6ccfa313dd",
+            "speaker": "Pharmee",
+            "text": "A dense, sweet, non-flammable liquid — chloroform confirmed by the silver-nitrate test.",
+            "chars": 87
+        },
+        {
+            "id": "6b3db79db8da436a",
+            "speaker": "Pharmee",
+            "text": "The cut was off-temperature or a test failed. Watch the thermometer through the 70-80 degree window.",
+            "chars": 100
+        },
+        {
+            "id": "9a3e636e9cbcc06e",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Ethyl Alcohol Synthesis.",
+            "chars": 45
+        },
+        {
+            "id": "987404f7da4cef6d",
+            "speaker": "Pharmee",
+            "text": "Ferment sugar to ethanol, confirm CO2 with limewater, then distil the 70-80 degree fraction.",
+            "chars": 92
+        },
+        {
+            "id": "8ac0e97c8b11dad4",
+            "speaker": "Pharmee",
+            "text": "The must is pitched and sealed. Watch the airlock — steady bubbling means fermentation is alive.",
+            "chars": 96
+        },
+        {
+            "id": "22126914428ed10b",
+            "speaker": "Pharmee",
+            "text": "A clean distillate that burns blue and gives a positive iodoform test. Textbook ethanol!",
+            "chars": 88
+        },
+        {
+            "id": "988b8b32dc0bc6d1",
+            "speaker": "Pharmee",
+            "text": "Not quite this time — but every chemist learns by doing.",
+            "chars": 56
+        },
+        {
+            "id": "079c4670f21a0e9b",
+            "speaker": "Pharmee",
+            "text": "Review the steps and give it another go. You've got this!",
+            "chars": 57
+        },
+        {
+            "id": "2f4a3a9f11d7d8ca",
+            "speaker": "Pharmee",
+            "text": "Welcome! Today we'll synthesize methane gas by heating sodium acetate with soda lime.",
+            "chars": 85
+        },
+        {
+            "id": "4671c887823ddb15",
+            "speaker": "Pharmee",
+            "text": "Your objective: assemble the apparatus, generate the gas, and confirm it burns with a clean blue flame.",
+            "chars": 103
+        },
+        {
+            "id": "df364420cabf1ce4",
+            "speaker": "Pharmee",
+            "text": "Follow the steps on your tablet. I'll be right here if you need me!",
+            "chars": 67
+        },
+        {
+            "id": "786817495e10e519",
+            "speaker": "Pharmee",
+            "text": "Nicely done — your reagent mixture is ready.",
+            "chars": 44
+        },
+        {
+            "id": "17406a6846847fe3",
+            "speaker": "Pharmee",
+            "text": "Now let's assemble the apparatus and start the reaction.",
+            "chars": 56
+        },
+        {
+            "id": "85f70e1baa53086e",
+            "speaker": "Pharmee",
+            "text": "That clean blue flame confirms it — you've synthesized methane!",
+            "chars": 63
+        },
+        {
+            "id": "b32e8596afe1cfeb",
+            "speaker": "Pharmee",
+            "text": "Excellent work. You're ready for the Prelim experiments.",
+            "chars": 56
+        },
+        {
+            "id": "93bef68b7e68bb91",
+            "speaker": "Pharmee",
+            "text": "Fermentation stalled or the wine clouded. Check your yeast, sugar and a clean, sealed vessel.",
+            "chars": 93
+        },
+        {
+            "id": "c369acd3daf42fae",
+            "speaker": "Pharmee",
+            "text": "Welcome back! Today: Wine Making.",
+            "chars": 33
+        },
+        {
+            "id": "3bb407e93a39fc18",
+            "speaker": "Pharmee",
+            "text": "Prepare a fruit must, ferment it, confirm CO2, then rack and evaluate your wine.",
+            "chars": 80
+        },
+        {
+            "id": "21accf611a82c903",
+            "speaker": "Pharmee",
+            "text": "Your must is sealed with the airlock. Now we wait — seven days and seven nights.",
+            "chars": 80
+        },
+        {
+            "id": "5df2f1875881ed35",
+            "speaker": "Pharmee",
+            "text": "Clear, aromatic, well-balanced — a wine to be proud of. Cheers to good technique!",
+            "chars": 81
+        }
+    ]
+}

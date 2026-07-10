@@ -75,7 +75,7 @@ public class HubSelectController : MonoBehaviour
     {
         var service = new ProgressionService();
         service.Load();
-        var flow = new ProgressionFlow(service);
+        var flow = ProgressionFlow.Create(service);
         var model = BuildModel(flow);
 
         for (int i = 0; i < entryButtons.Length && i < model.Count; i++)
@@ -106,7 +106,7 @@ public class HubSelectController : MonoBehaviour
     {
         var service = new ProgressionService();
         service.Load();
-        var flow = new ProgressionFlow(service);
+        var flow = ProgressionFlow.Create(service);
         if (!CanSelect(flow, moduleId)) return false;
         GameFlow.Select(moduleId);
         if (Application.isPlaying)

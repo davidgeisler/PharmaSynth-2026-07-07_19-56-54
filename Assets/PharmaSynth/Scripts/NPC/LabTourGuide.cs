@@ -118,18 +118,26 @@ public class LabTourGuide : MonoBehaviour
         return -1;
     }
 
+    /// The default tour copy, exposed for the voice-over corpus (index 0 = the
+    /// intro, last = the closer, the middle entries are the location beats).
+    public static readonly string[] DefaultBeatTexts =
+    {
+        "Welcome! Let's take a quick tour. The bench in the middle is your main workspace — walk around and I'll point out the rest as you reach them.",
+        "This bench is your main workspace. Flick your wrist face-up and glance at it — your holographic procedures board appears with every step, live. The progress bar and timer up top track your pace.",
+        "The equipment cabinet — open it and pick the apparatus your procedures board calls for. Flick your wrist anytime to check the next step.",
+        "The reagent shelf holds your chemicals — take only what each step needs. And Settings up top lets you tune audio, text size and comfort whenever you like.",
+        "That's the tour! Follow the glowing markers during a run, and poke me whenever you're ready to take on a graded campaign.",
+    };
+
     /// Default stops — the storyboard's tour areas, each folding in a UI tip so every
     /// beat has a physical trigger. Names match the SampleScene landmarks.
     public void SeedDefaults()
     {
         stops = new List<Stop>
         {
-            new Stop { landmarkName = "LabTablet", radius = 1.8f,
-                beat = "This is your tablet — grab it anytime to see the full step-by-step procedure. The progress bar and timer up top track your pace." },
-            new Stop { landmarkName = "EquipmentShelf", radius = 2.0f,
-                beat = "The equipment cabinet — open it and pick the apparatus your tablet calls for. Flick your wrist anytime for the live checklist." },
-            new Stop { landmarkName = "ReagentShelf", radius = 2.0f,
-                beat = "The reagent shelf holds your chemicals — take only what each step needs. And Settings up top lets you tune audio, text size and comfort whenever you like." },
+            new Stop { landmarkName = "DynamicStage", radius = 2.2f, beat = DefaultBeatTexts[1] },
+            new Stop { landmarkName = "EquipmentShelf", radius = 2.0f, beat = DefaultBeatTexts[2] },
+            new Stop { landmarkName = "ReagentShelf", radius = 2.0f, beat = DefaultBeatTexts[3] },
         };
     }
 }

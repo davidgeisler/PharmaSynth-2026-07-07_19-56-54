@@ -42,6 +42,15 @@ public class TaskGraph
 
     public bool IsComplete(string taskId) => _completed.Contains(taskId);
 
+    /// Whether any task belongs to the given phase (the gate uses this to route
+    /// modules that have no ChemicalTests phase into the review flow off Synthesis).
+    public bool HasPhase(TaskPhase phase)
+    {
+        for (int i = 0; i < _tasks.Count; i++)
+            if (_tasks[i] != null && _tasks[i].phase == phase) return true;
+        return false;
+    }
+
     public bool PrerequisitesMet(string taskId)
     {
         if (!_byId.TryGetValue(taskId, out var task)) return false;

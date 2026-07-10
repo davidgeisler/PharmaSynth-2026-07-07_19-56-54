@@ -1,4 +1,5 @@
 using UnityEngine;
+using XRGrab = UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable;
 
 /// Points-at-it inspector (user 2026-07-10): each frame it casts from the pointer
 /// (right-hand ray, falling back to gaze) and, if it lands on a known reagent bottle,
@@ -34,7 +35,8 @@ public class HoverInspector : MonoBehaviour
         var src = Source();
         if (src == null) return;
 
-        if (Physics.Raycast(src.position, src.forward, out var hit, maxDistance, mask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(src.position, src.forward, out var hit, maxDistance, mask, QueryTriggerInteraction.Ignore)
+            && !IsHeld(hit.collider))   // don't card an item that's already in hand — it blocks using it
         {
             var entry = Resolve(hit.collider, out _);
             if (entry != null)
@@ -84,4 +86,14 @@ public class HoverInspector : MonoBehaviour
     }
 
     private LabInfoEntry Resolve(Collider col, out Vector3 anchor) => ResolveFor(col, out anchor);
+
+    /// True when the collider belongs to a grabbable that a hand is currently
+    /// holding — the card is suppressed for it so it doesn't sit over the item
+    /// you're trying to use (user 2026-07-11).
+    public static bool IsHeld(Collider col)
+    {
+        if (col == null) return false;
+        var grab = col.GetComponentInParent<XRGrab>();
+        return grab != null && grab.isSelected;
+    }
 }

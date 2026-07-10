@@ -33,6 +33,10 @@ public class NPCNarrationController : MonoBehaviour
     [SerializeField] private string voiceBlipKey = "";          // this speaker's talking blip (SoundBank key)
     [SerializeField, Range(0f, 1f)] private float blipVolume = 0.5f;
 
+    [Header("Voice-over (user 2026-07-10: NPCs speak their lines)")]
+    [SerializeField] private VoiceBank voiceBank;               // hash-keyed clip lookup (optional)
+    [SerializeField] private VoiceSpeaker speaker = VoiceSpeaker.Pharmee;
+
     [Header("Events")]
     public UnityEvent onNarrationFinished;
 
@@ -57,9 +61,17 @@ public class NPCNarrationController : MonoBehaviour
     private Coroutine narrationRoutine;
     private AudioSource _blip;
     private bool _skipReveal;
+    private bool _voiceActive;   // a real voice clip is playing → suppress blips
 
     /// Edit-mode/test binding for the auto-hidden bubble panel.
     public void SetPanelRoot(GameObject g) => panelRoot = g;
+
+    /// Voice-over seam: the hash-keyed clip bank + which character this channel is.
+    public void BindVoice(VoiceBank bank, VoiceSpeaker who) { voiceBank = bank; speaker = who; }
+
+    /// The voice clip for a subtitle, if the bank has one (null = blip fallback).
+    public AudioClip ResolveVoice(string subtitle)
+        => voiceBank != null ? voiceBank.Get(speaker, VoiceLineId.For(subtitle)) : null;
 
     /// Assign this speaker's talking blip (SoundBank key) — played per few chars as the line types.
     public void SetVoiceBlip(string key, float volume = 0.5f) { voiceBlipKey = key; blipVolume = Mathf.Clamp01(volume); }
@@ -115,14 +127,18 @@ public class NPCNarrationController : MonoBehaviour
 
     private IEnumerator SayRoutine(string subtitle, float seconds, AudioClip clip)
     {
+        if (clip == null) clip = ResolveVoice(subtitle);   // voice-over by text hash
         float waitSeconds = Mathf.Max(0.1f, seconds);
+        _voiceActive = false;
         if (narratorAudioSource != null && clip != null)
         {
             narratorAudioSource.clip = clip;
             narratorAudioSource.Play();
-            waitSeconds = clip.length;
+            waitSeconds = Mathf.Max(waitSeconds, clip.length + 0.2f);
+            _voiceActive = true;                            // real speech → no robot blips
         }
         yield return RevealAndHold(subtitle, waitSeconds);
+        _voiceActive = false;
     }
 
     /// Type the line out character-by-character (with per-few-chars talking blips),
@@ -180,6 +196,7 @@ public class NPCNarrationController : MonoBehaviour
 
     private void PlayBlip()
     {
+        if (_voiceActive) return;   // a spoken clip owns this line
         if (string.IsNullOrEmpty(voiceBlipKey) || AudioService.Instance == null) return;
         var e = AudioService.Instance.EntryOf(voiceBlipKey);
         if (e == null || e.clip == null) return;
@@ -221,15 +238,18 @@ public class NPCNarrationController : MonoBehaviour
                 continue;
 
             float waitSeconds = Mathf.Max(0.1f, line.fallbackSeconds);
-
-            if (narratorAudioSource != null && line.voiceClip != null)
+            var clip = line.voiceClip != null ? line.voiceClip : ResolveVoice(line.subtitle);
+            _voiceActive = false;
+            if (narratorAudioSource != null && clip != null)
             {
-                narratorAudioSource.clip = line.voiceClip;
+                narratorAudioSource.clip = clip;
                 narratorAudioSource.Play();
-                waitSeconds = line.voiceClip.length;
+                waitSeconds = Mathf.Max(waitSeconds, clip.length + 0.2f);
+                _voiceActive = true;
             }
 
             yield return RevealAndHold(line.subtitle, waitSeconds);
+            _voiceActive = false;
         }
 
         onNarrationFinished?.Invoke();

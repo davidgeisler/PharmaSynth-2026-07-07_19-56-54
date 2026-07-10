@@ -32,6 +32,7 @@ public class PharmeeMood : MonoBehaviour
             case GateState.UnlockAnnounce:
             case GateState.LabTour:
             case GateState.Blocked:
+            case GateState.QuizIntro:   // celebratory walk-over to the review corner
             case GateState.ModeChoice: return PharmeeFaceExpression.Happy;
             default: return PharmeeFaceExpression.Neutral;
         }

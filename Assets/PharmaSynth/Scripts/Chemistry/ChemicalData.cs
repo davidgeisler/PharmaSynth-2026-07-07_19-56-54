@@ -38,4 +38,8 @@ public class ChemicalData : ScriptableObject
     [Tooltip("Toxic/volatile reagents must be handled in the fume hood.")]
     public bool requiresFumeHood = false;
     public bool isDangerous = false; // legacy flag (kept for existing spill logic)
+    [Tooltip("Strong oxidizer — meeting a Flammable chemical outside a known reaction ignites (HazardousMix).")]
+    public bool isOxidizer = false;
+    [Tooltip("Concentrated acid — pouring other liquids into it spatters (HazardousMix). Set by Tools ▸ PharmaSynth ▸ Audit Chemical Hazard Flags.")]
+    public bool isConcentratedAcid = false;
 }

@@ -93,6 +93,10 @@ public class ExaminerNPC : MonoBehaviour
         _nextRemark = Time.time + Random.Range(remarkMin, remarkMax);
     }
 
+    /// External line seam (the gate's quiz briefing + score remarks speak through
+    /// Jimenez's own bubble/animator, never Pharmee's channel).
+    public void SpeakLine(string line) => Say(line);
+
     private void Say(string line)
     {
         if (string.IsNullOrEmpty(line)) return;

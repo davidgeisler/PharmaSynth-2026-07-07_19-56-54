@@ -67,6 +67,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
 
         bool methane = moduleId == methaneModuleId;
         if (methaneStage != null) methaneStage.SetActive(methane);
+        SpawnDemoKit(stage, moduleId);              // demo sessions get the ready-made product
         if (methane) return 0;                      // Methane uses its hand-built stage
 
         var layout = FindLayout(moduleId);
@@ -77,6 +78,38 @@ public class ExperimentSceneBuilder : MonoBehaviour
         foreach (var p in layout.props)    { BuildProp(stage, p); n++; }
         foreach (var v in layout.vessels)  { BuildVessel(stage, v); n++; }
         return n;
+    }
+
+    /// Demo sessions (user 2026-07-10): a ready-made vial of the module's end
+    /// product spawns on the raw-reagent cabinets' demo shelf, so panelists can
+    /// run the tests without performing the synthesis.
+    private void SpawnDemoKit(Transform stage, string moduleId)
+    {
+        if (!Application.isPlaying || !DemoSession.Active || assets == null) return;
+        string product = DemoMode.ProductFor(moduleId);
+        var chem = product != null ? assets.GetChemical(product) : null;
+        var prefab = assets.GetPrefab("TestTube_WithLiquid");
+        if (chem == null || prefab == null) return;
+
+        var anchor = GameObject.Find("ReagentCabinets");
+        Vector3 pos = anchor != null
+            ? anchor.transform.position + new Vector3(-0.35f, 1.0f, 0f)
+            : new Vector3(0f, 1.0f, -2.6f);
+        var inst = Instantiate(prefab, stage);
+        inst.name = "DemoKit_" + product.Replace(" ", "");
+        Normalise(inst, "TestTube_WithLiquid", 0.15f);
+        Seat(inst.transform, pos);
+        var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
+        lp.registry = registry;
+        lp.currentChemical = chem;
+        lp.currentLiquidVolume = 40f;
+        PhysicsProfiles.EnsurePhysics(inst, "TestTube_WithLiquid");
+        GrabTuning.Apply(inst.GetComponent<XRGrab>());
+        inst.AddComponent<GrabPhysicsPolicy>();
+        var respawn = inst.AddComponent<DropRespawn>();
+        respawn.SetHome(inst.transform.position, inst.transform.rotation);
+        var pl = inst.AddComponent<ProximityLabel>();
+        pl.SetLabel("Ready-made: " + product + " (demo)", 1.6f);
     }
 
     // ---- builders ---------------------------------------------------------
@@ -117,6 +150,14 @@ public class ExperimentSceneBuilder : MonoBehaviour
             var vfx = pad.AddComponent<StationVfx>();   // steam/frost/drip/bubbles while occupied
             vfx.Bind(s.sim);
             rig.SetVfx(vfx);
+
+            // Overheat consequence (error-effects pass): smoke + ruined batch +
+            // alarm + Overheat mistake when the sim crosses its threshold.
+            if (s.sim == StationSim.Heat && temp != null)
+            {
+                var overheat = pad.AddComponent<OverheatEffects>();
+                overheat.Bind(temp, runner, assets != null ? assets.GetChemical("Ruined Mixture") : null);
+            }
 
             // Hot-surface hazard (§1): touching a HEAT station once it is
             // actually hot records a handling mistake. Player-only (props
@@ -213,6 +254,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         item.itemId = p.itemId; item.displayName = p.displayName;
         var rb = PhysicsProfiles.EnsurePhysics(inst, p.prefabName);
         inst.AddComponent<GrabPhysicsPolicy>();
+        GrabTuning.Apply(inst.GetComponent<XRGrab>());   // held items collide with the world
         inst.AddComponent<HoverHighlight>().Bind(inst.GetComponent<XRGrab>());   // hover affordance
         var respawn = inst.AddComponent<DropRespawn>();
         respawn.SetHome(inst.transform.position, inst.transform.rotation);
@@ -246,6 +288,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
             }
             var spill = inst.AddComponent<SpillMistake>();
             spill.Bind(runner, lp, inst.GetComponent<XRGrab>(), p.displayName);
+            inst.AddComponent<HazardousMixReactor>().Bind(lp, runner);   // bad-mix consequences
         }
         var pl = inst.AddComponent<ProximityLabel>(); pl.SetLabel(p.displayName, 1.6f);
     }
@@ -259,6 +302,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         Normalise(inst, v.prefabName, v.targetHeight);
         Seat(inst.transform, v.pos);
         PhysicsProfiles.EnsurePhysics(inst, v.prefabName);   // vessels stay kinematic (no release policy)
+        GrabTuning.Apply(inst.GetComponent<XRGrab>());       // collide while held; re-freezes on release
         var lp = inst.GetComponent<LiquidPhysics>() ?? inst.AddComponent<LiquidPhysics>();
         lp.registry = registry;
         if (!string.IsNullOrEmpty(v.startChemical))
@@ -273,6 +317,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
             var reagent = assets.GetChemical(b.reagentChemical);
             if (reagent != null) bind.AddExpected(reagent, b.taskId, b.requiredMl);
         }
+        inst.AddComponent<HazardousMixReactor>().Bind(lp, runner);   // bad-mix consequences
         var pl = inst.AddComponent<ProximityLabel>(); pl.SetLabel(v.displayName, 1.6f);
     }
 

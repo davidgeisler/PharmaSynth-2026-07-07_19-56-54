@@ -69,9 +69,31 @@ public class ReagentSupplyMonitor : MonoBehaviour
         var shortfalls = EvaluateNow();
         if (shortfalls.Count > 0)
         {
+            // Demo sessions never dead-end into the restart prompt — the bottles
+            // visibly top themselves back up instead (config: infiniteSupply).
+            if (DemoSession.Active && DemoMode.InfiniteSupply)
+            {
+                RefillSourceBottles();
+                return;
+            }
             _latched = true;
             SupplyExhausted?.Invoke(shortfalls);
         }
+    }
+
+    /// Demo-only: top every SOURCE bottle (no task binding) back up to at least
+    /// 150 ml so no pour-step can starve.
+    public static int RefillSourceBottles()
+    {
+        int refilled = 0;
+        var bottles = UnityEngine.Object.FindObjectsByType<LiquidPhysics>(FindObjectsSortMode.None);
+        foreach (var lp in bottles)
+        {
+            if (lp.currentChemical == null) continue;
+            if (lp.GetComponent<LiquidTaskBinding>() != null) continue;
+            if (lp.currentLiquidVolume < 150f) { lp.currentLiquidVolume = 150f; refilled++; }
+        }
+        return refilled;
     }
 
     /// One poll pass (public for headless tests): gathers needs from every live

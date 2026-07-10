@@ -82,6 +82,7 @@ public class ExperimentRunner : MonoBehaviour
         _mistakes = new MistakeLog();
         _grader = new ExperimentGrader(module.BuildScoreCalculator(), gradingConfig);
         _elapsed = 0f;
+        _clockFrozen = false;
 
         _graph.TaskCompleted += OnGraphTaskCompleted;
         _graph.PhaseCompleted += OnGraphPhaseCompleted;
@@ -167,8 +168,17 @@ public class ExperimentRunner : MonoBehaviour
     /// Advance the experiment clock (called by Update; exposed for deterministic tests).
     public void AdvanceTime(float dt)
     {
-        if (IsRunning && dt > 0f) _elapsed += dt;
+        if (IsRunning && dt > 0f && !_clockFrozen) _elapsed += dt;
     }
+
+    private bool _clockFrozen;
+
+    /// Stop the Time-Management clock without ending the run — called when the
+    /// chemical tests complete, so the review-corner teleport, Jimenez's briefing
+    /// and the quiz never count against the time score.
+    public void FreezeClock() => _clockFrozen = true;
+
+    public bool ClockFrozen => _clockFrozen;
 
     private void Update()
     {

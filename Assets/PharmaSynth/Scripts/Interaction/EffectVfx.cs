@@ -13,7 +13,7 @@ public static class EffectVfx
     private static Texture2D _dot;
     private static Material _mat;
 
-    public enum Kind { Shatter, Confetti, FlamePop, ColdAir }
+    public enum Kind { Shatter, Confetti, FlamePop, ColdAir, Smoke, FireBurst, Spatter, ColorFlash }
 
     /// Glass-shatter burst: pale shards spray out and fall.
     public static void Shatter(Vector3 pos, Color tint) => Play(Kind.Shatter, pos, tint);
@@ -28,6 +28,22 @@ public static class EffectVfx
     /// Cold-air puff: a soft white vapour cloud that spreads out and sinks — fired
     /// when the lab door opens (user 2026-07-10 atmosphere pass).
     public static void ColdAir(Vector3 pos) => Play(Kind.ColdAir, pos, new Color(0.72f, 0.82f, 0.95f, 0.6f));
+
+    // ---- Error-effect set (user 2026-07-10: wrong-mix consequences) ----------
+
+    /// Rising smoke plume — overheated/ruined batch. Grey default; ToxicGas mixes
+    /// pass a chlorine green-yellow tint.
+    public static void Smoke(Vector3 pos) => Play(Kind.Smoke, pos, new Color(0.45f, 0.45f, 0.48f, 0.8f));
+    public static void Smoke(Vector3 pos, Color tint) => Play(Kind.Smoke, pos, tint);
+
+    /// Fire burst — oxidizer meets a flammable (isolated in-sim; no player harm).
+    public static void FireBurst(Vector3 pos) => Play(Kind.FireBurst, pos, new Color(1f, 0.5f, 0.12f, 0.95f));
+
+    /// Spatter — violent droplets, e.g. liquid poured into a concentrated acid.
+    public static void Spatter(Vector3 pos, Color tint) => Play(Kind.Spatter, pos, tint);
+
+    /// Bright expanding flash — generic unknown-mix fizz feedback.
+    public static void ColorFlash(Vector3 pos, Color tint) => Play(Kind.ColorFlash, pos, tint);
 
     /// Shared soft-dot particle material (reused by AtmosphereVfx so vapour matches).
     public static Material ParticleMaterial() => SharedMaterial();
@@ -91,6 +107,55 @@ public static class EffectVfx
                 csz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 0.7f, 1f, 1.8f));   // expand as it drifts
                 break;
 
+            case Kind.Smoke:
+                life = 2.4f; burst = 26;
+                main.startLifetime = new ParticleSystem.MinMaxCurve(1.4f, 2.4f);
+                main.startSpeed = new ParticleSystem.MinMaxCurve(0.35f, 0.7f);
+                main.startSize = new ParticleSystem.MinMaxCurve(0.12f, 0.28f);
+                main.startColor = tint;
+                main.gravityModifier = -0.06f;                       // smoke rises
+                shape.shapeType = ParticleSystemShapeType.Cone; shape.angle = 16f; shape.radius = 0.05f;
+                col.color = Fade(tint, tint.a);
+                var ssz = ps.sizeOverLifetime; ssz.enabled = true;
+                ssz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 0.6f, 1f, 1.9f));
+                break;
+
+            case Kind.FireBurst:
+                life = 1.0f; burst = 34;
+                main.startLifetime = new ParticleSystem.MinMaxCurve(0.35f, 0.9f);
+                main.startSpeed = new ParticleSystem.MinMaxCurve(0.9f, 2.2f);
+                main.startSize = new ParticleSystem.MinMaxCurve(0.06f, 0.14f);
+                main.startColor = tint;
+                main.gravityModifier = -0.15f;                       // flames lick upward
+                shape.shapeType = ParticleSystemShapeType.Cone; shape.angle = 30f; shape.radius = 0.05f;
+                col.color = FlameGradient();
+                var fsz = ps.sizeOverLifetime; fsz.enabled = true;
+                fsz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 1f, 1f, 0.35f));
+                break;
+
+            case Kind.Spatter:
+                life = 0.8f; burst = 24;
+                main.startLifetime = new ParticleSystem.MinMaxCurve(0.3f, 0.7f);
+                main.startSpeed = new ParticleSystem.MinMaxCurve(1.4f, 2.8f);
+                main.startSize = new ParticleSystem.MinMaxCurve(0.01f, 0.024f);
+                main.startColor = tint;
+                main.gravityModifier = 2.2f;                         // droplets arc and fall
+                shape.shapeType = ParticleSystemShapeType.Cone; shape.angle = 42f; shape.radius = 0.02f;
+                col.color = Fade(tint, tint.a);
+                break;
+
+            case Kind.ColorFlash:
+                life = 0.9f; burst = 16;
+                main.startLifetime = new ParticleSystem.MinMaxCurve(0.4f, 0.8f);
+                main.startSpeed = new ParticleSystem.MinMaxCurve(0.3f, 0.7f);
+                main.startSize = new ParticleSystem.MinMaxCurve(0.08f, 0.16f);
+                main.startColor = tint;
+                shape.shapeType = ParticleSystemShapeType.Sphere; shape.radius = 0.04f;
+                col.color = Fade(tint, tint.a);
+                var csz2 = ps.sizeOverLifetime; csz2.enabled = true;
+                csz2.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 0.8f, 1f, 1.6f));
+                break;
+
             default: // FlamePop
                 life = 0.6f; burst = 18;
                 main.startLifetime = new ParticleSystem.MinMaxCurve(0.25f, 0.55f);
@@ -108,7 +173,7 @@ public static class EffectVfx
         emission.SetBursts(new[] { em });
 
         var r = go.GetComponent<ParticleSystemRenderer>();
-        r.material = kind == Kind.ColdAir ? SmokeMaterial() : SharedMaterial();
+        r.material = (kind == Kind.ColdAir || kind == Kind.Smoke) ? SmokeMaterial() : SharedMaterial();
         r.sortingOrder = 12;
 
         ps.Play();
@@ -166,9 +231,20 @@ public static class EffectVfx
 
     /// Build an unlit transparent ALPHA-blended particle material. The explicit
     /// blend/ZWrite state is what makes it soft — without it URP renders the quads
-    /// opaque (the earlier "blocky white squares" bug).
+    /// opaque (the earlier "blocky white squares" bug). Instantiates from the
+    /// persisted Resources/FxParticleUnlit asset when present — a runtime
+    /// Shader.Find-only material gets its shader STRIPPED from device builds;
+    /// the asset (created by Tools ▸ PharmaSynth ▸ Wire Shelf Pourers) keeps the
+    /// URP particle shader included.
     private static Material MakeParticleMat(Texture tex)
     {
+        var src = Resources.Load<Material>("FxParticleUnlit");
+        if (src != null)
+        {
+            var inst = new Material(src);
+            inst.SetTexture("_BaseMap", tex);
+            return inst;
+        }
         var sh = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         if (sh == null) sh = Shader.Find("Particles/Standard Unlit");
         var m = new Material(sh);

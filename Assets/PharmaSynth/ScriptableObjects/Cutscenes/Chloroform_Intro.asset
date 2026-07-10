@@ -18,6 +18,15 @@ MonoBehaviour:
   - subtitle: 'Welcome back! Today: Chloroform.'
     seconds: 3.5
     face: 1
+  - subtitle: 'Here''s what you''ll be able to do by the end of this session:'
+    seconds: 2.8
+    face: 1
+  - subtitle: 'Objective 1: Synthesize chloroform.'
+    seconds: 2.5
+    face: 0
+  - subtitle: 'Objective 2: Determine its identity through chemical tests.'
+    seconds: 3.6875
+    face: 0
   - subtitle: 'Run the haloform reaction: bleaching powder with acetone, reflux,
       then distil the chloroform.'
     seconds: 4.5

@@ -17,50 +17,50 @@ MonoBehaviour:
   - taskId: prep-koh
     label: 1. Prepare lime/KOH
     requiredItemId: prep-koh
-    pos: {x: -1.1, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -3.790166}
     sim: 0
     simTargetC: 85
   - taskId: weigh-acetates
     label: 2. Weigh acetate
     requiredItemId: weigh-acetates
-    pos: {x: -1.1, y: 0.91, z: -4}
+    pos: {x: -0.65308976, y: 0.91, z: -3.790166}
     sim: 0
     simTargetC: 85
   - taskId: setup-distill
     label: 3. Set up distillation
     requiredItemId: setup-distill
-    pos: {x: -1.1, y: 0.91, z: -4.6}
+    pos: {x: -1.2530897, y: 0.91, z: -3.790166}
     sim: 0
     simTargetC: 85
   - taskId: heat-glow
     label: 4. Heat to red glow
     requiredItemId: heat-glow
-    pos: {x: -1.1, y: 0.91, z: -5.2}
+    pos: {x: -1.8530896, y: 0.91, z: -3.790166}
     sim: 1
     simTargetC: 150
   - taskId: collect-56
     label: 5. Collect at 56 C
     requiredItemId: collect-56
-    pos: {x: -1.9, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -2.9901662}
     sim: 4
     simTargetC: 85
   - taskId: test-schiff
     label: 7. Schiff test
     requiredItemId: test-schiff
-    pos: {x: -1.9, y: 0.91, z: -4}
+    pos: {x: -0.65308976, y: 0.91, z: -2.9901662}
     sim: 0
     simTargetC: 85
   - taskId: test-bisulfite
     label: 9. Bisulfite test
     requiredItemId: test-bisulfite
-    pos: {x: -1.9, y: 0.91, z: -4.6}
+    pos: {x: -1.2530897, y: 0.91, z: -2.9901662}
     sim: 0
     simTargetC: 85
   props:
   - prefabName: Vial_Brown
     itemId: test-tollens
     displayName: Tollens Reagent
-    pos: {x: -2.15, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -2.740166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Silver Nitrate
@@ -68,7 +68,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: test-iodoform
     displayName: Sodium Hypochlorite
-    pos: {x: -1.85, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.040166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Sodium Hypochlorite
@@ -76,7 +76,7 @@ MonoBehaviour:
   - prefabName: Spatula
     itemId: prep-koh
     displayName: KOH Spatula
-    pos: {x: -2.05, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -2.840166}
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
@@ -84,7 +84,7 @@ MonoBehaviour:
   - prefabName: Scoopula
     itemId: weigh-acetates
     displayName: Acetate Scoop
-    pos: {x: -1.75, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.140166}
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
@@ -92,7 +92,7 @@ MonoBehaviour:
   - prefabName: RetortStand
     itemId: setup-distill
     displayName: Retort Stand
-    pos: {x: -1.45, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.440166}
     targetHeight: 0.35
     pourable: 0
     fillChemical: 
@@ -100,7 +100,7 @@ MonoBehaviour:
   - prefabName: BunsenBurner
     itemId: heat-glow
     displayName: Bunsen Burner
-    pos: {x: -1.15, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.7401662}
     targetHeight: 0.22
     pourable: 0
     fillChemical: 
@@ -108,7 +108,7 @@ MonoBehaviour:
   - prefabName: Beaker_100mL
     itemId: collect-56
     displayName: Collection Beaker
-    pos: {x: -0.85, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.880003}
     targetHeight: 0.14
     pourable: 0
     fillChemical: 
@@ -116,7 +116,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: test-schiff
     displayName: Schiff's Reagent
-    pos: {x: -1.55, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.340166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Schiff's Reagent
@@ -124,7 +124,7 @@ MonoBehaviour:
   - prefabName: EvaporatingDish
     itemId: test-bisulfite
     displayName: Bisulfite Dish
-    pos: {x: -0.25, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.880003}
     targetHeight: 0.1
     pourable: 0
     fillChemical: 
@@ -132,13 +132,13 @@ MonoBehaviour:
   vessels:
   - prefabName: ErlenmeyerFlask_400mL
     displayName: Distillation Flask
-    pos: {x: -1.4, y: 0.91, z: -2.6}
+    pos: {x: 0.74691033, y: 0.91, z: -3.4901662}
     targetHeight: 0.22
     startChemical: 
-    bindings:
+    bindings: []
   - prefabName: TestTube_WithLiquid
     displayName: Product Test Tube
-    pos: {x: -1.1, y: 0.91, z: -2.45}
+    pos: {x: 0.8969102, y: 0.91, z: -3.790166}
     targetHeight: 0.13
     startChemical: Acetone
     bindings:

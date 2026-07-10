@@ -52,3 +52,19 @@ Every experiment currently uses this normalized weight set (the manual's printed
 ## 4. Hardware / schedule
 
 - **Quest 3 headset not yet delivered.** On-device comfort + 90 Hz validation are day-1 device items and cannot start without it. The plan's escalation deadline was W5. ☐ delivery date: ____ · ☐ escalate.
+
+## 5. ILO copy for the game-authored experiments (added 2026-07-11)
+
+Pharmee now states each experiment's **Intended Learning Outcomes** in the intro cutscene. The 8 manuscript experiments use the **verbatim Appendix C "Objectives"** text. Three modules have no manuscript source — the ILOs below are game-authored in the same voice and need your confirmation (`IloCopy.cs`):
+
+| Module | Game-authored ILO copy | Decision |
+|---|---|---|
+| Tutorial: Methane | 1. Synthesize methane gas by heating sodium acetate with soda lime. 2. Determine its identity through the flame test. | ☐ approve · ☐ replace with: ____ |
+| Final: Aspirin | 1. Synthesize aspirin — acetylsalicylic acid — from salicylic acid. 2. Determine its identity through chemical tests. | ☐ approve · ☐ replace with: ____ |
+| Final: Caffeine | 1. Extract and purify caffeine. 2. Determine its identity through chemical tests. | ☐ approve · ☐ replace with: ____ |
+
+## 6. NPC voice-over (added 2026-07-11)
+
+Pharmee and Dr. Jimenez now speak their lines via pre-generated ElevenLabs TTS clips (subtitles remain). Two asks:
+- ☐ **Approve the two voices** after the 4-line sample listen (Pharmee: bright/slightly synthetic; Dr. Jimenez: stern older male) — or nominate voices.
+- ☐ **Confirm dialogue copy** (same ask as the existing "dialogue copy pass" item) — voiced lines regenerate automatically per changed line, so copy edits stay cheap.

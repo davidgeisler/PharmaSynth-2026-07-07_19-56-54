@@ -1,0 +1,31 @@
+{
+    "asset": "eac9abfdace5edd48884eb55a6eeb90b",
+    "fileName": "019f4df7-81ef-7282-b952-4de05bddab91.png",
+    "prompt": "A small flat dispenser box of litmus pH test paper strips: a purple-violet cardboard box with a slot, several small paper strips in red, violet and blue fanned out beside it. Single object group, centered, plain flat white background, even studio lighting, product photo, no text.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

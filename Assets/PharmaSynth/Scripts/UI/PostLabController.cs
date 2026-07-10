@@ -29,6 +29,9 @@ public class PostLabController : MonoBehaviour
     [SerializeField] private TMP_Text yieldValueText;     // stepper display "Yield: NN %"
     [SerializeField] private Button submitButton;
 
+    [Tooltip("Open automatically when ChemicalTests completes. The gatekeeper's review flow sets this false and opens the quiz itself after Jimenez's briefing.")]
+    [SerializeField] private bool autoOpen = true;
+
     private QuizBank _bank;
     private int[] _answers;      // chosen option per question, -1 = unanswered
     private int _current;
@@ -44,11 +47,13 @@ public class PostLabController : MonoBehaviour
     private void OnEnable()  { if (runner != null) runner.PhaseCompleted += OnPhaseCompleted; }
     private void OnDisable() { if (runner != null) runner.PhaseCompleted -= OnPhaseCompleted; }
 
+    public void SetAutoOpen(bool on) => autoOpen = on;
+
     private void OnPhaseCompleted(TaskPhase phase)
     {
         // Chemical Tests done → time to document. (Modules whose last phase is
         // ChemicalTests still open here; Submit simply finishes.)
-        if (phase == TaskPhase.ChemicalTests) Open();
+        if (autoOpen && phase == TaskPhase.ChemicalTests) Open();
     }
 
     /// Open the quiz for the currently running module.

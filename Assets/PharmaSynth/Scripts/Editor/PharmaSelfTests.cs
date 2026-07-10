@@ -69,6 +69,18 @@ public static class PharmaSelfTests
         HoverInfoSuite();
         GlyphSafeSuite();
         MusicSpeakerSuite();
+        GrabTuningSuite();
+        ShelfPourWiringSuite();
+        FxMaterialSuite();
+        ChecklistPagerSuite();
+        DemoModeSuite();
+        DemoActionsSuite();
+        IloCopySuite();
+        ReviewFlowSuite();
+        HazardousMixSuite();
+        CenterTableMathSuite();
+        RawReagentSuite();
+        VoiceSuite();
 
         string summary = $"PharmaSynth Self-Tests: {_total - _fail}/{_total} passed";
         if (_fail == 0) Debug.Log("<color=#4CD07D>" + summary + " — ALL GREEN</color>");
@@ -385,9 +397,37 @@ public static class PharmaSelfTests
             A("gate: cross before confirm refused", !m.Fire(GateEvent.CrossedThreshold));
             A("gate: proceed arms door", m.Fire(GateEvent.ProceedConfirmed) && m.State == GateState.DoorArmed && GatekeeperModel.DoorOpen(m.State));
             A("gate: walk-in runs", m.Fire(GateEvent.CrossedThreshold) && m.State == GateState.Running);
-            A("gate: return loop to blocked", m.Fire(GateEvent.ContinueAfterPass) && m.Fire(GateEvent.DebriefDone)
-                && m.Fire(GateEvent.TeleportDone) && m.State == GateState.UnlockAnnounce
+            // Post-experiment review flow (2026-07-11): tests done → Jimenez quiz →
+            // score review → return home → entrance debrief → unlock announce.
+            A("gate: continue illegal while running", !m.Fire(GateEvent.ContinueAfterPass) && m.State == GateState.Running);
+            A("gate: tests done → quiz intro", m.Fire(GateEvent.TestsDone) && m.State == GateState.QuizIntro
+                && GatekeeperModel.DoorOpen(m.State));
+            A("gate: briefing done → quiz time", m.Fire(GateEvent.QuizBegin) && m.State == GateState.QuizTime);
+            A("gate: supply event ignored during quiz", !m.Fire(GateEvent.SupplyExhausted) && m.State == GateState.QuizTime);
+            A("gate: graded → score review", m.Fire(GateEvent.Graded) && m.State == GateState.ScoreReview
+                && GatekeeperModel.DoorOpen(m.State));
+            A("gate: return loop to blocked", m.Fire(GateEvent.ContinueAfterPass) && m.State == GateState.Returning
+                && m.Fire(GateEvent.TeleportDone) && m.State == GateState.Debrief
+                && !GatekeeperModel.DoorOpen(m.State)
+                && m.Fire(GateEvent.DebriefDone) && m.State == GateState.UnlockAnnounce
                 && m.Fire(GateEvent.AnnounceDone) && m.State == GateState.Blocked);
+
+            // Fail path: retry from the review corner = clean re-armed attempt.
+            var mr = new GatekeeperModel();
+            mr.Fire(GateEvent.Approach); mr.Fire(GateEvent.PickCampaign); mr.Fire(GateEvent.ExplainDone);
+            mr.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+            mr.Fire(GateEvent.Coated); mr.Fire(GateEvent.Ready); mr.Fire(GateEvent.Loaded);
+            mr.Fire(GateEvent.ProceedConfirmed); mr.Fire(GateEvent.CrossedThreshold);
+            mr.Fire(GateEvent.TestsDone); mr.Fire(GateEvent.QuizBegin); mr.Fire(GateEvent.Graded);
+            A("gate: retry re-arms via loading", mr.Fire(GateEvent.RetryRequested) && mr.State == GateState.Loading
+                && !string.IsNullOrEmpty(mr.SelectedModuleId));
+            var mq = new GatekeeperModel();
+            mq.Fire(GateEvent.Approach); mq.Fire(GateEvent.PickCampaign); mq.Fire(GateEvent.ExplainDone);
+            mq.ChooseEpisode(ExperimentPeriod.Tutorial, _ => true, _ => "tutorial-methane");
+            mq.Fire(GateEvent.Coated); mq.Fire(GateEvent.Ready); mq.Fire(GateEvent.Loaded);
+            mq.Fire(GateEvent.ProceedConfirmed); mq.Fire(GateEvent.CrossedThreshold); mq.Fire(GateEvent.TestsDone);
+            mq.ResetToBlocked();
+            A("gate: HUD reset escapes the quiz flow", mq.State == GateState.Blocked);
 
             svc.RecordResult("tutorial-methane", new ExperimentResult { grade = new GradeBreakdown { Total = 95 }, overallMastery = 0.95f, passed = true }, false);
             A("gate: prelim unlocks after tutorial", GatekeeperModel.FirstPlayableInPeriod(flow, ExperimentPeriod.Prelim) == firstPrelim && firstPrelim != null);
@@ -568,7 +608,12 @@ public static class PharmaSelfTests
                     gk.OnThresholdTriggerEntered();
                     A("return: running", gk.Model.State == GateState.Running && runner.IsRunning);
 
-                    gk.OnContinueAfterPass(); // edit mode: debrief+teleport+announce run immediately
+                    // A finish while Running (dev/legacy path) must cascade through the
+                    // quiz states (entries short-circuit on the cached result) to review.
+                    runner.Finish(1f);
+                    A("return: finish lands in score review", gk.Model.State == GateState.ScoreReview);
+
+                    gk.OnContinueAfterPass(); // edit mode: return+debrief+announce run immediately
                     A("return: loop lands blocked", gk.Model.State == GateState.Blocked);
                     A("return: door re-blocked", blocker.activeSelf);
                     // camera (rig child) must now stand on the marker XZ
@@ -2114,6 +2159,17 @@ public static class PharmaSelfTests
         A("panel: very close target floored", HoverInfoPanel.PlaceDistance(0.5f, 0.5f, 1.1f, 0.4f) <= 0.5f - 0.12f + 1e-4f);
         A("panel: distant target stays readable-close", HoverInfoPanel.PlaceDistance(4f, 0.5f, 1.1f, 0.4f) <= 1.1f + 1e-4f);
         A("panel: never negative", HoverInfoPanel.PlaceDistance(0.3f, 0.5f, 1.1f, 0.4f) >= 0.3f);
+
+        // Held-item suppression (user 2026-07-11: the card must not sit over an
+        // item you're holding). Grabbable NOT selected → not held; null safe.
+        var hgo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            hgo.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+            A("panel: idle grabbable is not held", !HoverInspector.IsHeld(hgo.GetComponent<Collider>()));
+            A("panel: null collider not held", !HoverInspector.IsHeld(null));
+        }
+        finally { UnityEngine.Object.DestroyImmediate(hgo); }
     }
 
     // Corner music speaker playlist advance (user 2026-07-10).
@@ -2138,6 +2194,499 @@ public static class PharmaSelfTests
         A("glyph: box ▶ → »", GlyphSafe.Sanitize("▶ step") == "» step");
         A("glyph: plain text untouched", GlyphSafe.Sanitize("Prepare 0.1N HCl (250 mL)") == "Prepare 0.1N HCl (250 mL)");
         A("glyph: null/empty safe", GlyphSafe.Sanitize(null) == null && GlyphSafe.Sanitize("") == "");
+    }
+
+    // Held-item collision profile (user 2026-07-10: grabbed props phased through
+    // walls — pack prefabs shipped with Instantaneous movement, no physics sweep).
+    static void GrabTuningSuite()
+    {
+        var host = new GameObject("tune-host");
+        try
+        {
+            var grab = host.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+            grab.movementType = UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable.MovementType.Instantaneous;
+            A("grab: untuned detected", !GrabTuning.IsTuned(grab));
+            A("grab: apply reports change", GrabTuning.Apply(grab));
+            A("grab: velocity-tracked after apply", GrabTuning.IsTuned(grab));
+            A("grab: ease-in set", Near(grab.attachEaseInTime, GrabTuning.AttachEaseSeconds));
+            A("grab: re-apply is a no-op", !GrabTuning.Apply(grab));
+            A("grab: null safe", !GrabTuning.Apply(null) && !GrabTuning.IsTuned(null));
+        }
+        finally { UnityEngine.Object.DestroyImmediate(host); }
+
+        // Every library prefab grab must stay velocity-tracked (pins the Wire
+        // Grab Collision menu's result; a prefab re-import regression fails here).
+        var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
+        A("grab: library present", lib != null && lib.prefabs != null);
+        if (lib != null && lib.prefabs != null)
+        {
+            int grabs = 0, tuned = 0;
+            foreach (var p in lib.prefabs)
+            {
+                if (p == null) continue;
+                foreach (var g in p.GetComponentsInChildren<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>(true))
+                { grabs++; if (GrabTuning.IsTuned(g)) tuned++; }
+            }
+            A("grab: all library prefabs velocity-tracked (" + tuned + "/" + grabs + ")", grabs > 0 && tuned == grabs);
+        }
+    }
+
+    // Shelf-bottle pour wiring (user 2026-07-10: tipping shelf bottles showed no
+    // stream/puddle — LiquidPourer only existed on runtime-spawned props).
+    static void ShelfPourWiringSuite()
+    {
+        A("shelfpour: null safe", ShelfPourWiring.WireBottle(null, null, null) == -1);
+        var bottle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            A("shelfpour: non-liquid rejected", ShelfPourWiring.WireBottle(bottle, null, null) == -1);
+            bottle.AddComponent<LiquidPhysics>();
+            int added = ShelfPourWiring.WireBottle(bottle, null, null);
+            A("shelfpour: adds pourer+spout+spill+reactor", added == 4);
+            var pourer = bottle.GetComponent<LiquidPourer>();
+            A("shelfpour: pourer present", pourer != null);
+            A("shelfpour: spout wired", pourer != null && pourer.spout != null);
+            A("shelfpour: spill present", bottle.GetComponent<SpillMistake>() != null);
+            A("shelfpour: idempotent", ShelfPourWiring.WireBottle(bottle, null, null) == 0);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(bottle); }
+    }
+
+    // Focused checklist for the single holo procedures board (user 2026-07-10:
+    // full-detail text overflowed the pads — collapse everything but the active phase).
+    static void ChecklistPagerSuite()
+    {
+        var g = new TaskGraph(new List<ExperimentTask> {
+            T("prep", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure),
+            T("mix", TaskPhase.Synthesis, 2, LabSkill.Transfer, RubricCategory.Procedure, "prep"),
+            T("heat", TaskPhase.Synthesis, 1, LabSkill.Heating, RubricCategory.Procedure, "mix"),
+            T("test", TaskPhase.ChemicalTests, 1, LabSkill.TestInterpretation, RubricCategory.ChemicalTests, "heat"),
+        });
+
+        A("pager: active = first available phase", ChecklistPager.ActivePhase(g) == TaskPhase.ReagentPrep);
+        string s = ChecklistPager.BuildFocusedText(g);
+        A("pager: active phase in detail", s.Contains("prep") && s.Contains("»"));
+        A("pager: future phase collapsed", s.Contains("(2 steps)") && !s.Contains("mix"));
+        A("pager: future tests collapsed", s.Contains("(1 steps)") && !s.Contains("test"));
+
+        g.TryComplete("prep");
+        A("pager: active advances", ChecklistPager.ActivePhase(g) == TaskPhase.Synthesis);
+        s = ChecklistPager.BuildFocusedText(g);
+        A("pager: completed phase folds to done n/n", s.Contains("done 1/1"));
+        A("pager: new active in detail", s.Contains("mix") && s.Contains("heat"));
+        A("pager: folded phase hides steps", !s.Contains("prep"));
+
+        g.TryComplete("mix"); g.TryComplete("heat"); g.TryComplete("test");
+        A("pager: all complete → no active", ChecklistPager.ActivePhase(g) == null);
+        s = ChecklistPager.BuildFocusedText(g);
+        A("pager: everything folded when done", s.Contains("done 1/1") && s.Contains("done 2/2") && !s.Contains("»"));
+
+        A("pager: null graph safe", ChecklistPager.BuildFocusedText(null) == "" && ChecklistPager.ActivePhase(null) == null);
+        A("pager: null runner header safe", ChecklistPager.BuildHeader(null) == "");
+
+        // Bounded by construction: line count ≤ phases + active-phase tasks + 1.
+        var lines = ChecklistPager.BuildFocusedText(g).Split('\n');
+        A("pager: folded output is compact", lines.Length <= 6);
+    }
+
+    // Demo Mode config/save isolation (user 2026-07-10: panelists get a fast
+    // auto-complete run-through; study participants' real save is never touched).
+    static void DemoModeSuite()
+    {
+        A("demo: missing config → disabled", !DemoMode.Resolve(null, null).demoEnabled);
+        A("demo: streaming default enables", DemoMode.Resolve(null, "{\"demoEnabled\":true}").demoEnabled);
+        A("demo: persistent override wins (disable)", !DemoMode.Resolve("{\"demoEnabled\":false}", "{\"demoEnabled\":true}").demoEnabled);
+        A("demo: persistent override wins (enable)", DemoMode.Resolve("{\"demoEnabled\":true}", null).demoEnabled);
+        A("demo: malformed override falls through", DemoMode.Resolve("not-json{", "{\"demoEnabled\":true}").demoEnabled);
+        A("demo: infiniteSupply defaults on", DemoMode.Resolve(null, "{\"demoEnabled\":true}").infiniteSupply);
+
+        A("demo: normal save path untouched", DemoMode.SavePathFor(false, "a/pharmasynth_progress.json") == "a/pharmasynth_progress.json");
+        A("demo: demo save path suffixed", DemoMode.SavePathFor(true, "a/pharmasynth_progress.json") == "a/pharmasynth_progress_demo.json");
+        A("demo: extensionless path safe", DemoMode.SavePathFor(true, "save") == "save_demo");
+        A("demo: null path safe", DemoMode.SavePathFor(true, null) == null);
+
+        // Unlock-all opens every period/module WITHOUT faking passes.
+        var svc = new ProgressionService(System.IO.Path.Combine(Application.temporaryCachePath, "demo_flow_selftest.json"));
+        var demoFlow = new ProgressionFlow(svc, true);
+        var normalFlow = new ProgressionFlow(svc);
+        A("demo: finals period pickable", demoFlow.IsPeriodUnlocked(ExperimentPeriod.Final));
+        A("demo: any module pickable", demoFlow.IsUnlocked("final-caffeine"));
+        A("demo: unknown module still rejected", !demoFlow.IsUnlocked("does-not-exist"));
+        A("demo: pass state stays honest", !demoFlow.IsPassed("tutorial-methane") && demoFlow.PassedCount() == 0);
+        A("demo: normal flow unaffected", !normalFlow.IsPeriodUnlocked(ExperimentPeriod.Final));
+    }
+
+    // Demo HUD auto-complete verbs (skip step / finish experiment / auto quiz).
+    static void DemoActionsSuite()
+    {
+        var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+        module.graphTasks = new List<ExperimentTask> {
+            T("a", TaskPhase.ReagentPrep, 1, LabSkill.Measuring, RubricCategory.Procedure),
+            T("b", TaskPhase.Synthesis, 1, LabSkill.Transfer, RubricCategory.Procedure, "a"),
+            T("c", TaskPhase.ChemicalTests, 1, LabSkill.TestInterpretation, RubricCategory.ChemicalTests, "b"),
+            T("record-x", TaskPhase.DataSheet, 1, LabSkill.Measuring, RubricCategory.Documentation, "c"),
+        };
+        module.trackedSkills = new List<LabSkill> { LabSkill.Measuring, LabSkill.Transfer, LabSkill.TestInterpretation };
+        var rgo = new GameObject("demo_runner"); var pgo = new GameObject("demo_postlab");
+        try
+        {
+            var runner = rgo.AddComponent<ExperimentRunner>();
+            runner.SetModule(module);
+            A("demoactions: inert before start", DemoActions.CompleteCurrentStep(runner) == null);
+            runner.StartExperiment();
+            A("demoactions: completes first available", DemoActions.CompleteCurrentStep(runner) == "a");
+            A("demoactions: complete-all stops at data sheet", DemoActions.CompleteAllTasks(runner) == 2);
+            A("demoactions: data-sheet task untouched", !runner.Graph.IsComplete("record-x"));
+            A("demoactions: nothing left to skip", DemoActions.CompleteCurrentStep(runner) == null);
+
+            var post = pgo.AddComponent<PostLabController>();
+            post.SetRefs(runner, null);
+            A("demoactions: quiz closed → no-op", !DemoActions.AutoAnswerQuiz(post));
+            var bank = ScriptableObject.CreateInstance<QuizBank>();
+            bank.questions = new List<QuizQuestion> {
+                new QuizQuestion { prompt = "q1", options = new List<string>{ "x", "y" }, correctIndex = 1 },
+                new QuizQuestion { prompt = "q2", options = new List<string>{ "x", "y" }, correctIndex = 0 },
+            };
+            post.OpenFor(bank);
+            A("demoactions: auto-answers all", DemoActions.AutoAnswerQuiz(post));
+            A("demoactions: perfect score", Near(post.ScoreFraction(), 1f));
+            var res = post.SubmitAndFinish();
+            A("demoactions: submit finishes with full graph", Near(runner.Graph.Progress01, 1f) && res.grade.Total > 0f);
+            UnityEngine.Object.DestroyImmediate(bank);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(rgo);
+            UnityEngine.Object.DestroyImmediate(pgo);
+            UnityEngine.Object.DestroyImmediate(module);
+        }
+    }
+
+    // Hazardous-mix consequences (user 2026-07-10: wrong mixtures now smoke,
+    // ignite, spatter or fizz — and cost the right rubric category).
+    static void HazardousMixSuite()
+    {
+        ChemicalData Make(string name, float ph = 7f, HazardType hz = HazardType.None,
+                          bool ox = false, bool conc = false, PhysicalState st = PhysicalState.Liquid)
+        {
+            var c = ScriptableObject.CreateInstance<ChemicalData>();
+            c.chemicalName = name; c.pH = ph; c.hazard = hz;
+            c.isOxidizer = ox; c.isConcentratedAcid = conc; c.state = st;
+            return c;
+        }
+
+        var acid = Make("Hydrochloric Acid 6N", 0.5f, HazardType.Corrosive, conc: true);
+        var bleach = Make("Sodium Hypochlorite 5%", 11f, ox: true);
+        var ethanol = Make("Ethanol", 7f, HazardType.Flammable);
+        var kmno4 = Make("Potassium Permanganate 0.1%", 7f, ox: true);
+        var water = Make("Purified Water");
+
+        try
+        {
+            A("hazmix: acid + bleach = toxic gas",
+                HazardousMix.Classify(acid, bleach) == HazardousMix.HazardOutcome.ToxicGas
+                && HazardousMix.Classify(bleach, acid) == HazardousMix.HazardOutcome.ToxicGas);
+            A("hazmix: oxidizer + flammable = fire",
+                HazardousMix.Classify(kmno4, ethanol) == HazardousMix.HazardOutcome.FireOrExplosion
+                && HazardousMix.Classify(ethanol, kmno4) == HazardousMix.HazardOutcome.FireOrExplosion);
+            A("hazmix: water INTO conc acid = spatter",
+                HazardousMix.Classify(acid, water) == HazardousMix.HazardOutcome.AcidSpatter);
+            A("hazmix: conc acid into water = fizz only",
+                HazardousMix.Classify(water, acid) == HazardousMix.HazardOutcome.GenericFizz);
+            A("hazmix: unknown pair fizzes", HazardousMix.Classify(water, ethanol) == HazardousMix.HazardOutcome.GenericFizz);
+            A("hazmix: null / same safe",
+                HazardousMix.Classify(null, water) == HazardousMix.HazardOutcome.None
+                && HazardousMix.Classify(water, water) == HazardousMix.HazardOutcome.None);
+
+            A("hazmix: penalties map to the matrix",
+                HazardousMix.ErrorTypeFor(HazardousMix.HazardOutcome.ToxicGas) == LabErrorType.HazardousAction
+                && HazardousMix.ErrorTypeFor(HazardousMix.HazardOutcome.FireOrExplosion) == LabErrorType.HazardousAction
+                && HazardousMix.ErrorTypeFor(HazardousMix.HazardOutcome.AcidSpatter) == LabErrorType.ChemicalContact
+                && HazardousMix.ErrorTypeFor(HazardousMix.HazardOutcome.GenericFizz) == LabErrorType.WrongReagent);
+            A("hazmix: every outcome has a warn line",
+                HazardousMix.WarnLineFor(HazardousMix.HazardOutcome.ToxicGas).Length > 0
+                && HazardousMix.WarnLineFor(HazardousMix.HazardOutcome.FireOrExplosion).Length > 0
+                && HazardousMix.WarnLineFor(HazardousMix.HazardOutcome.AcidSpatter).Length > 0
+                && HazardousMix.WarnLineFor(HazardousMix.HazardOutcome.GenericFizz).Length > 0);
+
+            // Name-rule flags (the audit menu + raw-reagent forge share these).
+            A("hazflags: oxidizers recognized",
+                HazardFlags.IsOxidizer("Potassium Permanganate 0.1%") && HazardFlags.IsOxidizer("Bleaching Powder")
+                && HazardFlags.IsOxidizer("Bromine Water") && !HazardFlags.IsOxidizer("Ethanol"));
+            A("hazflags: conc acids recognized",
+                HazardFlags.IsConcentratedAcid("Sulfuric Acid") && HazardFlags.IsConcentratedAcid("Glacial Acetic Acid")
+                && !HazardFlags.IsConcentratedAcid("Diluted Hydrochloric Acid")
+                && !HazardFlags.IsConcentratedAcid("0.1N Hydrochloric Acid"));
+
+            // Warning-pulse curve + alarm flash phase.
+            A("pulse: silent at ends", Near(FadeState.Pulse01(0f, 0.35f), 0f) && Near(FadeState.Pulse01(1f, 0.35f), 0f));
+            A("pulse: peaks at attack end", Near(FadeState.Pulse01(0.35f, 0.35f), 0.35f));
+            A("pulse: clamped peak", FadeState.Pulse01(0.35f, 1.7f) <= 1f);
+            A("alarm: flash phase alternates", LabAlarm.FlashOn(0.1f, 0.5f) && !LabAlarm.FlashOn(0.3f, 0.5f)
+                && LabAlarm.FlashOn(0.6f, 0.5f) && !LabAlarm.FlashOn(0f, 0f));
+
+            // Reactor wiring seam (edit-mode: Bind + event path, no VFX side effects).
+            var host = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            try
+            {
+                var lp = host.AddComponent<LiquidPhysics>();
+                var reactor = host.AddComponent<HazardousMixReactor>();
+                reactor.Bind(lp, null);
+                A("hazmix: reactor binds without a runner", reactor != null);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(host); }
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(acid);
+            UnityEngine.Object.DestroyImmediate(bleach);
+            UnityEngine.Object.DestroyImmediate(ethanol);
+            UnityEngine.Object.DestroyImmediate(kmno4);
+            UnityEngine.Object.DestroyImmediate(water);
+        }
+    }
+
+    // NPC voice-over pipeline (user 2026-07-10: Pharmee + Dr. Jimenez speak) —
+    // hash-keyed clip lookup with graceful blip fallback.
+    static void VoiceSuite()
+    {
+        A("voice: id ignores cosmetic whitespace", VoiceLineId.For("Hello  world") == VoiceLineId.For(" Hello world "));
+        A("voice: distinct lines differ", VoiceLineId.For("line a") != VoiceLineId.For("line b"));
+        A("voice: null/empty agree", VoiceLineId.For(null) == VoiceLineId.For(""));
+        A("voice: id is 16 hex chars", VoiceLineId.For("x").Length == 16);
+
+        var corpus = VoiceCorpus.CodeLines();
+        A("voice: corpus substantial (≥110 code lines)", corpus.Count >= 110);
+        bool nonEmpty = true;
+        int jimenez = 0;
+        foreach (var l in corpus)
+        {
+            if (string.IsNullOrEmpty(l.text)) nonEmpty = false;
+            if (l.speaker == VoiceSpeaker.Jimenez) jimenez++;
+        }
+        A("voice: no empty corpus lines", nonEmpty);
+        A("voice: Jimenez pools attributed (≥15)", jimenez >= 15);
+        bool greetAsJimenez = false;
+        foreach (var l in corpus)
+            if (l.text == PharmeeLines.ExamGreeting[0] && l.speaker == VoiceSpeaker.Jimenez) greetAsJimenez = true;
+        A("voice: exam greeting speaks as Jimenez", greetAsJimenez);
+
+        var bank = ScriptableObject.CreateInstance<VoiceBank>();
+        var clip = AudioClip.Create("voice_test", 441, 1, 44100, false);
+        var go = new GameObject("voice_narr");
+        try
+        {
+            bank.entries.Add(new VoiceBank.Entry { speaker = VoiceSpeaker.Pharmee, id = VoiceLineId.For("hello"), clip = clip });
+            bank.Rebuild();
+            A("voice: bank hit", bank.Get(VoiceSpeaker.Pharmee, VoiceLineId.For("hello")) == clip);
+            A("voice: wrong speaker misses", bank.Get(VoiceSpeaker.Jimenez, VoiceLineId.For("hello")) == null);
+            A("voice: unknown id misses", bank.Get(VoiceSpeaker.Pharmee, "beef") == null);
+
+            var n = go.AddComponent<NPCNarrationController>();
+            n.BindVoice(bank, VoiceSpeaker.Pharmee);
+            A("voice: narration resolves by text", n.ResolveVoice("hello") == clip);
+            A("voice: unknown text degrades to blips", n.ResolveVoice("no clip for this") == null);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(go);
+            UnityEngine.Object.DestroyImmediate(bank);
+            UnityEngine.Object.DestroyImmediate(clip);
+        }
+    }
+
+    // The manuscript materials catalog + consumable behaviours (user 2026-07-10:
+    // ~54 raw materials stocked in nature-appropriate labware).
+    static void RawReagentSuite()
+    {
+        var rows = RawReagentCatalog.Rows;
+        A("raw: catalog covers the manuscript union (≥52)", rows.Count >= 52);
+
+        var names = new HashSet<string>();
+        bool unique = true, blurbs = true, groupsOk = true;
+        var validGroups = new HashSet<string> { RawReagentCatalog.GroupAcids, RawReagentCatalog.GroupOrganics,
+                                                RawReagentCatalog.GroupTests, RawReagentCatalog.GroupConsumables };
+        foreach (var r in rows)
+        {
+            if (!names.Add(r.chemicalName)) unique = false;
+            if (string.IsNullOrEmpty(r.blurb)) blurbs = false;
+            if (!validGroups.Contains(r.group)) groupsOk = false;
+        }
+        A("raw: names unique", unique);
+        A("raw: every row has a hover blurb", blurbs);
+        A("raw: groups valid", groupsOk);
+
+        A("raw: light-sensitive chemicals go amber",
+            RawReagentCatalog.Find("Aniline").labware == RawReagentCatalog.LabwareKind.AmberBottle
+            && RawReagentCatalog.Find("Benzaldehyde").labware == RawReagentCatalog.LabwareKind.AmberBottle
+            && RawReagentCatalog.Find("Silver Nitrate").labware == RawReagentCatalog.LabwareKind.AmberBottle
+            && RawReagentCatalog.Find("Bromine Water").labware == RawReagentCatalog.LabwareKind.AmberBottle);
+        A("raw: fume-hood set marked",
+            RawReagentCatalog.Find("Aniline").fumeHood && RawReagentCatalog.Find("Benzoyl Chloride").fumeHood
+            && RawReagentCatalog.Find("Ammonia Solution").fumeHood);
+        A("raw: manuscript consumables present",
+            RawReagentCatalog.Find("Litmus Paper") != null && RawReagentCatalog.Find("Matchsticks") != null
+            && RawReagentCatalog.Find("Cotton Swabs") != null && RawReagentCatalog.Find("Filter Paper") != null
+            && RawReagentCatalog.Find("Ice") != null && RawReagentCatalog.Find("Anhydrous Calcium Chloride") != null);
+        A("raw: blurb lookup + uses folded in",
+            RawReagentCatalog.BlurbFor("Aniline") != null && RawReagentCatalog.BlurbFor("Aniline").Contains("Exp 5"));
+        A("raw: unknown blurb null", RawReagentCatalog.BlurbFor("Unobtainium") == null);
+
+        // Labware → prefab mapping must resolve through the scene asset library.
+        var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
+        A("raw: library present", lib != null);
+        if (lib != null)
+        {
+            bool prefabsOk = true;
+            foreach (var kind in new[] { RawReagentCatalog.LabwareKind.ReagentBottle, RawReagentCatalog.LabwareKind.AmberBottle,
+                                         RawReagentCatalog.LabwareKind.PowderJar, RawReagentCatalog.LabwareKind.DropperBottle })
+                if (lib.GetPrefab(ReagentCabinetBuilder.PrefabFor(kind)) == null) prefabsOk = false;
+            A("raw: bottle labware prefabs resolve", prefabsOk);
+        }
+
+        // Litmus colours.
+        A("litmus: acid red", LitmusMath.ColorForPH(1f) == LitmusMath.AcidRed);
+        A("litmus: base blue", LitmusMath.ColorForPH(13f) == LitmusMath.BaseBlue);
+        Color mid = LitmusMath.ColorForPH(6.4f);
+        A("litmus: violet between", mid != LitmusMath.AcidRed && mid != LitmusMath.BaseBlue);
+
+        // Matchstick ignition predicate.
+        A("match: ignites near heat", Matchstick.ShouldIgnite(0.1f, 120f, false, false));
+        A("match: too far stays out", !Matchstick.ShouldIgnite(0.5f, 120f, false, false));
+        A("match: too cold stays out", !Matchstick.ShouldIgnite(0.1f, 40f, false, false));
+        A("match: lit/spent never re-ignite", !Matchstick.ShouldIgnite(0.1f, 120f, true, false)
+            && !Matchstick.ShouldIgnite(0.1f, 120f, false, true));
+
+        // Demo ready-made product per module.
+        string[] ids = { "tutorial-methane", "prelim-chemical-compounding", "prelim-ethyl-alcohol",
+                         "midterm-benzoic-acid", "midterm-acetanilide", "midterm-acetone", "midterm-chloroform",
+                         "final-benzamide", "final-aspirin", "final-caffeine", "final-winemaking" };
+        bool products = true;
+        foreach (var id in ids) if (string.IsNullOrEmpty(DemoMode.ProductFor(id))) products = false;
+        A("demo: ready-made product for all 11 modules", products);
+        A("demo: unknown module has none", DemoMode.ProductFor("nope") == null);
+    }
+
+    // Center-table merge geometry (user 2026-07-10: one wide landscape table,
+    // centered — a rigid remap shared by the island object and the baked layouts).
+    static void CenterTableMathSuite()
+    {
+        var pts = new List<Vector3> {
+            new Vector3(-2.15f, 0.91f, -1.95f), new Vector3(-1.1f, 0.91f, -4.6f), new Vector3(-1.9f, 0.91f, -3.4f),
+        };
+        var b = CenterTableMath.FootprintOf(pts, 0.35f);
+        A("table: footprint spans the points", b.min.x < -2.15f && b.max.x > -1.1f && b.min.z < -4.6f && b.max.z > -1.95f);
+        A("table: margin applied", Near(b.max.x, -1.1f + 0.35f, 0.01f));
+
+        Vector3 oldC = new Vector3(-1.6f, 0.91f, -3.3f);
+        Vector3 newC = new Vector3(0f, 0.91f, -3.3f);
+        A("table: centre maps to centre", Near(Vector3.Distance(
+            CenterTableMath.Remap(oldC, oldC, newC, true), newC), 0f, 0.001f));
+        // +z offset becomes +x offset under the 90° landscape turn.
+        Vector3 r = CenterTableMath.Remap(oldC + new Vector3(0f, 0f, 1f), oldC, newC, true);
+        A("table: rotation maps z-run onto x-run", Near(r.x, newC.x + 1f) && Near(r.z, newC.z));
+        // Height is preserved.
+        A("table: deck height preserved", Near(CenterTableMath.Remap(new Vector3(-1.2f, 0.91f, -2f), oldC, newC, true).y, 0.91f));
+        // Distances are rigid (no scaling).
+        Vector3 p1 = new Vector3(-2.15f, 0.91f, -1.95f), p2 = new Vector3(-1.1f, 0.91f, -4.6f);
+        A("table: remap is rigid", Near(
+            Vector3.Distance(CenterTableMath.Remap(p1, oldC, newC, true), CenterTableMath.Remap(p2, oldC, newC, true)),
+            Vector3.Distance(p1, p2), 0.001f));
+
+        A("table: within test", CenterTableMath.WithinXZ(new Vector3(-1.5f, 0.9f, -3f), b)
+            && !CenterTableMath.WithinXZ(new Vector3(2f, 0.9f, -3f), b));
+        A("table: mirror across x", Near(CenterTableMath.MirrorAcrossX(new Vector3(1.4f, 0f, -3f), 0f).x, -1.4f));
+    }
+
+    // Post-experiment review flow seams (user 2026-07-11: congrats → Jimenez
+    // briefing → quiz → score remarks → entrance debrief).
+    static void ReviewFlowSuite()
+    {
+        // Clock freeze: the review/quiz never costs Time-Management score.
+        var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
+        module.graphTasks = new List<ExperimentTask> {
+            T("a", TaskPhase.Synthesis, 1, LabSkill.Transfer, RubricCategory.Procedure),
+        };
+        module.trackedSkills = new List<LabSkill> { LabSkill.Transfer };
+        var go = new GameObject("freeze_runner");
+        try
+        {
+            var runner = go.AddComponent<ExperimentRunner>();
+            runner.SetModule(module);
+            runner.StartExperiment();
+            runner.AdvanceTime(10f);
+            A("review: clock runs before freeze", Near(runner.ElapsedSeconds, 10f));
+            runner.FreezeClock();
+            runner.AdvanceTime(30f);
+            A("review: frozen clock holds", Near(runner.ElapsedSeconds, 10f) && runner.ClockFrozen);
+            runner.Retry();
+            A("review: retry thaws the clock", !runner.ClockFrozen);
+            A("review: HasPhase sees synthesis only",
+                runner.Graph.HasPhase(TaskPhase.Synthesis) && !runner.Graph.HasPhase(TaskPhase.ChemicalTests));
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); UnityEngine.Object.DestroyImmediate(module); }
+
+        // Banded debrief remark (numbers stay on the grade card, lines stay finite).
+        A("review: flawless band", PharmeeLines.DebriefRemark(98f).Contains("flawless"));
+        A("review: strong band", PharmeeLines.DebriefRemark(94f).Contains("strong"));
+        A("review: solid band", PharmeeLines.DebriefRemark(90f).Contains("solid"));
+
+        // New spoken pools all populated (voice corpus depends on them).
+        A("review: pools populated",
+            PharmeeLines.TestsDoneLines.Length >= 3 && PharmeeLines.JimenezQuizBrief.Length >= 3
+            && PharmeeLines.JimenezPassRemarks.Length >= 4 && PharmeeLines.JimenezFailRemarks.Length >= 3
+            && PharmeeLines.DebriefCongrats.Length >= 3);
+    }
+
+    // ILO opening dialogue (user 2026-07-10: Pharmee states each experiment's
+    // learning outcomes — verbatim Appendix C copy — in the intro cutscene).
+    static void IloCopySuite()
+    {
+        string[] ids = {
+            "tutorial-methane", "prelim-chemical-compounding", "prelim-ethyl-alcohol",
+            "midterm-benzoic-acid", "midterm-acetanilide", "midterm-acetone", "midterm-chloroform",
+            "final-benzamide", "final-aspirin", "final-caffeine", "final-winemaking",
+        };
+        bool allPresent = true, allSized = true;
+        foreach (var id in ids)
+        {
+            var ilos = IloCopy.ForModule(id);
+            if (ilos.Length == 0) allPresent = false;
+            foreach (var line in ilos)
+                if (string.IsNullOrEmpty(line) || line.Length > 220) allSized = false;
+        }
+        A("ilo: all 11 modules covered", allPresent);
+        A("ilo: subtitle-sized lines", allSized);
+        A("ilo: synthesis modules keep manuscript verbs",
+            IloCopy.ForModule("prelim-ethyl-alcohol")[0].Contains("Synthesize ethyl alcohol")
+            && IloCopy.ForModule("final-benzamide")[1].Contains("identity through chemical tests"));
+        A("ilo: unknown id → empty", IloCopy.ForModule("does-not-exist").Length == 0);
+        A("ilo: beat pacing floors and caps",
+            Near(IloCopy.BeatSeconds("short"), 2.5f) && Near(IloCopy.BeatSeconds(new string('x', 200)), 6f));
+
+        var cs = ScriptableObject.CreateInstance<CutsceneData>();
+        try
+        {
+            cs.beats = new List<CutsceneData.Beat> { new CutsceneData.Beat { subtitle = "greet", seconds = 3f } };
+            int added = IloBeatInjector.InjectInto(cs, "prelim-ethyl-alcohol");
+            A("ilo: injects lead-in + objectives", added == 3 && cs.beats.Count == 4);
+            A("ilo: lead-in lands after the greeting", cs.beats[1].subtitle == IloCopy.LeadIn);
+            A("ilo: objectives follow in order", cs.beats[2].subtitle.Contains("Objective 1"));
+            A("ilo: re-inject is a no-op", IloBeatInjector.InjectInto(cs, "prelim-ethyl-alcohol") == 0 && cs.beats.Count == 4);
+        }
+        finally { UnityEngine.Object.DestroyImmediate(cs); }
+    }
+
+    // Persisted particle material (device builds strip runtime Shader.Find-only
+    // shaders — the Resources asset keeps the pour stream/puddles alive on Quest).
+    static void FxMaterialSuite()
+    {
+        var m = ShelfPourBuilder.EnsureFxMaterial();
+        A("fxmat: asset exists", m != null);
+        A("fxmat: transparent surface", m != null && Near(m.GetFloat("_Surface"), 1f));
+        A("fxmat: alpha blend", m != null && m.GetInt("_SrcBlend") == (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        A("fxmat: no zwrite", m != null && m.GetInt("_ZWrite") == 0);
+        A("fxmat: resources-loadable", Resources.Load<Material>("FxParticleUnlit") != null);
     }
 }
 #endif

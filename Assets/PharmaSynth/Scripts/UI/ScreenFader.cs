@@ -35,6 +35,14 @@ public class FadeState
         t = Mathf.Clamp01(t);
         return t * t * (3f - 2f * t);
     }
+
+    /// 0→peak→0 warning-pulse alpha (fast attack, slow release). Pure for tests.
+    public static float Pulse01(float t01, float peak)
+    {
+        t01 = Mathf.Clamp01(t01);
+        float k = t01 < 0.35f ? Ease01(t01 / 0.35f) : 1f - Ease01((t01 - 0.35f) / 0.65f);
+        return Mathf.Clamp01(peak) * k;
+    }
 }
 
 /// VR-safe screen fade: a black quad floating just in front of the camera (a
@@ -128,6 +136,39 @@ public class ScreenFader : MonoBehaviour
             var cb = _onDone; _onDone = null;
             cb();
         }
+    }
+
+    private bool _pulsing;
+
+    /// Brief tinted vignette pulse for player-adjacent hazards (fire/spatter —
+    /// the manuscript's "visual alert"). Never fights a real fade: skipped while
+    /// one runs, aborted if one starts.
+    public void PulseWarning(Color tint, float seconds = 0.9f, float peak = 0.35f)
+    {
+        if (!Application.isPlaying) return;
+        EnsureQuad();
+        if (_mat == null || _state.Busy || _pulsing) return;
+        StartCoroutine(PulseRoutine(tint, Mathf.Max(0.2f, seconds), peak));
+    }
+
+    private System.Collections.IEnumerator PulseRoutine(Color tint, float seconds, float peak)
+    {
+        _pulsing = true;
+        var c = _mat.color;
+        _mat.color = new Color(tint.r, tint.g, tint.b, 0f);
+        float t = 0f;
+        while (t < seconds && !_state.Busy)
+        {
+            t += Time.deltaTime;
+            float a = FadeState.Pulse01(t / seconds, peak);
+            var pc = _mat.color; pc.a = a; _mat.color = pc;
+            quad.enabled = a > 0.001f;
+            yield return null;
+        }
+        // Hand the quad back to the fade system: black, at the fade's own alpha.
+        _mat.color = new Color(0f, 0f, 0f, _state.Alpha);
+        quad.enabled = _state.Alpha > 0.001f;
+        _pulsing = false;
     }
 
     public void FadeOut(float seconds = -1f, Action done = null)

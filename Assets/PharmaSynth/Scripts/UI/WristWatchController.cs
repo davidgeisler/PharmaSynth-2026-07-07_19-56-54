@@ -32,6 +32,9 @@ public class WristWatchController : MonoBehaviour
     [SerializeField] private GameObject holoPanel;      // world-space holographic board
     [SerializeField] private TMP_Text holoTitle;
     [SerializeField] private TMP_Text holoBody;
+    [SerializeField] private TMP_Text holoSummary;      // one-line header (absorbed the wrist mini-panel)
+    [SerializeField] private TMP_Text holoReaction;     // balanced-reaction footer (absorbed the LabTablet's)
+    [SerializeField, TextArea] private string balancedReaction = "";
     [SerializeField] private float holoDistance = 1.15f;
     [SerializeField] private float holoHeightOffset = -0.05f;
 
@@ -41,6 +44,11 @@ public class WristWatchController : MonoBehaviour
 
     public void BindHolo(GameObject panel, TMP_Text title, TMP_Text body)
     { holoPanel = panel; holoTitle = title; holoBody = body; }
+
+    public void BindHolo(GameObject panel, TMP_Text title, TMP_Text summary, TMP_Text body, TMP_Text reaction)
+    { holoPanel = panel; holoTitle = title; holoSummary = summary; holoBody = body; holoReaction = reaction; }
+
+    public void SetReaction(string reaction) => balancedReaction = reaction;
 
     private void OnEnable()
     {
@@ -76,19 +84,23 @@ public class WristWatchController : MonoBehaviour
         // No experiment content, no panels — otherwise the simulator's resting
         // palm-up controllers summon an empty board in the corridor/lab tour.
         if (runner == null || runner.Graph == null) show = false;
-        if (panel != null && panel.activeSelf != show) panel.SetActive(show);
-        if (show && summaryText != null) summaryText.text = BuildSummary(runner);
+        // The wrist mini-panel is retired (user 2026-07-10: one procedures
+        // display, centered) — the holo board below is the single panel now.
+        if (panel != null && panel.activeSelf) panel.SetActive(false);
 
         // Large holographic procedures board: appears in front of the player on
-        // the same gesture, listing the full phase-grouped checklist.
+        // the same gesture. Focused checklist (active phase in detail, others
+        // collapsed) + status header + reaction footer.
         if (show && !_lastShow) PlaceHolo();
         _lastShow = show;
         if (holoPanel != null && holoPanel.activeSelf != show) holoPanel.SetActive(show);
         if (show && runner != null)
         {
             if (holoTitle != null) holoTitle.text = runner.Module != null ? runner.Module.moduleTitle : "Procedures";
+            if (holoSummary != null) holoSummary.text = ChecklistPager.BuildHeader(runner);
             if (holoBody != null && runner.Graph != null)
-                holoBody.text = TabletChecklistController.BuildChecklistText(runner.Graph);
+                holoBody.text = ChecklistPager.BuildFocusedText(runner.Graph);
+            if (holoReaction != null) holoReaction.text = GlyphSafe.Sanitize(balancedReaction);
         }
     }
 

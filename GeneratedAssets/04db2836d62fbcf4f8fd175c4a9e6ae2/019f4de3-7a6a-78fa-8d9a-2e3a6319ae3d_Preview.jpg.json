@@ -1,0 +1,12 @@
+{
+    "asset": "04db2836d62fbcf4f8fd175c4a9e6ae2",
+    "fileName": "019f4de3-7a6a-78fa-8d9a-2e3a6319ae3d_Preview.jpg",
+    "prompt": "Seamless tileable brushed stainless steel texture, fine horizontal satin grain, clean metallic surface, realistic PBR, top-down flat",
+    "negativePrompt": "",
+    "model": "realistic-textures-3-0",
+    "modelName": "Realistic Textures 3.0",
+    "customSeed": 1206179564,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation"
+}

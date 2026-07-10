@@ -18,6 +18,14 @@ MonoBehaviour:
   - subtitle: 'Welcome back! Today: Wine Making.'
     seconds: 3.5
     face: 1
+  - subtitle: 'Here''s what you''ll be able to do by the end of this session:'
+    seconds: 2.8
+    face: 1
+  - subtitle: 'Objective: Learn the basic methodology in preparation and synthesis
+      of alcohol using the fermentation technique, with basic ingredients found in
+      any household kitchen.'
+    seconds: 6
+    face: 0
   - subtitle: Prepare a fruit must, ferment it, confirm CO2, then rack and evaluate
       your wine.
     seconds: 4.5

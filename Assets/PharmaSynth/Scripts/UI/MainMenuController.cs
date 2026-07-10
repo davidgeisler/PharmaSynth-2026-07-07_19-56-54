@@ -24,9 +24,24 @@ public class MainMenuController : MonoBehaviour
 
     public void OnLaboratory()
     {
+        DemoSession.Active = false;          // normal play never inherits a demo session
+        EnterLab();
+    }
+
+    /// The config-gated Demo Mode button (visible only when the backend file
+    /// enables it): same entry, but on the throwaway demo save with every
+    /// period unlocked and the HUD auto-complete controls armed.
+    public void OnDemoLaboratory()
+    {
+        DemoSession.Active = true;
+        EnterLab();
+    }
+
+    private void EnterLab()
+    {
         var service = new ProgressionService();
         service.Load();
-        GameFlow.Select(ResolveLabTarget(new ProgressionFlow(service), fallbackModuleId));
+        GameFlow.Select(ResolveLabTarget(ProgressionFlow.Create(service), fallbackModuleId));
         ScreenFader.FadeOutThen(() => SceneManager.LoadScene(labSceneName));
     }
 

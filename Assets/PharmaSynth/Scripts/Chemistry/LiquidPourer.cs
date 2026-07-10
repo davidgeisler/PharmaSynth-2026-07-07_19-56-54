@@ -60,6 +60,7 @@ public class LiquidPourer : MonoBehaviour
 
         if (tiltAngle > pourThreshold && sourceContainer.currentLiquidVolume > 0)
         {
+            EnsureStreamLine();
             Pour(tiltAngle);
             UpdatePourAudio(true, smoothedFlow01);
             UpdatePourStream(true, smoothedFlow01);
@@ -126,7 +127,7 @@ public class LiquidPourer : MonoBehaviour
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.startLifetime = 0.55f;
             main.startSpeed = 0.45f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.008f, 0.016f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.012f, 0.022f);
             main.gravityModifier = 2.6f;
             main.maxParticles = 160;
             var em = _pourStream.emission; em.rateOverTime = 0f;
@@ -138,7 +139,7 @@ public class LiquidPourer : MonoBehaviour
             _pourStream.Play();
         }
         var emis = _pourStream.emission;
-        emis.rateOverTime = pouring ? Mathf.Lerp(22f, 75f, Mathf.Clamp01(flow01)) : 0f;
+        emis.rateOverTime = pouring ? Mathf.Lerp(35f, 110f, Mathf.Clamp01(flow01)) : 0f;
         if (pouring)
         {
             var main = _pourStream.main;
@@ -147,6 +148,27 @@ public class LiquidPourer : MonoBehaviour
             c.a = 1f;
             main.startColor = c;
         }
+    }
+
+    /// The connected pour ARC (DrawCurvedStream) previously rendered only on
+    /// bottles whose optional LineRenderer someone had authored — which was none
+    /// of them (user 2026-07-10: pours to the ground still hard to see). Build it
+    /// on first pour so every pourer shows a continuous mouth-to-surface stream
+    /// on top of the droplet particles.
+    void EnsureStreamLine()
+    {
+        if (streamLine != null || !Application.isPlaying) return;
+        var go = new GameObject("StreamLine");
+        go.transform.SetParent(Mouth, false);
+        streamLine = go.AddComponent<LineRenderer>();
+        streamLine.useWorldSpace = true;
+        streamLine.positionCount = Mathf.Max(2, streamSegments);
+        streamLine.startWidth = minStreamWidth;
+        streamLine.endWidth = minStreamWidth * 0.65f;
+        streamLine.numCapVertices = 4;
+        streamLine.material = EffectVfx.ParticleMaterial();
+        streamLine.sortingOrder = 10;
+        streamLine.enabled = false;
     }
 
     void Pour(float currentTilt)

@@ -1,0 +1,31 @@
+{
+    "asset": "42cb980c271c1b7469fcc1a331c98165",
+    "fileName": "019f4df8-44fa-79b1-b039-f580ceccabc9.png",
+    "prompt": "A wide-mouth laboratory reagent jar: clear glass jar with a screw-top black cap, filled two-thirds with a fine white powder. Single object, centered, plain flat white background, even studio lighting, product photo, no text or label.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

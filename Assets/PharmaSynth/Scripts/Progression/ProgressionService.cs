@@ -33,12 +33,16 @@ public class ProgressionService
     private readonly string _backupPath;
     private ProgressSaveData _data = new ProgressSaveData();
 
-    /// Default location: Application.persistentDataPath/pharmasynth_progress.json.
-    /// Tests pass an explicit path.
+    /// Default location: Application.persistentDataPath/pharmasynth_progress.json —
+    /// remapped to the throwaway _demo file while a demo session is active, so
+    /// every default-path consumer (menu, gatekeeper, recorder, results screen)
+    /// reads/writes demo progress without touching the real save. Tests pass an
+    /// explicit path.
     public ProgressionService(string path = null)
     {
         _path = string.IsNullOrEmpty(path)
-            ? Path.Combine(Application.persistentDataPath, "pharmasynth_progress.json")
+            ? DemoMode.SavePathFor(DemoSession.Active,
+                Path.Combine(Application.persistentDataPath, "pharmasynth_progress.json"))
             : path;
         _backupPath = _path + ".bak";
     }

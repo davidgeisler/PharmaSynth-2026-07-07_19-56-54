@@ -17,20 +17,20 @@ MonoBehaviour:
   - taskId: test-combustion
     label: 2. Combustion test
     requiredItemId: test-combustion
-    pos: {x: -1.1, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -3.790166}
     sim: 0
     simTargetC: 85
   - taskId: test-sodium
     label: 3. Sodium metal test
     requiredItemId: test-sodium
-    pos: {x: -1.1, y: 0.91, z: -4}
+    pos: {x: -0.65308976, y: 0.91, z: -3.790166}
     sim: 0
     simTargetC: 85
   props:
   - prefabName: Vial_Brown
     itemId: gather-ethanol
     displayName: Ethanol
-    pos: {x: -2.15, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -2.740166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Ethanol
@@ -38,7 +38,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: test-bromine
     displayName: Bromine Water
-    pos: {x: -1.85, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.040166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Bromine Water
@@ -46,7 +46,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: test-kmno4
     displayName: KMnO4 Solution
-    pos: {x: -1.55, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.340166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Potassium Permanganate
@@ -54,7 +54,7 @@ MonoBehaviour:
   - prefabName: GlassRod
     itemId: test-combustion
     displayName: Lit Splint
-    pos: {x: -2.05, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -2.840166}
     targetHeight: 0.18
     pourable: 0
     fillChemical: 
@@ -62,7 +62,7 @@ MonoBehaviour:
   - prefabName: Spatula
     itemId: test-sodium
     displayName: Sodium Scoop
-    pos: {x: -1.75, y: 0.91, z: -1.55}
+    pos: {x: 1.3800015, y: 0.91, z: -3.140166}
     targetHeight: 0.16
     pourable: 0
     fillChemical: 
@@ -70,7 +70,7 @@ MonoBehaviour:
   vessels:
   - prefabName: Beaker_100mL
     displayName: Test Beaker
-    pos: {x: -1.4, y: 0.91, z: -2.6}
+    pos: {x: 0.74691033, y: 0.91, z: -3.4901662}
     targetHeight: 0.16
     startChemical: 
     bindings:

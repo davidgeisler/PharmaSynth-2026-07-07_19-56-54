@@ -25,3 +25,5 @@ MonoBehaviour:
   hazard: 2
   requiresFumeHood: 0
   isDangerous: 1
+  isOxidizer: 0
+  isConcentratedAcid: 0

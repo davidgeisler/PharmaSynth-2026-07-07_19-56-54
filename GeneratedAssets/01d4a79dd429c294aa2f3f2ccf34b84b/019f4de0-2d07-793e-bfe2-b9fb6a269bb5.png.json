@@ -1,0 +1,31 @@
+{
+    "asset": "01d4a79dd429c294aa2f3f2ccf34b84b",
+    "fileName": "019f4de0-2d07-793e-bfe2-b9fb6a269bb5.png",
+    "prompt": "A small stainless steel laboratory ice bucket: a cylindrical brushed-metal pail filled with clear ice cubes rising just above the rim. Single object, centered, plain flat white background, even studio lighting, full object visible, product photo, no text, no shadow clutter.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

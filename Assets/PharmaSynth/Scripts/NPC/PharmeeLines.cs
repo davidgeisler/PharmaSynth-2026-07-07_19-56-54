@@ -96,13 +96,61 @@ public static class PharmeeLines
         "Keep your workspace orderly.",
     };
 
+    // ---- Post-experiment review flow (user 2026-07-11: congrats → Jimenez quiz
+    // briefing → score remarks → entrance debrief). Finite pools, numbers stay on
+    // the grade card so every line is voice-recordable.
+    public static readonly string[] TestsDoneLines =
+    {
+        "Excellent — every test is complete! Dr. Jimenez will review your work now. Let's head over to him.",
+        "That's the last test done! Time for your assessment review — Dr. Jimenez is waiting.",
+        "All tests finished — wonderful work! Off to Dr. Jimenez for your documentation and review.",
+    };
+
+    public static readonly string[] JimenezQuizBrief =
+    {
+        "Well done reaching this stage. Before your grade is final, you will document your work.",
+        "Answer the questions on the tablet. Your documentation counts toward your final grade. Begin.",
+        "Take your time — accuracy over speed. The tablet is ready for you.",
+    };
+
+    public static readonly string[] JimenezPassRemarks =
+    {
+        "A commendable performance. Your technique meets the standard.",
+        "Satisfactory work. Your method was sound and your record is complete.",
+        "You have met the requirements of this assessment. Well executed.",
+        "Precise and orderly. I am marking this assessment as passed.",
+    };
+
+    public static readonly string[] JimenezFailRemarks =
+    {
+        "Not yet to standard. Review your procedure and attempt it again.",
+        "Your record shows gaps. Repeat the exercise with more care.",
+        "This attempt falls short of the requirement. I expect better on your retry.",
+    };
+
+    public static readonly string[] DebriefCongrats =
+    {
+        "Congratulations on completing the assessment and the quiz!",
+        "Assessment complete — quiz and all. Well done making it through!",
+        "That's a full experiment, tests, and documentation finished. Great job!",
+    };
+
+    /// Banded performance remark for Pharmee's entrance debrief (Debrief is only
+    /// reachable after a pass, so bands split the passing range). Pure for tests.
+    public static string DebriefRemark(float gradeTotal)
+    {
+        if (gradeTotal >= 97f) return "A flawless run — truly impressive work.";
+        if (gradeTotal >= 93f) return "A strong performance — you clearly know your way around this lab.";
+        return "A solid pass — keep practising and the tricky steps will feel natural.";
+    }
+
     // ---- Guided lab tour (storyboard beats, refined to exceed) ---------------
     // Played in order when the player picks "Lab Tour" — Pharmee walks them through
     // each area instead of the old single free-roam line. The last beat is the closer.
     public static readonly string[] TourBeats =
     {
         "Welcome to the lab! Let's take a quick tour so you feel right at home before any graded work.",
-        "On your left, you can grab the tablet anytime — it lays out the full step-by-step procedure for each experiment.",
+        "Flick your wrist face-up and glance at it — your holographic procedures board lays out every step of the experiment, live.",
         "The bench in front of you is your main workspace: prepare reagents, run your reactions, and handle glassware here.",
         "Over there is the equipment cabinet — open it and pick the apparatus your tablet calls for.",
         "The reagent shelf holds your chemicals. Take only what each step needs — the bottles are limited!",

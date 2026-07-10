@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
 
-/// States of the door-gated game loop (confirmed client workflow, 2026-07-09):
+/// States of the door-gated game loop (confirmed client workflow 2026-07-09,
+/// post-experiment review flow redesigned 2026-07-11 per the user's plan):
 /// Pharmee blocks the lab door; the player picks Lab Tour or Campaign → episode →
 /// lab-coat → ready → the lab loads/resets → threshold warning → the period starts
-/// the moment they walk in → debrief → teleport back → unlock announcement → repeat.
+/// the moment they walk in → tests complete → Pharmee congratulates and fades the
+/// player to Dr. Jimenez's review corner (QuizIntro) → Jimenez briefs → the quiz
+/// (QuizTime, never score-gated — manuscript) → grade + outro + spoken remarks
+/// (ScoreReview) → Continue teleports home with a full lab/wearables reset
+/// (Returning) → Pharmee's quiz-completion debrief AT THE ENTRANCE (Debrief) →
+/// unlock announcement → repeat. Retry from the review corner re-arms at the door.
 public enum GateState
 {
     Blocked, ModeChoice, CampaignExplain, EpisodePick, CoatPrompt,
     ReadyPrompt, Loading, ThresholdWarn, DoorArmed, Running,
-    SupplyPrompt, Debrief, Returning, UnlockAnnounce, LabTour
+    SupplyPrompt, Debrief, Returning, UnlockAnnounce, LabTour,
+    QuizIntro, ScoreReview, QuizTime
 }
 
 public enum GateEvent
@@ -18,7 +25,11 @@ public enum GateEvent
     Coated, Ready, Loaded, ProceedConfirmed, CrossedThreshold,
     ContinueAfterPass, DebriefDone, TeleportDone, AnnounceDone,
     SupplyExhausted, RestartConfirmed, Dismiss,
-    TalkRequested   // poking Pharmee re-opens the conversation (e.g. during Lab Tour)
+    TalkRequested,  // poking Pharmee re-opens the conversation (e.g. during Lab Tour)
+    TestsDone,      // last chemical-test phase completed → review flow begins
+    QuizBegin,      // Jimenez's briefing done → the tablet quiz opens
+    Graded,         // runner.Finish landed (quiz submitted) → score review
+    RetryRequested  // failed review → clean re-armed attempt at the door
 }
 
 /// Pure, table-driven state machine for the Pharmee door gate. No Unity types —
@@ -107,17 +118,27 @@ public class GatekeeperModel
                 break;
             case GateState.Running:
                 if (e == GateEvent.SupplyExhausted) return GateState.SupplyPrompt;
-                if (e == GateEvent.ContinueAfterPass) return GateState.Debrief;
+                if (e == GateEvent.TestsDone) return GateState.QuizIntro;
+                break;
+            case GateState.QuizIntro:
+                if (e == GateEvent.QuizBegin) return GateState.QuizTime;
+                break;
+            case GateState.QuizTime:
+                if (e == GateEvent.Graded) return GateState.ScoreReview;
+                break;
+            case GateState.ScoreReview:
+                if (e == GateEvent.ContinueAfterPass) return GateState.Returning;   // pass-gated by the grade screen
+                if (e == GateEvent.RetryRequested) return GateState.Loading;        // clean re-armed attempt
                 break;
             case GateState.SupplyPrompt:
                 if (e == GateEvent.RestartConfirmed) return GateState.Loading;
                 if (e == GateEvent.Dismiss) return GateState.Running;       // keep trying
                 break;
-            case GateState.Debrief:
-                if (e == GateEvent.DebriefDone) return GateState.Returning;
-                break;
             case GateState.Returning:
-                if (e == GateEvent.TeleportDone) return GateState.UnlockAnnounce;
+                if (e == GateEvent.TeleportDone) return GateState.Debrief;  // debrief happens AT the entrance
+                break;
+            case GateState.Debrief:
+                if (e == GateEvent.DebriefDone) return GateState.UnlockAnnounce;
                 break;
             case GateState.UnlockAnnounce:
                 if (e == GateEvent.AnnounceDone) return GateState.Blocked;
@@ -126,10 +147,12 @@ public class GatekeeperModel
         return s;
     }
 
-    /// Whether the physical door blocker should be OFF in this state.
+    /// Whether the physical door blocker should be OFF in this state. (Debrief now
+    /// happens back at the entrance after the Returning teleport → door closed.)
     public static bool DoorOpen(GateState s)
         => s == GateState.LabTour || s == GateState.DoorArmed || s == GateState.Running
-        || s == GateState.SupplyPrompt || s == GateState.Debrief;
+        || s == GateState.SupplyPrompt
+        || s == GateState.QuizIntro || s == GateState.QuizTime || s == GateState.ScoreReview;
 
     /// Pick the episode (period): resolves the first playable module in it, checks
     /// selectability, stores the module and advances. False = locked/empty, no move.

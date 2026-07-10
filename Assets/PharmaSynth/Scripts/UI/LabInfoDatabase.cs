@@ -43,6 +43,11 @@ public static class LabInfoDatabase
         Build();
         if (_reagents.TryGetValue(Norm(chemicalName), out var e)) return e;
         string title = string.IsNullOrEmpty(chemicalName) ? "Reagent" : chemicalName;
+        // The manuscript materials catalog carries blurbs for the raw-reagent
+        // stock (batch H) — authored entries above still win.
+        string catalogBlurb = RawReagentCatalog.BlurbFor(chemicalName);
+        if (!string.IsNullOrEmpty(catalogBlurb))
+            return new LabInfoEntry(title, LabInfoCategory.Reagent, catalogBlurb);
         return new LabInfoEntry(title, LabInfoCategory.Reagent,
             "A laboratory reagent. Handle with gloves and goggles, keep the bottle capped, and pour only what the procedure calls for.");
     }

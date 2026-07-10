@@ -18,6 +18,16 @@ MonoBehaviour:
   - subtitle: 'Welcome back! Today: Chemical Compounding.'
     seconds: 3.5
     face: 1
+  - subtitle: 'Here''s what you''ll be able to do by the end of this session:'
+    seconds: 2.8
+    face: 1
+  - subtitle: 'Objective 1: Write chemical reactions involved in some organic compounds
+      such as alcohols, aldehydes, ketones, carboxylic acids and esters.'
+    seconds: 6
+    face: 0
+  - subtitle: 'Objective 2: Differentiate tests for different organic compounds.'
+    seconds: 4.0625
+    face: 0
   - subtitle: Identify ethanol's functional group with combustion, sodium, bromine-water
       and permanganate tests.
     seconds: 4.5

@@ -41,6 +41,11 @@ public class PharmeeGatekeeper : MonoBehaviour
     [SerializeField] private HudRigController hudRig;     // snapped after teleports
     [SerializeField] private ReagentSupplyMonitor supplyMonitor;   // insufficiency detector
 
+    [Header("Review corner (post-experiment quiz flow, 2026-07-11)")]
+    [SerializeField] private PostLabController postLab;   // the quiz tablet (autoOpen off in-scene)
+    [SerializeField] private Transform reviewCornerSpawn; // lands the player facing Jimenez + tablet
+    [SerializeField] private ExaminerNPC examiner;        // Dr. Jimenez's voice channel
+
     [Header("Dialogue")]
     [SerializeField] private GateLines lines = new GateLines();
     [SerializeField] private float lineSeconds = 4f;
@@ -57,6 +62,9 @@ public class PharmeeGatekeeper : MonoBehaviour
     private bool _subscribed;
     private float _baseLineSeconds = -1f;
     private int _tourIndex;
+    private int _remarkVariant;
+    private bool _returnOnLoad;                 // retry-from-review: teleport home inside the load fade
+    private ExperimentResult? _lastResult;      // cached at ExperimentFinished for the review remarks
 
     /// Comfort seam: subtitle pacing multiplier (see PharmeeBrain.SetSubtitlePace).
     public void SetSubtitlePace(float speed)
@@ -88,6 +96,12 @@ public class PharmeeGatekeeper : MonoBehaviour
         if (panel != null) panel.OptionChosen += OnPanelOption;
         if (ppe != null) ppe.PPEWornChanged += OnPPEWorn;
         if (supplyMonitor != null) supplyMonitor.SupplyExhausted += OnSupplyExhausted;
+        if (runner != null)
+        {
+            runner.PhaseCompleted += OnRunnerPhase;
+            runner.ExperimentFinished += OnRunnerFinished;
+            runner.ExperimentStarted += OnRunnerStarted;
+        }
         _subscribed = true;
     }
 
@@ -98,7 +112,39 @@ public class PharmeeGatekeeper : MonoBehaviour
         if (panel != null) panel.OptionChosen -= OnPanelOption;
         if (ppe != null) ppe.PPEWornChanged -= OnPPEWorn;
         if (supplyMonitor != null) supplyMonitor.SupplyExhausted -= OnSupplyExhausted;
+        if (runner != null)
+        {
+            runner.PhaseCompleted -= OnRunnerPhase;
+            runner.ExperimentFinished -= OnRunnerFinished;
+            runner.ExperimentStarted -= OnRunnerStarted;
+        }
         _subscribed = false;
+    }
+
+    // ---- post-experiment review flow (user 2026-07-11) ----------------------
+
+    private void OnRunnerStarted(ExperimentModuleDefinition m) => _lastResult = null;
+
+    /// ChemicalTests complete while Running → begin the review flow. Modules
+    /// without a ChemicalTests phase route off their Synthesis completion instead.
+    private void OnRunnerPhase(TaskPhase p)
+    {
+        if (Model.State != GateState.Running) return;
+        if (p == TaskPhase.ChemicalTests) { Model.Fire(GateEvent.TestsDone); return; }
+        if (p == TaskPhase.Synthesis && runner != null && runner.Graph != null
+            && !runner.Graph.HasPhase(TaskPhase.ChemicalTests))
+            Model.Fire(GateEvent.TestsDone);
+    }
+
+    /// Quiz submitted (or a dev/legacy Finish) → the result is in. From QuizTime
+    /// this lands in ScoreReview; a finish that arrives while still Running (the
+    /// DevExperimentDriver F key) cascades through the quiz states, whose entries
+    /// short-circuit when the result already exists.
+    private void OnRunnerFinished(ExperimentResult r)
+    {
+        _lastResult = r;
+        if (Model.State == GateState.QuizTime) Model.Fire(GateEvent.Graded);
+        else if (Model.State == GateState.Running) Model.Fire(GateEvent.TestsDone);
     }
 
     // ---- scene entry points (trigger relays, PPE, panel) -------------------
@@ -170,7 +216,7 @@ public class PharmeeGatekeeper : MonoBehaviour
     {
         var svc = new ProgressionService();
         svc.Load();
-        var flow = new ProgressionFlow(svc);
+        var flow = ProgressionFlow.Create(svc);
         bool ok = Model.ChooseEpisode(period,
             id => HubSelectController.CanSelect(flow, id),
             p => GatekeeperModel.FirstPlayableInPeriod(flow, p));
@@ -262,16 +308,46 @@ public class PharmeeGatekeeper : MonoBehaviour
                 runner?.StartRun();          // the walk-in timer start
                 break;
 
-            case GateState.Debrief:
+            case GateState.QuizIntro:
                 panel?.Hide();
-                Say(lines.congrats);
-                After(lineSeconds, () => Model.Fire(GateEvent.DebriefDone));
+                // Dev/legacy finish already graded everything — skip the staging.
+                if (_lastResult.HasValue) { Model.Fire(GateEvent.QuizBegin); break; }
+                runner?.FreezeClock();       // the review never costs Time-Management score
+                Say(PharmeeLines.Pick(PharmeeLines.TestsDoneLines, _remarkVariant++));
+                After(lineSeconds * 0.9f, () =>
+                {
+                    if (Model.State != GateState.QuizIntro) return;
+                    DoFaded(() => TeleportTo(reviewCornerSpawn));
+                    After(0.9f, () => SpeakJimenezBrief(0));
+                });
+                break;
+
+            case GateState.QuizTime:
+                panel?.Hide();
+                if (_lastResult.HasValue) { Model.Fire(GateEvent.Graded); break; }
+                postLab?.Open();             // never score-gated (manuscript)
+                break;
+
+            case GateState.ScoreReview:
+                panel?.Hide();
+                // The grade screen + Success/Failure outro fire off ExperimentFinished
+                // on their own; once the outro ends, Jimenez + Pharmee speak the remarks.
+                After(0.8f, WaitOutroThenRemarks);
                 break;
 
             case GateState.Returning:
-                if (ScreenFader.Instance != null && Application.isPlaying)
-                    ScreenFader.Instance.FadeAround(() => { TeleportToFrontDoor(); Model.Fire(GateEvent.TeleportDone); });
-                else { TeleportToFrontDoor(); Model.Fire(GateEvent.TeleportDone); }
+                // One fade: full lab reset (props re-seated, wearables back on their
+                // pegs) + teleport home — the user-approved return sequence.
+                DoFaded(() => { ResetLabForReturn(); Model.Fire(GateEvent.TeleportDone); });
+                break;
+
+            case GateState.Debrief:
+                // Now AT the entrance, after the return teleport: quiz-completion
+                // congrats + a banded performance remark, then the unlock announce.
+                panel?.Hide();
+                Say(PharmeeLines.Pick(PharmeeLines.DebriefCongrats, _remarkVariant++) + " "
+                    + PharmeeLines.DebriefRemark(_lastResult.HasValue ? _lastResult.Value.grade.Total : 100f));
+                After(lineSeconds + 1f, () => Model.Fire(GateEvent.DebriefDone));
                 break;
 
             case GateState.UnlockAnnounce:
@@ -326,10 +402,20 @@ public class PharmeeGatekeeper : MonoBehaviour
             Do();
     }
 
-    /// GradeScreen Retry — rebuild the whole stage (props re-seated, bottles
-    /// refilled) and start a fresh attempt in place.
+    /// GradeScreen Retry. From the review corner (the normal fail path) this is a
+    /// CLEAN re-armed attempt: back to the door, stage rebuilt, walk-in timer —
+    /// consistent with the supply-restart path. Outside the review flow (dev
+    /// shortcuts) it keeps the legacy in-place FullStart.
     public void OnRetryRequested()
     {
+        var grade = UnityEngine.Object.FindFirstObjectByType<GradeScreenController>(FindObjectsInactive.Include);
+        if (grade != null) grade.Hide();
+        if (Model.State == GateState.ScoreReview)
+        {
+            _returnOnLoad = true;                        // teleport home inside the load fade
+            Model.Fire(GateEvent.RetryRequested);        // → Loading → armed at the door
+            return;
+        }
         var mod = runner != null ? runner.Module : null;
         string id = mod != null ? mod.moduleId : GameFlow.SelectedModuleId;
         ExperimentStationRegistry.Clear();
@@ -339,25 +425,93 @@ public class PharmeeGatekeeper : MonoBehaviour
             launcher?.Launch(id, LaunchMode.FullStart);
     }
 
+    /// Jimenez's two-beat quiz briefing at the review corner, then the quiz opens.
+    private void SpeakJimenezBrief(int beat)
+    {
+        if (Model.State != GateState.QuizIntro) return;
+        if (beat >= 2) { Model.Fire(GateEvent.QuizBegin); return; }
+        if (examiner != null)
+            examiner.SpeakLine(PharmeeLines.Pick(PharmeeLines.JimenezQuizBrief, beat));
+        After(lineSeconds, () => SpeakJimenezBrief(beat + 1));
+    }
+
+    /// Hold the spoken score remarks until the Success/Failure outro cutscene ends.
+    private void WaitOutroThenRemarks()
+    {
+        if (Model.State != GateState.ScoreReview) return;
+        var director = UnityEngine.Object.FindFirstObjectByType<CutsceneDirector>(FindObjectsInactive.Include);
+        if (Application.isPlaying && director != null && director.IsPlaying && director.onCutsceneFinished != null)
+        {
+            UnityEngine.Events.UnityAction handler = null;
+            handler = () =>
+            {
+                director.onCutsceneFinished.RemoveListener(handler);
+                SpeakScoreRemarks();
+            };
+            director.onCutsceneFinished.AddListener(handler);
+        }
+        else SpeakScoreRemarks();
+    }
+
+    /// Jimenez gives the verdict, Pharmee follows up — numbers stay on the grade
+    /// card so every spoken line comes from a finite (voice-recordable) pool.
+    private void SpeakScoreRemarks()
+    {
+        if (Model.State != GateState.ScoreReview) return;
+        bool passed = _lastResult.HasValue && _lastResult.Value.passed;
+        if (examiner != null)
+            examiner.SpeakLine(PharmeeLines.Pick(
+                passed ? PharmeeLines.JimenezPassRemarks : PharmeeLines.JimenezFailRemarks, _remarkVariant++));
+        After(lineSeconds + 0.5f, () =>
+        {
+            if (Model.State != GateState.ScoreReview) return;
+            Say(PharmeeLines.Pick(passed ? PharmeeLines.Celebrate : PharmeeLines.Encourage, _remarkVariant++));
+        });
+    }
+
+    /// The user-approved return: props/bottles re-seated, wearables back on their
+    /// pegs, player at the entrance — all inside the Returning fade.
+    private void ResetLabForReturn()
+    {
+        string id = runner != null && runner.Module != null ? runner.Module.moduleId : GameFlow.SelectedModuleId;
+        ExperimentStationRegistry.Clear();
+        launcher?.Launch(id, LaunchMode.StageOnly);
+        if (WearableReseat.Instance != null) WearableReseat.Instance.Reseat();
+        else if (ppe != null) ppe.RemovePPE();
+        TeleportToFrontDoor();
+    }
+
+    /// Fade wrapper with the edit-mode/test fallback (immediate).
+    private void DoFaded(Action mid)
+    {
+        if (ScreenFader.Instance != null && Application.isPlaying)
+            ScreenFader.Instance.FadeAround(mid);
+        else
+            mid();
+    }
+
     private void SnapshotUnlocks()
     {
         _unlockedAtStart.Clear();
         var svc = new ProgressionService();
         svc.Load();
-        foreach (var id in UnlockDiff.UnlockedSet(new ProgressionFlow(svc)))
+        foreach (var id in UnlockDiff.UnlockedSet(ProgressionFlow.Create(svc)))
             _unlockedAtStart.Add(id);
     }
 
-    private void TeleportToFrontDoor()
+    private void TeleportToFrontDoor() => TeleportTo(frontDoorSpawn);
+
+    /// Move the rig so the CAMERA lands on the marker, facing the marker's yaw.
+    private void TeleportTo(Transform marker)
     {
-        if (frontDoorSpawn == null || playerRig == null) return;
+        if (marker == null || playerRig == null) return;
         var cam = cameraOverride != null ? cameraOverride : Camera.main;
         Vector3 camPos = cam != null ? cam.transform.position : playerRig.position;
         float camYaw = cam != null ? cam.transform.eulerAngles.y : playerRig.eulerAngles.y;
-        float markerYaw = frontDoorSpawn.eulerAngles.y;
+        float markerYaw = marker.eulerAngles.y;
         float rigYaw = playerRig.eulerAngles.y;
         float deltaYaw = Mathf.DeltaAngle(camYaw, markerYaw);
-        Vector3 newPos = TeleportMath.RigPositionFor(frontDoorSpawn.position, deltaYaw, playerRig.position, camPos);
+        Vector3 newPos = TeleportMath.RigPositionFor(marker.position, deltaYaw, playerRig.position, camPos);
         playerRig.SetPositionAndRotation(newPos,
             Quaternion.Euler(0f, TeleportMath.RigYawFor(markerYaw, rigYaw, camYaw), 0f));
         if (hudRig != null) hudRig.SnapToCamera();
@@ -368,7 +522,7 @@ public class PharmeeGatekeeper : MonoBehaviour
     {
         var svc = new ProgressionService();
         svc.Load();
-        var newly = UnlockDiff.NewlyUnlocked(_unlockedAtStart, new ProgressionFlow(svc));
+        var newly = UnlockDiff.NewlyUnlocked(_unlockedAtStart, ProgressionFlow.Create(svc));
         Say(UnlockDiff.AnnouncementFor(newly));
     }
 
@@ -389,7 +543,7 @@ public class PharmeeGatekeeper : MonoBehaviour
     {
         var svc = new ProgressionService();
         svc.Load();
-        var flow = new ProgressionFlow(svc);
+        var flow = ProgressionFlow.Create(svc);
         GatekeeperModel.EpisodeOptions(flow, out var labels, out var selectable);
         Say(lines.episodePrompt);
         panel?.Show("Choose your episode", labels, selectable);
@@ -409,6 +563,7 @@ public class PharmeeGatekeeper : MonoBehaviour
     private void DoLoad(string id)
     {
         launcher?.Launch(id, LaunchMode.PrepareArmed);   // stage rebuilt + armed, clock held
+        if (_returnOnLoad) { _returnOnLoad = false; TeleportToFrontDoor(); }   // retry-from-review
         Model.Fire(GateEvent.Loaded);
     }
 
@@ -439,5 +594,11 @@ public class PharmeeGatekeeper : MonoBehaviour
     public void BindReturn(Transform frontDoor, Transform rig, Camera cam, HudRigController hud)
     {
         frontDoorSpawn = frontDoor; playerRig = rig; cameraOverride = cam; hudRig = hud;
+    }
+
+    /// Edit-mode/test binding for the review-corner quiz flow refs.
+    public void BindQuiz(PostLabController quiz, Transform reviewSpawn, ExaminerNPC ex)
+    {
+        postLab = quiz; reviewCornerSpawn = reviewSpawn; examiner = ex;
     }
 }

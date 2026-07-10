@@ -17,20 +17,20 @@ MonoBehaviour:
   - taskId: distill
     label: 3. Distil (70-80 C)
     requiredItemId: distill-flask
-    pos: {x: -1.15, y: 0.91, z: -3.4}
+    pos: {x: -0.053089857, y: 0.91, z: -3.7401662}
     sim: 1
     simTargetC: 78
   - taskId: test-combustion
     label: 4. Combustion test
     requiredItemId: splint
-    pos: {x: -1.15, y: 0.91, z: -4}
+    pos: {x: -0.65308976, y: 0.91, z: -3.7401662}
     sim: 0
     simTargetC: 85
   props:
   - prefabName: Vial_Brown
     itemId: sugar
     displayName: Brown Sugar
-    pos: {x: -2.05, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -2.840166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Brown Sugar
@@ -38,7 +38,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: yeast
     displayName: Yeast
-    pos: {x: -1.75, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.140166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Yeast
@@ -46,7 +46,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: hypo
     displayName: Sodium Hypochlorite
-    pos: {x: -1.45, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.440166}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Sodium Hypochlorite
@@ -54,7 +54,7 @@ MonoBehaviour:
   - prefabName: Vial_Brown
     itemId: acetic
     displayName: Glacial Acetic Acid
-    pos: {x: -1.15, y: 0.91, z: -1.95}
+    pos: {x: 1.3969102, y: 0.91, z: -3.7401662}
     targetHeight: 0.16
     pourable: 1
     fillChemical: Glacial Acetic Acid
@@ -62,7 +62,7 @@ MonoBehaviour:
   - prefabName: ErlenmeyerFlask_400mL
     itemId: distill-flask
     displayName: Distillation Flask
-    pos: {x: -0.85, y: 0.91, z: -1.95}
+    pos: {x: 1.3800015, y: 0.91, z: -3.880003}
     targetHeight: 0.2
     pourable: 0
     fillChemical: 
@@ -70,7 +70,7 @@ MonoBehaviour:
   - prefabName: GlassRod
     itemId: splint
     displayName: Lit Splint
-    pos: {x: -0.6, y: 0.91, z: -1.95}
+    pos: {x: 1.3800015, y: 0.91, z: -3.880003}
     targetHeight: 0.18
     pourable: 0
     fillChemical: 
@@ -78,7 +78,7 @@ MonoBehaviour:
   vessels:
   - prefabName: Beaker_500mL
     displayName: Fermentation Beaker
-    pos: {x: -1.45, y: 0.91, z: -2.6}
+    pos: {x: 0.74691033, y: 0.91, z: -3.440166}
     targetHeight: 0.24
     startChemical: 
     bindings:
@@ -90,7 +90,7 @@ MonoBehaviour:
       requiredMl: 50
   - prefabName: TestTube_WithLiquid
     displayName: Distillate Test Tube
-    pos: {x: -1.1, y: 0.91, z: -2.45}
+    pos: {x: 0.8969102, y: 0.91, z: -3.790166}
     targetHeight: 0.13
     startChemical: Ethanol
     bindings:
