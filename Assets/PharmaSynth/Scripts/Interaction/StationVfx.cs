@@ -10,6 +10,7 @@ using UnityEngine;
 public class StationVfx : MonoBehaviour
 {
     private ParticleSystem _ps;
+    private ParticleSystem _flame;      // Heat stations also get a burner flame
     private StationSim _kind = StationSim.None;
     private bool _running;
 
@@ -42,11 +43,55 @@ public class StationVfx : MonoBehaviour
         {
             if (_ps == null) _ps = BuildSystem(_kind, transform);
             if (_ps != null) _ps.Play();
+            if (_kind == StationSim.Heat)
+            {
+                if (_flame == null) _flame = BuildFlame(transform);
+                if (_flame != null) _flame.Play();
+            }
         }
-        else if (_ps != null)
+        else
         {
-            _ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);   // let live ones fade
+            if (_ps != null) _ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);   // let live ones fade
+            if (_flame != null) _flame.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+    }
+
+    /// A small orange burner flame at the station base — plays under the steam
+    /// while a Heat station is occupied (the visible source of the boil).
+    private static ParticleSystem BuildFlame(Transform parent)
+    {
+        var go = new GameObject("StationVfx_flame");
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = new Vector3(0f, 0.02f, 0f);
+        var ps = go.AddComponent<ParticleSystem>();
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        var main = ps.main;
+        main.loop = true; main.playOnAwake = false; main.maxParticles = 40;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(0.25f, 0.5f);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0.25f, 0.5f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.05f, 0.1f);
+        main.startColor = new Color(1f, 0.6f, 0.2f, 0.9f);
+
+        var emission = ps.emission; emission.rateOverTime = 26f;
+        var shape = ps.shape; shape.shapeType = ParticleSystemShapeType.Cone;
+        shape.angle = 8f; shape.radius = 0.02f;
+        var col = ps.colorOverLifetime; col.enabled = true;
+        var g = new Gradient();
+        g.SetKeys(
+            new[] { new GradientColorKey(new Color(1f, 0.85f, 0.3f), 0f),
+                    new GradientColorKey(new Color(1f, 0.45f, 0.1f), 0.5f),
+                    new GradientColorKey(new Color(0.55f, 0.12f, 0.05f), 1f) },
+            new[] { new GradientAlphaKey(0.9f, 0f), new GradientAlphaKey(0.6f, 0.5f), new GradientAlphaKey(0f, 1f) });
+        col.color = g;
+        var siz = ps.sizeOverLifetime; siz.enabled = true;
+        siz.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 1f, 1f, 0.35f));
+
+        var r = go.GetComponent<ParticleSystemRenderer>();
+        r.material = SharedMaterial();
+        r.sortingOrder = 9;
+        return ps;
     }
 
     // ---- procedural particle construction ------------------------------------

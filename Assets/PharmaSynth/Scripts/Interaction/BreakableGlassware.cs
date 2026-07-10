@@ -44,6 +44,8 @@ public class BreakableGlassware : MonoBehaviour
         if (_runner != null)
             _runner.RecordMistake(LabErrorType.DroppedGlassware, _label + " shattered — handle glassware gently");
         if (AudioService.Instance != null) AudioService.Instance.Play("glass-shatter");
+        // Shard burst at the break point (VFX-set completion 2026-07-10).
+        if (Application.isPlaying) EffectVfx.Shatter(transform.position);
         // A liquid-carrying vessel leaves its contents pooled where it fell,
         // lingering then fading out (user 2026-07-10).
         var liquid = GetComponent<LiquidPhysics>();

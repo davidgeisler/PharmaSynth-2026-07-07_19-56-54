@@ -1,7 +1,9 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// Wires the 2026-07-10 NPC/audio polish batch into SampleScene:
 ///   1. Pharmee expressions — PharmeeFace re-pointed at the robot's EYES + MOUTH
@@ -95,6 +97,16 @@ public static class LabNpcPolishBuilder
             if (roamer == null) roamer = jim.AddComponent<ProctorRoamer>();
             roamer.Bind(animator, runner, points);
 
+            // Examiner VOICE (2026-07-10): stern greeting + periodic proctor remarks,
+            // each driving the animator's "Talking" bool. Uses his narration channel
+            // if he has one (else talks via animation only).
+            var exam = jim.GetComponent<ExaminerNPC>();
+            if (exam == null) exam = jim.AddComponent<ExaminerNPC>();
+            var jimNarration = BuildJimenezBubble(jim);   // overhead subtitle so his lines are visible
+            exam.Bind(runner, animator, jimNarration);
+            EnsureTalkParam(animator);
+            Debug.Log("[NpcPolish] Jimenez examiner voice wired (narration=" + (jimNarration != null) + ")");
+
             // Solid body: a CharacterController stops him phasing through walls while
             // roaming (ProctorRoamer moves via cc.Move) AND blocks the player.
             var cc = jim.GetComponent<CharacterController>();
@@ -155,6 +167,127 @@ public static class LabNpcPolishBuilder
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(robot.scene);
         Debug.Log("<color=#4CD07D>[NpcPolish] done</color>");
+    }
+
+    /// Build (idempotently) a world-space overhead subtitle bubble on Dr. Jimenez so
+    /// his examiner remarks are VISIBLE (he had no narration channel — talked only via
+    /// animation). Mirrors Pharmee's only-while-speaking bubble; returns its controller.
+    static NPCNarrationController BuildJimenezBubble(GameObject jim)
+    {
+        var existing = jim.transform.Find("JimenezSubtitles");
+        if (existing != null) Object.DestroyImmediate(existing.gameObject);
+
+        // Above his head (bounds top ≈ 1.86 m; his pivot is at the floor).
+        var root = new GameObject("JimenezSubtitles");
+        root.transform.SetParent(jim.transform, false);
+        root.transform.localPosition = new Vector3(0f, 2.15f, 0f);
+
+        var canvasGo = new GameObject("Bubble", typeof(Canvas), typeof(FaceCamera));
+        canvasGo.transform.SetParent(root.transform, false);
+        var canvas = canvasGo.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.sortingOrder = 29000;                       // bubble tier (UI conventions)
+        var crt = (RectTransform)canvasGo.transform;
+        crt.sizeDelta = new Vector2(620f, 220f);
+        canvasGo.transform.localScale = Vector3.one * 0.0016f;
+
+        // Dark rounded panel.
+        var panel = new GameObject("Panel", typeof(Image));
+        panel.transform.SetParent(canvasGo.transform, false);
+        Stretch((RectTransform)panel.transform);
+        panel.GetComponent<Image>().color = new Color(0.06f, 0.07f, 0.11f, 0.92f);
+
+        // Name plate.
+        var nameGo = new GameObject("Name", typeof(TextMeshProUGUI));
+        nameGo.transform.SetParent(panel.transform, false);
+        var nameT = nameGo.GetComponent<TextMeshProUGUI>();
+        nameT.text = "Dr. Jimenez";
+        nameT.fontSize = 26f; nameT.fontStyle = FontStyles.Bold;
+        nameT.alignment = TextAlignmentOptions.Top;
+        nameT.color = new Color(0.75f, 0.85f, 1f, 1f);
+        var nrt = nameT.rectTransform;
+        nrt.anchorMin = new Vector2(0f, 1f); nrt.anchorMax = new Vector2(1f, 1f);
+        nrt.pivot = new Vector2(0.5f, 1f); nrt.anchoredPosition = new Vector2(0f, -8f);
+        nrt.sizeDelta = new Vector2(-24f, 44f);
+
+        // Subtitle line.
+        var textGo = new GameObject("Subtitle", typeof(TextMeshProUGUI));
+        textGo.transform.SetParent(panel.transform, false);
+        var tmp = textGo.GetComponent<TextMeshProUGUI>();
+        tmp.text = string.Empty;
+        tmp.fontSize = 30f; tmp.alignment = TextAlignmentOptions.Center;
+        tmp.color = Color.white; tmp.textWrappingMode = TextWrappingModes.Normal;
+        var trt = tmp.rectTransform;
+        trt.anchorMin = new Vector2(0f, 0f); trt.anchorMax = new Vector2(1f, 1f);
+        trt.offsetMin = new Vector2(18f, 14f); trt.offsetMax = new Vector2(-18f, -50f);
+
+        var narr = root.AddComponent<NPCNarrationController>();
+        var so = new SerializedObject(narr);
+        so.FindProperty("subtitleText").objectReferenceValue = tmp;
+        so.FindProperty("panelRoot").objectReferenceValue = panel;
+        so.FindProperty("playOnStart").boolValue = false;
+        so.ApplyModifiedProperties();
+        panel.SetActive(false);                            // silent until he speaks
+        return narr;
+    }
+
+    static void Stretch(RectTransform rt)
+    {
+        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
+    }
+
+    /// Make sure the animator has a bool "Talking" and an Idle⇄Talk transition pair
+    /// (the rigged Jimenez ships with a Talk clip; this guarantees the wiring).
+    static void EnsureTalkParam(Animator animator)
+    {
+        if (animator == null) return;
+        var ctrl = animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
+        if (ctrl == null && animator.runtimeAnimatorController is AnimatorOverrideController ov)
+            ctrl = ov.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
+        if (ctrl == null) { Debug.LogWarning("[NpcPolish] Jimenez animator not editable — talk wiring skipped"); return; }
+
+        bool hasParam = false;
+        foreach (var p in ctrl.parameters)
+            if (p.name == "Talking" && p.type == AnimatorControllerParameterType.Bool) hasParam = true;
+        if (!hasParam) ctrl.AddParameter("Talking", AnimatorControllerParameterType.Bool);
+
+        var sm = ctrl.layers[0].stateMachine;
+        UnityEditor.Animations.AnimatorState idle = null, talk = null;
+        foreach (var s in sm.states)
+        {
+            string n = s.state.name.ToLower();
+            if (n.Contains("idle")) idle = s.state;
+            if (n.Contains("talk")) talk = s.state;
+        }
+        if (talk == null)
+        {
+            foreach (var guid in AssetDatabase.FindAssets("t:AnimationClip talk"))
+            {
+                var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
+                if (clip != null) { talk = sm.AddState("Talk"); talk.motion = clip; break; }
+            }
+        }
+        if (idle == null || talk == null)
+        { Debug.LogWarning("[NpcPolish] talk: idle=" + (idle != null) + " talk=" + (talk != null) + " — transitions skipped"); EditorUtility.SetDirty(ctrl); return; }
+
+        bool hasOut = false, hasBack = false;
+        foreach (var tr in idle.transitions) if (tr.destinationState == talk) hasOut = true;
+        foreach (var tr in talk.transitions) if (tr.destinationState == idle) hasBack = true;
+        if (!hasOut)
+        {
+            var tr = idle.AddTransition(talk);
+            tr.hasExitTime = false; tr.duration = 0.15f;
+            tr.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0f, "Talking");
+        }
+        if (!hasBack)
+        {
+            var tr = talk.AddTransition(idle);
+            tr.hasExitTime = false; tr.duration = 0.15f;
+            tr.AddCondition(UnityEditor.Animations.AnimatorConditionMode.IfNot, 0f, "Talking");
+        }
+        EditorUtility.SetDirty(ctrl);
+        Debug.Log("[NpcPolish] talk state OK (param=Talking, idle='" + idle.name + "', talk='" + talk.name + "')");
     }
 
     /// Make sure the animator has a bool "Walking" and an Idle⇄Walk transition pair.

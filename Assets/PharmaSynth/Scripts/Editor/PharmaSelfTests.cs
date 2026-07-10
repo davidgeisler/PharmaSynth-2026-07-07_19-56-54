@@ -835,9 +835,10 @@ public static class PharmaSelfTests
             ("Layout_Acetanilide",  "Acetanilide",    new[] { "Bromine Water" }),
             ("Layout_Benzamide",    "Benzamide",      new[] { "Sodium Hydroxide", "Sodium Nitrite", "Hydrochloric Acid 6N" }),
             ("Layout_Chloroform",   "Chloroform",     new[] { "Silver Nitrate" }),
-            ("Layout_Acetone",      "Acetone",        new[] { "Silver Nitrate", "Sodium Hypochlorite" }),
+            ("Layout_Acetone",      "Acetone",        new[] { "Silver Nitrate", "Sodium Hypochlorite", "Schiff's Reagent" }),
             ("Layout_EthylAlcohol", "Ethanol",        new[] { "Sodium Hypochlorite", "Glacial Acetic Acid" }),
             ("Layout_WineMaking",   "Carbon Dioxide", new[] { "Limewater" }),
+            ("Layout_Caffeine",     "Caffeine",       new[] { "Murexide Reagent" }),
         };
         foreach (var c in cases)
         {
@@ -1570,6 +1571,7 @@ public static class PharmaSelfTests
             runner.SetModule(Mod(false)); runner.StartExperiment();
             A("examiner: guided → Pharmee gives a hint", !string.IsNullOrEmpty(brain.LastLine));
             A("examiner: guided → examiner dormant", !exam.IsObserving && !brain.AssessmentMode);
+            A("examiner: proctors aloud on start (greeting line)", !string.IsNullOrEmpty(exam.LastLine));
         }
         finally { UnityEngine.Object.DestroyImmediate(rgo); UnityEngine.Object.DestroyImmediate(bgo); UnityEngine.Object.DestroyImmediate(ego); }
 
@@ -1587,6 +1589,12 @@ public static class PharmaSelfTests
             A("examiner: assessment → examiner observing", exam.IsObserving);
         }
         finally { UnityEngine.Object.DestroyImmediate(rgo2); UnityEngine.Object.DestroyImmediate(bgo2); UnityEngine.Object.DestroyImmediate(ego2); }
+
+        // Rich dialogue pools (user 2026-07-10: richer NPC interactions).
+        A("lines: Pick wraps index + non-empty", !string.IsNullOrEmpty(PharmeeLines.Pick(PharmeeLines.Idle, 0))
+            && PharmeeLines.Pick(PharmeeLines.Greetings, 5) == PharmeeLines.Pick(PharmeeLines.Greetings, 5 % PharmeeLines.Greetings.Length));
+        A("lines: greetings pool has variety", PharmeeLines.Pick(PharmeeLines.Greetings, 0) != PharmeeLines.Pick(PharmeeLines.Greetings, 1));
+        A("lines: Pick handles null + negative", PharmeeLines.Pick(null, 3) == "" && !string.IsNullOrEmpty(PharmeeLines.Pick(PharmeeLines.ExamRemarks, -2)));
     }
 
     static void AudioSuite()

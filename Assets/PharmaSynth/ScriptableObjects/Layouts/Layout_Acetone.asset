@@ -113,13 +113,13 @@ MonoBehaviour:
     pourable: 0
     fillChemical: 
     supplyMl: 0
-  - prefabName: TestTube
+  - prefabName: Vial_Brown
     itemId: test-schiff
-    displayName: Schiff Test Tube
-    pos: {x: -0.55, y: 0.91, z: -1.55}
-    targetHeight: 0.14
-    pourable: 0
-    fillChemical: 
+    displayName: Schiff's Reagent
+    pos: {x: -1.55, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Schiff's Reagent
     supplyMl: 0
   - prefabName: EvaporatingDish
     itemId: test-bisulfite
@@ -147,4 +147,7 @@ MonoBehaviour:
       requiredMl: 50
     - reagentChemical: Sodium Hypochlorite
       taskId: test-iodoform
+      requiredMl: 50
+    - reagentChemical: Schiff's Reagent
+      taskId: test-schiff
       requiredMl: 50

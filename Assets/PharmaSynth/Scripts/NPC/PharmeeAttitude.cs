@@ -15,6 +15,7 @@ public class PharmeeAttitude : MonoBehaviour
     [SerializeField] private float leanPerMps = 22f;             // degrees per m/s
     [SerializeField] private float leanSharpness = 5f;
     [SerializeField] private float wavePulse = 0.12f;
+    [SerializeField] private float waveSpeedMultiplier = 30f;    // user 2026-07-10: waves 30x faster
 
     private Quaternion _baseLocal;
     private Vector3[] _waveBase = new Vector3[0];
@@ -94,7 +95,7 @@ public class PharmeeAttitude : MonoBehaviour
         bodyRoot.localRotation = Quaternion.AngleAxis(_lean, _leanAxis) * talk * _baseLocal;
 
         // Hover waves: staggered breathing pulse, faster while moving.
-        float rate = 2.2f + Mathf.Min(vel.magnitude * 2f, 2f);
+        float rate = (2.2f + Mathf.Min(vel.magnitude * 2f, 2f)) * Mathf.Max(0.01f, waveSpeedMultiplier);
         for (int i = 0; i < waves.Length && i < _waveBase.Length; i++)
         {
             if (waves[i] == null) continue;

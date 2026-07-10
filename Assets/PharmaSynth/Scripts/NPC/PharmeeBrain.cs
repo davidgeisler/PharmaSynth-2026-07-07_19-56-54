@@ -37,10 +37,18 @@ public class PharmeeBrain : MonoBehaviour
     [Tooltip("When a CutsceneDirector handles intro/outro, let it greet — the brain only instructs/warns.")]
     [SerializeField] private bool deferIntroToDirector = false;
 
+    [Header("Ambient chatter (user 2026-07-10: richer interactions)")]
+    [Tooltip("Seconds of quiet before Pharmee offers an idle comment while a run is active.")]
+    [SerializeField] private float idleChatterGap = 16f;
+    [SerializeField] private bool idleChatterEnabled = true;
+
     private IPharmeeFace _face;
     private bool _subscribed;
     private bool _assessment;   // assessment mode → no procedural hints (safety warnings stay)
     private float _baseLineSeconds = -1f;
+    private int _variant;        // rotates line pools so he doesn't repeat himself
+    private bool _praiseToggle;
+    private float _lastLineTime = -999f;
 
     /// Comfort seam: subtitle pacing multiplier (2 = lines dwell half as long,
     /// 0.5 = twice as long). Baseline is the authored lineSeconds.
@@ -102,11 +110,44 @@ public class PharmeeBrain : MonoBehaviour
         // With a cutscene director present, it plays the intro then calls
         // InstructCurrent() on finish — the brain stays quiet here to avoid overlap.
         if (deferIntroToDirector) return;
-        Speak(PharmeeState.Greeting, PharmeeFaceExpression.Happy, lines.greeting);
+        Speak(PharmeeState.Greeting, PharmeeFaceExpression.Happy, Variant(lines.greeting, PharmeeLines.Greetings));
         InstructCurrent();
     }
 
-    private void OnTaskCompleted(ExperimentTask t) => InstructCurrent();
+    /// On a completed step: fold an occasional bit of praise into the next
+    /// instruction (one line, so it doesn't stomp itself) — livelier than a bare hint.
+    private void OnTaskCompleted(ExperimentTask t)
+    {
+        if (_assessment) return;
+        if (runner == null || runner.Graph == null) return;
+        string praise = (_praiseToggle = !_praiseToggle) ? PharmeeLines.Pick(PharmeeLines.Praise, _variant++) + " " : "";
+        foreach (var nx in runner.Graph.AvailableTasks())
+        {
+            Speak(PharmeeState.Instructing, PharmeeFaceExpression.Happy, praise + InstructionFor(nx));
+            return;
+        }
+        // all steps done — a small cheer while the data sheet/quiz comes up
+        if (!string.IsNullOrEmpty(praise))
+            Speak(PharmeeState.Instructing, PharmeeFaceExpression.Happy, praise.Trim());
+    }
+
+    /// Idle chatter: after a stretch of quiet mid-run, Pharmee offers a friendly
+    /// comment (never in assessment mode; never overlapping a fresh line).
+    private void Update()
+    {
+        if (!idleChatterEnabled || _assessment) return;
+        if (runner == null || !runner.IsRunning) return;
+        if (Time.time - _lastLineTime < idleChatterGap) return;
+        Speak(PharmeeState.Encouraging, PharmeeFaceExpression.Happy,
+              PharmeeLines.Pick(PharmeeLines.Idle, _variant++));
+    }
+
+    /// Pick a fresh pool line; falls back to the authored single line if the pool is empty.
+    private string Variant(string authored, string[] pool)
+    {
+        var v = PharmeeLines.Pick(pool, _variant++);
+        return string.IsNullOrEmpty(v) ? authored : v;
+    }
 
     private void OnMistake(LabErrorType type, string message)
         => Speak(PharmeeState.Warning, PharmeeFaceExpression.Warning, WarnLineFor(type));
@@ -115,8 +156,8 @@ public class PharmeeBrain : MonoBehaviour
     {
         // The end cutscene carries the celebrate/encourage line when a director is present.
         if (deferIntroToDirector) return;
-        if (r.passed) Speak(PharmeeState.Celebrating, PharmeeFaceExpression.Happy, lines.celebrate);
-        else Speak(PharmeeState.Encouraging, PharmeeFaceExpression.Neutral, lines.encourage);
+        if (r.passed) Speak(PharmeeState.Celebrating, PharmeeFaceExpression.Happy, Variant(lines.celebrate, PharmeeLines.Celebrate));
+        else Speak(PharmeeState.Encouraging, PharmeeFaceExpression.Neutral, Variant(lines.encourage, PharmeeLines.Encourage));
     }
 
     /// Instruct the current available step (nearest to done). No-op when finished.
@@ -137,6 +178,7 @@ public class PharmeeBrain : MonoBehaviour
         State = state;
         LastLine = line;
         LastExpression = face;
+        _lastLineTime = Time.time;
         _face?.SetExpression(face);
         if (narration != null) narration.Say(line, lineSeconds);
         // Pharmee's robotic "voice" — a beep per mood (no-op if no AudioService/clip).
@@ -158,10 +200,10 @@ public class PharmeeBrain : MonoBehaviour
     {
         switch (type)
         {
-            case LabErrorType.WrongReagent: return lines.wrongReagent;
-            case LabErrorType.WrongStep: return lines.wrongStep;
-            case LabErrorType.Overheat: return lines.overheat;
-            default: return lines.safety; // fire, PPE, fume hood, contact, hazardous, dropped glass
+            case LabErrorType.WrongReagent: return Variant(lines.wrongReagent, PharmeeLines.WrongReagent);
+            case LabErrorType.WrongStep: return Variant(lines.wrongStep, PharmeeLines.WrongStep);
+            case LabErrorType.Overheat: return Variant(lines.overheat, PharmeeLines.Overheat);
+            default: return Variant(lines.safety, PharmeeLines.Safety); // fire, PPE, fume hood, contact, hazardous, dropped glass
         }
     }
 

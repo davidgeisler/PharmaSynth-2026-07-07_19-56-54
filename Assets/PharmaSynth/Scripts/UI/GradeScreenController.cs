@@ -56,6 +56,13 @@ public class GradeScreenController : MonoBehaviour
         if (failedVisuals != null) failedVisuals.SetActive(!r.passed);
         if (continueButton != null) continueButton.SetActive(r.passed); // gate: can't advance until passed
         if (AudioService.Instance != null) AudioService.Instance.Play(r.passed ? "grade-pass" : "grade-fail");
+        // Confetti burst over the panel on a pass (VFX-set completion 2026-07-10).
+        if (r.passed && Application.isPlaying)
+        {
+            var origin = (passedVisuals != null ? passedVisuals.transform
+                        : (root != null ? root.transform : transform));
+            EffectVfx.Confetti(origin.position + Vector3.up * 0.2f);
+        }
     }
 
     public void Hide() { if (root != null) root.SetActive(false); }

@@ -93,13 +93,13 @@ MonoBehaviour:
     pourable: 0
     fillChemical: 
     supplyMl: 0
-  - prefabName: TestTube
+  - prefabName: Vial_Brown
     itemId: test-murexide
-    displayName: Murexide Test Tube
-    pos: {x: -1.15, y: 0.91, z: -1.55}
-    targetHeight: 0.14
-    pourable: 0
-    fillChemical: 
+    displayName: Murexide Reagent
+    pos: {x: -1.25, y: 0.91, z: -1.95}
+    targetHeight: 0.16
+    pourable: 1
+    fillChemical: Murexide Reagent
     supplyMl: 0
   - prefabName: GlassRod
     itemId: test-meltingpoint
@@ -124,4 +124,13 @@ MonoBehaviour:
       requiredMl: 50
     - reagentChemical: Sodium Sulfate
       taskId: dry-na2so4
+      requiredMl: 50
+  - prefabName: TestTube_WithLiquid
+    displayName: Product Test Tube
+    pos: {x: -1.1, y: 0.91, z: -2.45}
+    targetHeight: 0.13
+    startChemical: Caffeine
+    bindings:
+    - reagentChemical: Murexide Reagent
+      taskId: test-murexide
       requiredMl: 50

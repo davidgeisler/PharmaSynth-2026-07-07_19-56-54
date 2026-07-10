@@ -21,6 +21,8 @@ public class MethaneApparatusRig : MonoBehaviour
 
     private const string ModuleId = "tutorial-methane";
     private bool _active;
+    private bool _prevHeating;      // burner-ignite flame edge
+    private bool _splintFired;      // splint flame-test pops once per collection
 
     /// Edit-mode/test binding (OnEnable doesn't fire on AddComponent in edit mode).
     public void Bind(ExperimentRunner r, TemperatureSim t, GasCollection g,
@@ -50,6 +52,7 @@ public class MethaneApparatusRig : MonoBehaviour
     {
         _active = module != null && module.moduleId == ModuleId
                   && runner != null && runner.Graph != null;
+        _prevHeating = false; _splintFired = false;
         if (!_active) return;
 
         if (temperature != null)
@@ -71,10 +74,21 @@ public class MethaneApparatusRig : MonoBehaviour
         // Burner in the heating zone → flame on; removed → cools back down.
         bool heating = burnerZone != null && burnerZone.IsOccupied;
         if (temperature != null) temperature.SetHeating(heating, burnerSourceC);
+        if (heating && !_prevHeating && burnerZone != null)       // ignite puff
+            EffectVfx.FlamePop(burnerZone.transform.position + Vector3.up * 0.08f);
+        _prevHeating = heating;
 
         // Hot apparatus + collection tube held in place → gas accumulates.
         bool hot = temperature != null && temperature.AtLeast(heatDoneC);
         if (hot && gas != null && collectZone != null && collectZone.IsOccupied)
             gas.AddGas(gasMlPerSecond * Time.deltaTime);
+
+        // Splint flame test: once the tube fills, the collected methane pops with
+        // a flame when lit (fires once per collection).
+        if (!_splintFired && gas != null && gas.Collected(collectedFraction) && collectZone != null)
+        {
+            EffectVfx.FlamePop(collectZone.transform.position + Vector3.up * 0.1f);
+            _splintFired = true;
+        }
     }
 }
