@@ -22,6 +22,10 @@ public class ProctorRoamer : MonoBehaviour
     [SerializeField] private float idleMax = 28f;
     [SerializeField] private float observeSeconds = 5f;
 
+    [Header("Never-escape failsafes (user 2026-07-10: he ran through a wall endlessly)")]
+    [SerializeField] private float stuckSeconds = 2f;      // no progress this long → give up on the walk
+    [SerializeField] private float maxLeash = 9f;          // farther than this from home → teleport back
+
     private ProctorRoamModel _model;
     private Vector3 _home;
     private Quaternion _homeRot;
@@ -29,6 +33,8 @@ public class ProctorRoamer : MonoBehaviour
     private bool _subscribed;
     private bool _hasWalkParam;
     private CharacterController _cc;    // walls stop him; players can't pass through him
+    private Vector3 _lastPos;
+    private float _stuckTimer;
 
     public ProctorRoamModel Model => _model;
 
@@ -91,11 +97,45 @@ public class ProctorRoamer : MonoBehaviour
         return false;
     }
 
+    /// Pure stuck test (self-tested): accumulates while barely moving, resets on progress.
+    public static bool StuckTick(ref float timer, float movedSq, float dt, float giveUpSeconds)
+    {
+        if (movedSq < 0.01f * 0.01f) timer += dt; else timer = 0f;
+        if (timer < giveUpSeconds) return false;
+        timer = 0f;
+        return true;
+    }
+
     private void Update()
     {
         if (_model == null) return;
+
+        // Leash: whatever went wrong (missing wall collider, physics shove), he can
+        // NEVER wander off — past the leash he snaps back to his post.
+        if (Flat(transform.position - _home).magnitude > maxLeash)
+        {
+            transform.SetPositionAndRotation(_home, _homeRot);
+            if (_hasWalkParam) animator.SetBool(walkBool, false);
+            _stuckTimer = 0f;
+            _lastPos = transform.position;
+            return;
+        }
+
         Vector3 target = CurrentTarget();
         bool arrived = Flat(transform.position - target).magnitude <= arriveDistance;
+
+        // Stuck watchdog: pushing a wall/bench without progress counts as "arrived",
+        // so a blocked outing becomes observe-from-here → walk home (never endless).
+        if (_model.IsWalking && !arrived
+            && StuckTick(ref _stuckTimer, (transform.position - _lastPos).sqrMagnitude, Time.deltaTime, stuckSeconds))
+        {
+            arrived = true;
+            // Stuck on the way HOME: teleport — home must always be reachable.
+            if (_model.Current == ProctorRoamModel.Phase.WalkingHome)
+                transform.SetPositionAndRotation(_home, _homeRot);
+        }
+        _lastPos = transform.position;
+
         _model.Tick(Time.deltaTime, _allowRoam, arrived);
 
         bool walking = _model.IsWalking && !arrived;

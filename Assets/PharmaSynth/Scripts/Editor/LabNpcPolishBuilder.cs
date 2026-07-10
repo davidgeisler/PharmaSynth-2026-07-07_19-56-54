@@ -99,11 +99,22 @@ public static class LabNpcPolishBuilder
             // roaming (ProctorRoamer moves via cc.Move) AND blocks the player.
             var cc = jim.GetComponent<CharacterController>();
             if (cc == null) cc = jim.AddComponent<CharacterController>();
+            // Fit the capsule from his real renderer bounds — the pivot may not be
+            // at the feet (Tripo pivots at model centre), and a floating capsule
+            // slides over low furniture / under wall trims.
+            var jrs = jim.GetComponentsInChildren<Renderer>();
+            if (jrs.Length > 0)
+            {
+                Bounds jb = jrs[0].bounds;
+                foreach (var r in jrs) jb.Encapsulate(r.bounds);
+                cc.height = Mathf.Max(1f, jb.size.y * 0.95f);
+                cc.center = jim.transform.InverseTransformPoint(new Vector3(jb.center.x, jb.min.y + cc.height * 0.5f + 0.02f, jb.center.z));
+            }
+            else { cc.height = 1.7f; cc.center = new Vector3(0f, 0.88f, 0f); }
             cc.radius = 0.28f;
-            cc.height = 1.7f;
-            cc.center = new Vector3(0f, 0.88f, 0f);
             cc.slopeLimit = 45f;
             cc.stepOffset = 0.15f;
+            Debug.Log("[NpcPolish] Jimenez CC height=" + cc.height.ToString("F2") + " center=" + cc.center.ToString("F2"));
 
             // Walk animation: ensure the controller has a "Walking" bool + a Walk
             // state wired Idle⇄Walk (the clip exists; wiring may not).

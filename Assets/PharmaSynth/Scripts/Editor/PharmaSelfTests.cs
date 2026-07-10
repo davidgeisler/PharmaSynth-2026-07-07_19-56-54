@@ -981,6 +981,12 @@ public static class PharmaSelfTests
         stay.Tick(10f, false, true);
         A("roam: never leaves during quiz", stay.Current == ProctorRoamModel.Phase.AtHome);
 
+        // Roamer stuck watchdog (user 2026-07-10: Jimenez ran through a wall endlessly).
+        float stuck = 0f;
+        A("roam: progress resets the watchdog", !ProctorRoamer.StuckTick(ref stuck, 0.5f, 1f, 2f) && Near(stuck, 0f));
+        A("roam: brief block is tolerated", !ProctorRoamer.StuckTick(ref stuck, 0f, 1f, 2f));
+        A("roam: sustained block gives up", ProctorRoamer.StuckTick(ref stuck, 0f, 1.5f, 2f) && Near(stuck, 0f));
+
         // Spill puddle fade (user 2026-07-10): full while lingering, smooth fade after.
         A("puddle: opaque while lingering", Near(SpillPuddle.Alpha01(0f, 3f, 1.2f), 1f) && Near(SpillPuddle.Alpha01(2.9f, 3f, 1.2f), 1f));
         A("puddle: half-faded mid-fade", Near(SpillPuddle.Alpha01(3.6f, 3f, 1.2f), 0.5f));
