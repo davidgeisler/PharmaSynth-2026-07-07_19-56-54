@@ -45,11 +45,21 @@ public class SpillMistake : MonoBehaviour
                 _armed = false;
                 if (_runner != null)
                     _runner.RecordMistake(LabErrorType.SpilledReagent, _label + " is spilling — stand bottles upright");
+                // The spilled liquid pools on the ground, lingers, then fades (user 2026-07-10).
+                if (Application.isPlaying)
+                    SpillPuddle.Spawn(transform.position, LiquidColorOf(_liquid));
             }
         }
         else if (tilt < rearmTilt)
         {
             _armed = true;
         }
+    }
+
+    /// The current liquid's tint (fallback: watery blue).
+    public static Color LiquidColorOf(LiquidPhysics liquid)
+    {
+        if (liquid != null && liquid.currentChemical != null) return liquid.currentChemical.liquidColor;
+        return new Color(0.55f, 0.7f, 0.85f);
     }
 }

@@ -44,6 +44,11 @@ public class BreakableGlassware : MonoBehaviour
         if (_runner != null)
             _runner.RecordMistake(LabErrorType.DroppedGlassware, _label + " shattered — handle glassware gently");
         if (AudioService.Instance != null) AudioService.Instance.Play("glass-shatter");
+        // A liquid-carrying vessel leaves its contents pooled where it fell,
+        // lingering then fading out (user 2026-07-10).
+        var liquid = GetComponent<LiquidPhysics>();
+        if (Application.isPlaying && liquid != null && liquid.currentLiquidVolume > 1f)
+            SpillPuddle.Spawn(transform.position, SpillMistake.LiquidColorOf(liquid));
         if (_respawn != null) _respawn.GoHome();             // replacement back on the shelf
     }
 }

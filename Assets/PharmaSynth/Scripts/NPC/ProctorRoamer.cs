@@ -28,6 +28,7 @@ public class ProctorRoamer : MonoBehaviour
     private bool _allowRoam = true;
     private bool _subscribed;
     private bool _hasWalkParam;
+    private CharacterController _cc;    // walls stop him; players can't pass through him
 
     public ProctorRoamModel Model => _model;
 
@@ -54,6 +55,7 @@ public class ProctorRoamer : MonoBehaviour
         _homeRot = transform.rotation;
         EnsureModel();
         _hasWalkParam = HasBool(animator, walkBool);
+        _cc = GetComponent<CharacterController>();
         Subscribe();
     }
 
@@ -129,7 +131,9 @@ public class ProctorRoamer : MonoBehaviour
         Vector3 to = Flat(target - transform.position);
         if (to.sqrMagnitude < 1e-6f) return;
         FaceToward(target);
-        transform.position += to.normalized * walkSpeed * Time.deltaTime;
+        Vector3 step = to.normalized * walkSpeed * Time.deltaTime;
+        if (_cc != null && _cc.enabled) _cc.Move(step);   // collides with walls/furniture
+        else transform.position += step;
     }
 
     private void FaceToward(Vector3 worldPoint)

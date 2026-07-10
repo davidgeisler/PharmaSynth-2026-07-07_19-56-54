@@ -94,8 +94,22 @@ public static class LabNpcPolishBuilder
             var roamer = jim.GetComponent<ProctorRoamer>();
             if (roamer == null) roamer = jim.AddComponent<ProctorRoamer>();
             roamer.Bind(animator, runner, points);
+
+            // Solid body: a CharacterController stops him phasing through walls while
+            // roaming (ProctorRoamer moves via cc.Move) AND blocks the player.
+            var cc = jim.GetComponent<CharacterController>();
+            if (cc == null) cc = jim.AddComponent<CharacterController>();
+            cc.radius = 0.28f;
+            cc.height = 1.7f;
+            cc.center = new Vector3(0f, 0.88f, 0f);
+            cc.slopeLimit = 45f;
+            cc.stepOffset = 0.15f;
+
+            // Walk animation: ensure the controller has a "Walking" bool + a Walk
+            // state wired Idle⇄Walk (the clip exists; wiring may not).
+            EnsureWalkState(animator);
             EditorUtility.SetDirty(jim);
-            Debug.Log("[NpcPolish] Jimenez roamer wired (animator=" + (animator != null) + ", runner=" + (runner != null) + ", points=" + points.Count + ")");
+            Debug.Log("[NpcPolish] Jimenez roamer wired (animator=" + (animator != null) + ", runner=" + (runner != null) + ", points=" + points.Count + ", cc added)");
         }
         else Debug.LogWarning("[NpcPolish] Dr. Jimenez not found — roamer skipped");
 
@@ -130,6 +144,66 @@ public static class LabNpcPolishBuilder
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(robot.scene);
         Debug.Log("<color=#4CD07D>[NpcPolish] done</color>");
+    }
+
+    /// Make sure the animator has a bool "Walking" and an Idle⇄Walk transition pair.
+    static void EnsureWalkState(Animator animator)
+    {
+        if (animator == null) return;
+        var ctrl = animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
+        if (ctrl == null)
+        {
+            // scene instances often reference an override/runtime — resolve the base asset
+            var rt = animator.runtimeAnimatorController;
+            if (rt is AnimatorOverrideController ov)
+                ctrl = ov.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
+        }
+        if (ctrl == null) { Debug.LogWarning("[NpcPolish] Jimenez animator controller not editable — walk wiring skipped"); return; }
+
+        bool hasParam = false;
+        foreach (var p in ctrl.parameters)
+            if (p.name == "Walking" && p.type == AnimatorControllerParameterType.Bool) hasParam = true;
+        if (!hasParam) ctrl.AddParameter("Walking", AnimatorControllerParameterType.Bool);
+
+        var sm = ctrl.layers[0].stateMachine;
+        UnityEditor.Animations.AnimatorState idle = null, walk = null;
+        foreach (var s in sm.states)
+        {
+            string n = s.state.name.ToLower();
+            if (n.Contains("idle")) idle = s.state;
+            if (n.Contains("walk")) walk = s.state;
+        }
+        if (walk == null)
+        {
+            // find a walk clip in the project (uthana text-to-motion set)
+            foreach (var guid in AssetDatabase.FindAssets("t:AnimationClip walk"))
+            {
+                var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
+                if (clip != null) { walk = sm.AddState("Walk"); walk.motion = clip; break; }
+            }
+        }
+        if (idle == null || walk == null)
+        { Debug.LogWarning("[NpcPolish] idle=" + (idle != null) + " walk=" + (walk != null) + " — transitions skipped"); return; }
+
+        bool hasOut = false, hasBack = false;
+        foreach (var tr in idle.transitions)
+            if (tr.destinationState == walk) hasOut = true;
+        foreach (var tr in walk.transitions)
+            if (tr.destinationState == idle) hasBack = true;
+        if (!hasOut)
+        {
+            var tr = idle.AddTransition(walk);
+            tr.hasExitTime = false; tr.duration = 0.15f;
+            tr.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0f, "Walking");
+        }
+        if (!hasBack)
+        {
+            var tr = walk.AddTransition(idle);
+            tr.hasExitTime = false; tr.duration = 0.15f;
+            tr.AddCondition(UnityEditor.Animations.AnimatorConditionMode.IfNot, 0f, "Walking");
+        }
+        EditorUtility.SetDirty(ctrl);
+        Debug.Log("[NpcPolish] walk state OK (param=Walking, idle='" + idle.name + "', walk='" + walk.name + "')");
     }
 }
 #endif

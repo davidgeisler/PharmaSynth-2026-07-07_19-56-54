@@ -981,6 +981,11 @@ public static class PharmaSelfTests
         stay.Tick(10f, false, true);
         A("roam: never leaves during quiz", stay.Current == ProctorRoamModel.Phase.AtHome);
 
+        // Spill puddle fade (user 2026-07-10): full while lingering, smooth fade after.
+        A("puddle: opaque while lingering", Near(SpillPuddle.Alpha01(0f, 3f, 1.2f), 1f) && Near(SpillPuddle.Alpha01(2.9f, 3f, 1.2f), 1f));
+        A("puddle: half-faded mid-fade", Near(SpillPuddle.Alpha01(3.6f, 3f, 1.2f), 0.5f));
+        A("puddle: gone after fade", Near(SpillPuddle.Alpha01(4.2f, 3f, 1.2f), 0f) && Near(SpillPuddle.Alpha01(9f, 3f, 1.2f), 0f));
+
         // Pharmee gate moods (user 2026-07-10): happy default, warning on trouble.
         A("mood: friendly at the door", PharmeeMood.ExpressionForGate(GateState.ModeChoice) == PharmeeFaceExpression.Happy);
         A("mood: warns on supply trouble", PharmeeMood.ExpressionForGate(GateState.SupplyPrompt) == PharmeeFaceExpression.Warning);
