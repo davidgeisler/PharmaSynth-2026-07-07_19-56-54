@@ -18630,6 +18630,7 @@ GameObject:
   - component: {fileID: 820681492}
   - component: {fileID: 820681491}
   - component: {fileID: 820681490}
+  - component: {fileID: 820681496}
   m_Layer: 0
   m_Name: PPELocker
   m_TagString: Untagged
@@ -18855,6 +18856,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820681496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820681489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 475d22a36e34a2a40b559ce1ca47de49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WearableReseat
+  displayNames:
+  - LabCoatDisplay
+  - Goggles_Standin
+  - Gloves_Standin
+  ppe: {fileID: 820681490}
 --- !u!1 &828703386
 GameObject:
   m_ObjectHideFlags: 0

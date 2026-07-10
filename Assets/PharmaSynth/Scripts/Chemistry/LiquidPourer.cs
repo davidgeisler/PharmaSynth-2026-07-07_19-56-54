@@ -28,6 +28,12 @@ public class LiquidPourer : MonoBehaviour
     private float lastSpillTime = 0f;
     private float smoothedFlow01;
 
+    // Procedural falling-liquid stream + landing puddles (user 2026-07-10: pouring/
+    // spilling showed no visible liquid). Independent of the optional LineRenderer.
+    private ParticleSystem _pourStream;
+    private float _lastPuddle;
+    private Transform Mouth => spout != null ? spout : transform;
+
     // Continuous positional pour sound (realism 2026-07-10: pouring was silent).
     private AudioSource pourAudio;
     private float pourBaseVol = 0.5f;
@@ -56,12 +62,14 @@ public class LiquidPourer : MonoBehaviour
         {
             Pour(tiltAngle);
             UpdatePourAudio(true, smoothedFlow01);
+            UpdatePourStream(true, smoothedFlow01);
         }
         else
         {
             smoothedFlow01 = Mathf.Lerp(smoothedFlow01, 0f, Time.deltaTime * flowSmoothingSpeed);
             if (streamLine) streamLine.enabled = false;
             UpdatePourAudio(false, 0f);
+            UpdatePourStream(false, 0f);
         }
     }
 
@@ -98,6 +106,49 @@ public class LiquidPourer : MonoBehaviour
         else if (!pouring && pourAudio.isPlaying && pourAudio.volume < 0.01f) pourAudio.Stop();
     }
 
+    /// Procedural tinted droplet stream falling from the vessel mouth while pouring —
+    /// visible even when the optional LineRenderer isn't wired. Gravity does the work,
+    /// so orientation is forgiving; emission scales with flow, colour tracks the liquid.
+    void UpdatePourStream(bool pouring, float flow01)
+    {
+        if (!Application.isPlaying) return;
+        if (_pourStream == null)
+        {
+            if (!pouring) return;
+            var go = new GameObject("PourStream");
+            go.transform.SetParent(Mouth, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.rotation = Quaternion.LookRotation(Vector3.down);   // emit downward
+            _pourStream = go.AddComponent<ParticleSystem>();
+            _pourStream.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main = _pourStream.main;
+            main.loop = true; main.playOnAwake = false;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.startLifetime = 0.55f;
+            main.startSpeed = 0.45f;
+            main.startSize = new ParticleSystem.MinMaxCurve(0.008f, 0.016f);
+            main.gravityModifier = 2.6f;
+            main.maxParticles = 160;
+            var em = _pourStream.emission; em.rateOverTime = 0f;
+            var sh = _pourStream.shape;
+            sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = 5f; sh.radius = 0.004f;
+            var r = _pourStream.GetComponent<ParticleSystemRenderer>();
+            r.material = EffectVfx.ParticleMaterial();
+            r.sortingOrder = 10;
+            _pourStream.Play();
+        }
+        var emis = _pourStream.emission;
+        emis.rateOverTime = pouring ? Mathf.Lerp(22f, 75f, Mathf.Clamp01(flow01)) : 0f;
+        if (pouring)
+        {
+            var main = _pourStream.main;
+            Color c = sourceContainer != null && sourceContainer.currentChemical != null
+                ? sourceContainer.currentChemical.liquidColor : new Color(0.6f, 0.75f, 0.9f);
+            c.a = 1f;
+            main.startColor = c;
+        }
+    }
+
     void Pour(float currentTilt)
     {
         // Calculate Amount
@@ -125,9 +176,9 @@ public class LiquidPourer : MonoBehaviour
 
         // Raycast Physics
         RaycastHit hit;
-        if (Physics.Raycast(spout.position, Vector3.down, out hit, 2.0f))
+        if (Physics.Raycast(Mouth.position, Vector3.down, out hit, 2.0f))
         {
-            if (streamLine) DrawCurvedStream(spout.position, hit.point, smoothedFlow01);
+            if (streamLine) DrawCurvedStream(Mouth.position, hit.point, smoothedFlow01);
 
             LiquidPhysics target = hit.collider.GetComponentInParent<LiquidPhysics>();
 
@@ -146,14 +197,21 @@ public class LiquidPourer : MonoBehaviour
                     SpawnHazard(hit.point, hit.normal);
                 }
 
-                // 2. Waste the liquid
+                // 2. Waste the liquid — and leave a growing wet puddle where it lands.
                 sourceContainer.PourOut(amountToPour);
+                if (Application.isPlaying && Time.time - _lastPuddle > 0.6f)
+                {
+                    _lastPuddle = Time.time;
+                    Color pc = sourceContainer.currentChemical != null
+                        ? sourceContainer.currentChemical.liquidColor : new Color(0.55f, 0.7f, 0.85f);
+                    SpillPuddle.Spawn(hit.point + Vector3.up * 0.02f, pc, 0.10f);
+                }
             }
         }
         else
         {
             // Poured into void
-            if (streamLine) DrawCurvedStream(spout.position, spout.position + Vector3.down * 0.5f, smoothedFlow01);
+            if (streamLine) DrawCurvedStream(Mouth.position, Mouth.position + Vector3.down * 0.5f, smoothedFlow01);
             sourceContainer.PourOut(amountToPour);
         }
     }

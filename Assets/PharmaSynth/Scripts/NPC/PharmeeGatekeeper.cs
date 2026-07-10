@@ -228,6 +228,10 @@ public class PharmeeGatekeeper : MonoBehaviour
                 break;
 
             case GateState.CoatPrompt:
+                // Put the wearables back on their pegs + strip any stale worn PPE, so the
+                // locker is always dressable here (the coat had gone missing after a lab-
+                // tour restart). This makes PPEWorn false, so the player re-dons cleanly.
+                if (WearableReseat.Instance != null) WearableReseat.Instance.Reseat();
                 if (ppe != null && ppe.PPEWorn) { Model.Fire(GateEvent.Coated); return; }
                 Say(lines.coatPrompt);
                 panel?.Show("Wear the lab coat, goggles and gloves from the locker beside you.", new List<string> { "Back" });
@@ -309,7 +313,9 @@ public class PharmeeGatekeeper : MonoBehaviour
             string id = runner != null && runner.Module != null ? runner.Module.moduleId : GameFlow.SelectedModuleId;
             ExperimentStationRegistry.Clear();
             launcher?.Launch(id, LaunchMode.StageOnly);   // props/bottles back to original spawns
-            if (ppe != null) ppe.RemovePPE();             // wearables off
+            // Wearables back on their pegs (+ worn PPE stripped) so the next campaign is dressable.
+            if (WearableReseat.Instance != null) WearableReseat.Instance.Reseat();
+            else if (ppe != null) ppe.RemovePPE();        // wearables off
             TeleportToFrontDoor();                         // rig back to the entrance by Pharmee
             Model.ResetToBlocked();                        // door re-closes; player must re-approach
             SpeakWelcome();

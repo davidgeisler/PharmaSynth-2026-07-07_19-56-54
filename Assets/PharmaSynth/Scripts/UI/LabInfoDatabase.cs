@@ -132,6 +132,12 @@ public static class LabInfoDatabase
         AddEquip("vial", "Reagent Vial", "Small capped bottle for storing or dispensing a reagent or a product.");
         AddEquip("labspeaker", "Lab Speaker", "Plays ambient background music for the lab. It gets louder as you walk toward it — a handy audio landmark for this corner.");
         AddEquip("speaker", "Lab Speaker", "Plays ambient background music for the lab. It gets louder as you walk toward it.");
+        // PPE wearables (locker displays).
+        AddEquip("labcoat", "Lab Coat", "Protects your clothes and skin from splashes. One of the three required PPE pieces — put it on at the locker before an experiment.");
+        AddEquip("coat", "Lab Coat", "Protects your clothes and skin from splashes. One of the three required PPE pieces — put it on at the locker before an experiment.");
+        AddEquip("goggle", "Safety Goggles", "Shield your eyes from splashes, fumes and flying glass. Required PPE — wear them the whole time you work.");
+        AddEquip("glove", "Nitrile Gloves", "Protect your hands from corrosive and toxic reagents. Required PPE — pull on a pair before handling any chemical.");
+        AddEquip("clothes", "Casual Clothes", "Your everyday outfit, seen in the mirror. Pull the lab coat, goggles and gloves on over it before starting.");
 
         // ---- REAGENTS (chemical-name keyed; trivia + hazard) --------------------------
         AddReagent("Sodium Hydroxide", "Caustic soda, a strong base. Dissolving it releases heat. Corrosive to skin and eyes — gloves and goggles are essential.");

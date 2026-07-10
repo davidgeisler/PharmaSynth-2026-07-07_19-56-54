@@ -28,5 +28,16 @@ public class PPEDonOnSelect : MonoBehaviour
     private void OnSelect(SelectEnterEventArgs _)
     {
         if (controller != null) controller.Don(piece);
+        // The piece is now on the player (worn visual shows on the avatar) — clear its
+        // locker display so it doesn't read as a duplicate. WearableReseat puts it back
+        // on reset / next CoatPrompt. Deferred a frame so we don't disable the
+        // interactable mid-select-event.
+        if (isActiveAndEnabled) StartCoroutine(HideNextFrame());
+    }
+
+    private System.Collections.IEnumerator HideNextFrame()
+    {
+        yield return null;
+        gameObject.SetActive(false);
     }
 }

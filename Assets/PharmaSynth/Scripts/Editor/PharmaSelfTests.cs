@@ -2083,6 +2083,12 @@ public static class PharmaSelfTests
         var rack = LabInfoDatabase.Equipment("TestTubeRack_12Tubes");
         A("info: test-tube RACK not plain test-tube", rack != null && rack.Title == "Test-Tube Rack");
         A("info: unknown prop → no card", LabInfoDatabase.Equipment("Wall_Section_42") == null);
+        var coat = LabInfoDatabase.Equipment("LabCoatDisplay");
+        A("info: lab coat resolves", coat != null && coat.Title == "Lab Coat");
+        var gog = LabInfoDatabase.Equipment("Goggles_Standin");
+        A("info: goggles resolve", gog != null && gog.Title == "Safety Goggles");
+        var glv = LabInfoDatabase.Equipment("Gloves_Standin");
+        A("info: gloves resolve", glv != null && glv.Title == "Nitrile Gloves");
 
         var naoh = LabInfoDatabase.Reagent("Sodium Hydroxide");
         A("info: NaOH trivia present", naoh != null && naoh.Category == LabInfoCategory.Reagent && naoh.Body.Length > 20);
