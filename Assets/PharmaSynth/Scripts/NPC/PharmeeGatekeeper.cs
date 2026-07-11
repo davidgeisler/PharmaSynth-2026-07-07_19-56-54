@@ -86,7 +86,34 @@ public class PharmeeGatekeeper : MonoBehaviour
     /// room), just after the screen fade-in settles.
     private void Start()
     {
-        if (Application.isPlaying) After(0.6f, SpeakWelcome);
+        if (Application.isPlaying)
+        {
+            // Menu → lab entry does no runtime placement, so the player would sit
+            // at the authored rig transform (~0.7 m behind the entrance). Route the
+            // initial spawn through the SAME target/code path Restart uses, so
+            // "walk in from the cube room" and "press Restart" land identically —
+            // but only AFTER the fixed-height calibration has sized the capsule
+            // (teleporting into the doorway while it is still un-sized makes physics
+            // depenetration shove the rig onto the roof). The player rests at the
+            // safe authored spawn during the brief calibration window.
+            if (isActiveAndEnabled) StartCoroutine(SpawnAtEntranceRoutine());
+            else { TeleportToFrontDoor(); After(0.6f, SpeakWelcome); }
+        }
+    }
+
+    /// Wait for the rig's height calibration to settle (or a safety timeout), then
+    /// land the player at the entrance exactly where Restart does.
+    private System.Collections.IEnumerator SpawnAtEntranceRoutine()
+    {
+        var boost = playerRig != null ? playerRig.GetComponent<SeatedHeightBoost>() : null;
+        float t = 0f;
+        while (boost != null && !boost.Calibrated && t < 3f)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        TeleportToFrontDoor();
+        After(0.6f, SpeakWelcome);
     }
 
     private void Subscribe()

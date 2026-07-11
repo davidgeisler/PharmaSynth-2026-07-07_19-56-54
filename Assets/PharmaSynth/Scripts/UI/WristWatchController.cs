@@ -71,7 +71,13 @@ public class WristWatchController : MonoBehaviour
     {
         if (watchAnchor != null)
         {
-            float faceUp = Vector3.Dot(watchAnchor.up, Vector3.up);
+            // Trigger on the natural "check my watch" pose: the watch face (its
+            // +up normal) aimed at the player's eyes — NOT palm-up toward the
+            // ceiling (the old Vector3.up reference fired on the wrong orientation).
+            Vector3 toHead = headTransform != null
+                ? (headTransform.position - watchAnchor.position).normalized
+                : Vector3.up;
+            float faceUp = Vector3.Dot(watchAnchor.up, toHead);
             // Hysteresis: raise above show-threshold to appear, drop below hide-threshold to vanish.
             if (!_gestureVisible && faceUp >= supinationShow) _gestureVisible = true;
             else if (_gestureVisible && faceUp < supinationHide) _gestureVisible = false;

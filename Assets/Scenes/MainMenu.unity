@@ -11619,7 +11619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b8daaf4d0a91d41b14a3a03a9163f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeatedHeightBoost
-  targetEyeHeight: 1.4
+  targetEyeHeight: 1.45
   cameraTransform: {fileID: 1049170290}
   offsetTransform: {fileID: 657188987}
 --- !u!1 &1062892760
@@ -25387,7 +25387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -11,7 +11,7 @@ public static class SpawnHeightWiring
     /// ONE eye height everywhere (user 2026-07-11: "take the lab's height and
     /// apply it to the cube room" — per-scene divergence kept confusing tests;
     /// the cube room's furnishings were lowered to suit instead).
-    public const float EyeHeight = 1.40f;
+    public const float EyeHeight = 1.45f;
 
     [MenuItem("Tools/PharmaSynth/Wire Spawn Height (Fixed Per Scene)")]
     public static void Wire()

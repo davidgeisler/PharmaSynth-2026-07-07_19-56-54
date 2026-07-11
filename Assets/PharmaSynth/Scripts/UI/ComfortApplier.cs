@@ -67,7 +67,13 @@ public class ComfortApplier : MonoBehaviour
             hudRoot.localScale = ComfortMath.HudScale(_hudBase, s.textScale);
         }
         if (snapTurn != null) snapTurn.turnAmount = s.snapTurnAngle;
-        if (vignette != null) vignette.defaultParameters.apertureSize = ComfortMath.ApertureFor(s.vignetteIntensity);
+        // Full, uncircled view (user 2026-07-11: "like Meta's home"). The XRI
+        // tunneling vignette was stuck as a permanent ~0.7-aperture circle in the
+        // headset — a locomotion provider (move-under-gravity) reports "locomoting"
+        // even while standing, so easing the idle aperture open didn't help. Turn
+        // the overlay OFF outright; no provider can bring the circle back. Re-add a
+        // comfort tunnel later only if a provider gates on INTENTIONAL movement.
+        if (vignette != null && vignette.gameObject.activeSelf) vignette.gameObject.SetActive(false);
         if (brain != null) brain.SetSubtitlePace(s.subtitleSpeed);
         if (gatekeeper != null) gatekeeper.SetSubtitlePace(s.subtitleSpeed);
     }

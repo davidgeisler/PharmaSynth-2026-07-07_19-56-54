@@ -70,6 +70,19 @@ public class SeatedHeightBoost : MonoBehaviour
 
     public float TargetEyeHeight { get { return targetEyeHeight; } }
 
+    /// True once a valid, settled pose has been measured and the eye-height offset
+    /// is locked in (capsule correctly sized). Consumers that move the rig on load
+    /// (e.g. the entrance teleport) must wait for this — teleporting while the
+    /// capsule is still un-sized lets depenetration shove the rig onto the roof.
+    public bool Calibrated => _done;
+
+    /// The fixed-height offset this component wants on the Camera Offset's local Y
+    /// this frame (target − measured head). Exposed so a sibling that also writes
+    /// the Camera Offset (e.g. WalkBob's head-bob) can ride ON TOP of the fixed
+    /// height instead of overwriting it — WalkBob's LateUpdate otherwise clobbers
+    /// this Update-write every frame, letting real head height leak through 1:1.
+    public float AppliedOffset => _applied;
+
     public void Bind(Transform cam, Transform offset) { cameraTransform = cam; offsetTransform = offset; }
     public void SetTarget(float eyeHeight) { targetEyeHeight = eyeHeight; }
 
@@ -93,38 +106,33 @@ public class SeatedHeightBoost : MonoBehaviour
 
         Vector3 head = cameraTransform.localPosition;
 
+        // TRULY FIXED eye height (user 2026-07-11: "regardless of the user's
+        // height, everyone has the same view"). The offset cancels the player's
+        // measured head height and re-plants the eye on targetEyeHeight EVERY
+        // frame — so a tall and a short player, standing or not, share the exact
+        // same viewpoint. (The old lock-once-then-drift scheme let real standing
+        // height leak back in above the tolerance band, which is what made the
+        // headset feel too tall.) A non-zero pose is required; while the HMD
+        // reports the untracked (0,0,0) origin we hold the last offset instead of
+        // snapping to 0. NOTE: this also cancels physical crouching (bending down
+        // no longer lowers the view) — the intended trade for a uniform height.
+        if (head.sqrMagnitude > 0.0001f)
+            _applied = HeightCalibration.FixedOffset(targetEyeHeight, head.y);
+
+        // Spawn gate only: once a valid, settled pose confirms the offset is real,
+        // mark Calibrated so the entrance teleport (which waits on it) never fires
+        // on a garbage first-frame pose and shoves the rig onto the roof.
         if (!_done)
         {
-            // PRE-CALIBRATION LIVE LOCK (2026-07-11 "roof once and for all"):
-            // while the pose settles the offset TRACKS target-minus-head every
-            // frame, so the eye sits on target from frame 1. The old behaviour
-            // held 0 here — with the runtime's floor origin sitting ~0.9 m below
-            // the real floor the head read 1.9+ and the player toured the
-            // ceiling for as long as the settle took (moving = it never ended).
-            _applied = head.sqrMagnitude > 0.0001f
-                ? HeightCalibration.FixedOffset(targetEyeHeight, head.y)
-                : 0f;
-
             bool ok = HeightCalibration.PoseValid(head, _lastY);
             _lastY = head.y;
             if (!ok) _stable = 0;
             else if (++_stable >= SettleFrames)
             {
-                _done = true;   // lock in — from here head motion is the player's own
+                _done = true;
                 Debug.Log("[FixedEyeHeight] head measured at " + head.y.ToString("F2")
                     + " m -> offset " + _applied.ToString("F2") + " m (eye = " + targetEyeHeight + " m).");
             }
-        }
-        else
-        {
-            // Two-sided drift correction (includes ROOT so mid-range floats
-            // count): stuck-tall glides down fast-ish, stuck-short (headset
-            // repositioned after lock-in) glides back up; ordinary crouching
-            // stays inside the generous short allowance and is never touched.
-            float eyeNow = transform.position.y + _applied + head.y;
-            float excess = HeightCalibration.TallExcess(eyeNow, targetEyeHeight);
-            if (excess > 0f) _applied -= Mathf.Min(excess, 0.4f * Time.deltaTime);
-            else if (excess < 0f) _applied += Mathf.Min(-excess, 0.4f * Time.deltaTime);
         }
 
         // The offset object's Y is OURS every frame.

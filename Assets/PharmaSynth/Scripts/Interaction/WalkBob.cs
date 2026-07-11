@@ -22,6 +22,7 @@ public class WalkBob : MonoBehaviour
     private Quaternion _homeRot;
     private float _phase;
     private float _weight;
+    private SeatedHeightBoost _height;   // owns the Camera Offset's fixed-height Y
 
     public void SetAmplitude(float a) => amplitude = a;   // comfort toggle → 0
 
@@ -32,6 +33,11 @@ public class WalkBob : MonoBehaviour
         _homeLocal = bobTarget.localPosition;
         _homeRot = bobTarget.localRotation;
         _lastPos = originRoot.position;
+        // If the fixed-eye-height component drives the SAME Camera Offset, bob
+        // relative to ITS offset instead of a stale cached home Y — otherwise this
+        // LateUpdate overwrites the fixed height every frame and the player floats
+        // at their real head height (2026-07-11 headset bug).
+        _height = originRoot.GetComponent<SeatedHeightBoost>();
     }
 
     private void LateUpdate()
@@ -50,7 +56,11 @@ public class WalkBob : MonoBehaviour
         float bob = Mathf.Sin(_phase) * amplitude * _weight;
         float roll = Mathf.Cos(_phase * 0.5f) * rollDegrees * _weight;
 
-        bobTarget.localPosition = _homeLocal + new Vector3(0f, bob, 0f);
+        // Base Y is the fixed-height offset (if present) so bob rides on top of it
+        // rather than replacing it; falls back to the cached home when no
+        // SeatedHeightBoost drives this transform.
+        float baseY = (_height != null && _height.isActiveAndEnabled) ? _height.AppliedOffset : _homeLocal.y;
+        bobTarget.localPosition = new Vector3(_homeLocal.x, baseY + bob, _homeLocal.z);
         // roll relative to the cached home rotation (never compounds frame-to-frame)
         bobTarget.localRotation = _homeRot * Quaternion.Euler(0f, 0f, roll);
     }
