@@ -1,0 +1,31 @@
+{
+    "asset": "ba737af3065d2d94384b71768cf34ed2",
+    "fileName": "019f4e53-c12c-722c-a479-71ce8f5b4167.png",
+    "prompt": "One single thin litmus pH test paper strip, isolated. A long narrow flat rectangular strip of thin paper, like a small ruler or a stick of gum — length roughly 6x its width, very thin. Solid violet-purple colour, slightly matte paper texture. Lying flat and straight. Centered on a plain flat white background, even soft studio lighting, product photo, no box, no other objects, no text.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

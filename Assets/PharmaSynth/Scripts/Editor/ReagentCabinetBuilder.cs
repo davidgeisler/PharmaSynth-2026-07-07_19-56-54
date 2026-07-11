@@ -254,6 +254,23 @@ public static class ReagentCabinetBuilder
         if (respawn == null) respawn = inst.AddComponent<DropRespawn>();
         respawn.SetHome(inst.transform.position, inst.transform.rotation);
         ShelfPourWiring.WireBottle(inst.gameObject, runner, registry);
+
+        // Glass labware shatters when dropped hard (user 2026-07-11); dropper
+        // bottles (WashBottle) are plastic and only clatter. Mirrors the runtime
+        // ExperimentSceneBuilder wiring — the prefab names are already in the
+        // Mishandling breakable policy.
+        if (Mishandling.IsBreakable(prefabName))
+        {
+            var breakable = inst.GetComponent<BreakableGlassware>() ?? inst.AddComponent<BreakableGlassware>();
+            breakable.Bind(runner, respawn, rb, row.chemicalName);
+            if (inst.GetComponent<ImpactSound>() == null)
+                inst.AddComponent<ImpactSound>().Bind(rb, Mishandling.DropSoundKey(prefabName), Mishandling.DefaultBreakSpeed);
+        }
+        else if (inst.GetComponent<ImpactSound>() == null)
+        {
+            inst.AddComponent<ImpactSound>().Bind(rb, Mishandling.DropSoundKey(prefabName));
+        }
+
         var label = inst.GetComponent<ProximityLabel>();
         if (label == null) label = inst.AddComponent<ProximityLabel>();
         label.SetLabel(row.chemicalName, 1.4f);
@@ -320,19 +337,66 @@ public static class ReagentCabinetBuilder
             // AI-generated kraft cardboard (falls back to the row's flat colour).
             box.GetComponent<Renderer>().sharedMaterial = Cardboard != null ? Cardboard : MakeMat(row.color);
         }
-        AddPropPhysics(box, 0.05f);
-        var label = box.AddComponent<ProximityLabel>();
+        // The box is a FIXED dispenser (user 2026-07-11): it stays on the shelf,
+        // you pull single pieces from it — so it's not grabbable as a whole.
+        MakeFixedProp(box);
+        var label = box.GetComponent<ProximityLabel>();
+        if (label == null) label = box.AddComponent<ProximityLabel>();
         label.SetLabel(row.chemicalName, 1.4f);
-        var item = box.AddComponent<LabItem>();
+        var item = box.GetComponent<LabItem>();
+        if (item == null) item = box.AddComponent<LabItem>();
         item.itemId = "raw-" + LabInfoDatabase.Norm(row.chemicalName);
         item.displayName = row.chemicalName;
 
-        // The interactive consumables ride ON the box, ready to grab.
-        if (row.chemicalName == "Litmus Paper")
-            for (int i = 0; i < 3; i++) MakeLitmusStrip(parent, pos + new Vector3(0f, 0.06f, -0.02f + i * 0.02f));
-        else if (row.chemicalName == "Matchsticks")
-            for (int i = 0; i < 3; i++) MakeMatchstick(parent, pos + new Vector3(0f, 0.062f, -0.02f + i * 0.02f));
+        // Endless single-piece dispenser: one ready piece rests on the box; when a
+        // hand takes it, a fresh one appears. All four paper/stick consumables get
+        // it (litmus, matches, cotton, filter); ice stays a bath (StockBucket).
+        if (HasSingle(row.chemicalName))
+            AttachDispenser(box, parent, row.chemicalName, pos);
         return true;
+    }
+
+    /// Which consumables dispense a single grabbable piece.
+    static bool HasSingle(string chem)
+        => chem == "Litmus Paper" || chem == "Matchsticks"
+        || chem == "Cotton Swabs" || chem == "Filter Paper";
+
+    /// Build one single piece of the named consumable at pos, parented to parent.
+    static GameObject BuildSingle(string chem, Transform parent, Vector3 pos)
+    {
+        switch (chem)
+        {
+            case "Litmus Paper": return MakeLitmusStrip(parent, pos);
+            case "Matchsticks":  return MakeMatchstick(parent, pos);
+            case "Cotton Swabs": return MakeCottonSwab(parent, pos);
+            case "Filter Paper": return MakeFilterPaper(parent, pos);
+            default: return null;
+        }
+    }
+
+    /// Wire a box into a refilling single-piece dispenser: a rest anchor on the
+    /// box top, a hidden fully-wired TEMPLATE to clone at runtime, and one seed
+    /// piece so it reads as stocked in the editor.
+    static void AttachDispenser(GameObject box, Transform parent, string chem, Vector3 pos)
+    {
+        var rends = box.GetComponentsInChildren<Renderer>(true);
+        float topY = rends.Length > 0 ? CombinedBounds(rends).max.y + 0.008f : pos.y + 0.07f;
+        Vector3 restPos = new Vector3(pos.x, topY, pos.z);
+
+        var anchor = new GameObject("SingleRest");
+        anchor.transform.SetParent(box.transform, true);
+        anchor.transform.position = restPos;
+
+        // Template + seed both parent to the cabinet unit (never under the box —
+        // a nested/scaled parent would distort the clones).
+        var template = BuildSingle(chem, parent, restPos);
+        template.name = "Template_Raw_" + chem.Replace(" ", "");
+        template.SetActive(false);
+
+        var seed = BuildSingle(chem, parent, restPos);
+
+        var disp = box.AddComponent<ConsumableDispenser>();
+        disp.Bind(template, anchor.transform, parent, seed, 1);
     }
 
     static bool StockBucket(RawReagentCatalog.Row row, Vector3 pos, Transform parent)
@@ -429,43 +493,132 @@ public static class ReagentCabinetBuilder
         }
     }
 
-    static void MakeLitmusStrip(Transform parent, Vector3 pos)
+    static GameObject MakeLitmusStrip(Transform parent, Vector3 pos)
     {
-        var strip = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        strip.name = "LitmusStrip";
-        strip.transform.SetParent(parent, false);
-        strip.transform.position = pos;
-        strip.transform.localScale = new Vector3(0.012f, 0.002f, 0.055f);
-        strip.GetComponent<Renderer>().sharedMaterial = MakeMat(LitmusMath.NeutralViolet);
-        AddPropPhysics(strip, 0.003f);
-        strip.AddComponent<LitmusStrip>().Bind(strip.GetComponent<Renderer>());
+        // The user's Tripo single-strip model wins when it exists.
+        var strip = TryTripo("LitmusStripSingle", pos, parent, 0.004f);
+        if (strip != null) strip.name = "LitmusStrip";
+        else
+        {
+            strip = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            strip.name = "LitmusStrip";
+            strip.transform.SetParent(parent, false);
+            strip.transform.position = pos;
+            strip.transform.localScale = new Vector3(0.012f, 0.002f, 0.055f);
+            strip.GetComponent<Renderer>().sharedMaterial = MakeMat(LitmusMath.NeutralViolet);
+        }
+        AddSinglePhysics(strip, 0.003f);
+        strip.AddComponent<LitmusStrip>().Bind(strip.GetComponentInChildren<Renderer>());
         var item = strip.AddComponent<LabItem>();
         item.itemId = "litmus-strip"; item.displayName = "Litmus Paper";
+        return strip;
     }
 
-    static void MakeMatchstick(Transform parent, Vector3 pos)
+    static GameObject MakeMatchstick(Transform parent, Vector3 pos)
     {
-        var stick = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        stick.name = "Matchstick";
-        stick.transform.SetParent(parent, false);
-        stick.transform.position = pos;
-        stick.transform.localScale = new Vector3(0.005f, 0.005f, 0.07f);
-        stick.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.75f, 0.55f, 0.3f));
-        var head = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        head.name = "Head";
-        head.transform.SetParent(stick.transform, false);
-        head.transform.localPosition = new Vector3(0f, 0f, 0.48f);
-        head.transform.localScale = new Vector3(1.6f, 1.6f, 0.12f);
-        head.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.6f, 0.12f, 0.1f));
-        Object.DestroyImmediate(head.GetComponent<Collider>());
-        AddPropPhysics(stick, 0.004f);
+        // The user's Tripo single-matchstick model wins when it exists.
+        var stick = TryTripo("MatchstickSingle", pos, parent, 0.008f);
+        if (stick != null) stick.name = "Matchstick";
+        else
+        {
+            stick = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            stick.name = "Matchstick";
+            stick.transform.SetParent(parent, false);
+            stick.transform.position = pos;
+            stick.transform.localScale = new Vector3(0.005f, 0.005f, 0.07f);
+            stick.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.75f, 0.55f, 0.3f));
+            var head = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            head.name = "Head";
+            head.transform.SetParent(stick.transform, false);
+            head.transform.localPosition = new Vector3(0f, 0f, 0.48f);
+            head.transform.localScale = new Vector3(1.6f, 1.6f, 0.12f);
+            head.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.6f, 0.12f, 0.1f));
+            Object.DestroyImmediate(head.GetComponent<Collider>());
+        }
+        AddSinglePhysics(stick, 0.004f);
         stick.AddComponent<Matchstick>();
         var item = stick.AddComponent<LabItem>();
         item.itemId = "matchstick"; item.displayName = "Matchstick";
+        return stick;
     }
 
-    /// Grabbable-prop physics for the procedural consumables (kinematic-parked,
-    /// dynamic on release — the shelf policy).
+    static GameObject MakeFilterPaper(Transform parent, Vector3 pos)
+    {
+        // Done procedurally like the litmus strip (user 2026-07-11: no Tripo
+        // needed for a flat disc) — a thin cream circle you seat in the funnel.
+        var disc = TryTripo("FilterPaperSingle", pos, parent, 0.004f);
+        if (disc != null) disc.name = "FilterPaper";
+        else
+        {
+            disc = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            disc.name = "FilterPaper";
+            disc.transform.SetParent(parent, false);
+            disc.transform.position = pos;
+            disc.transform.localScale = new Vector3(0.055f, 0.0012f, 0.055f);   // flat disc, ~5.5 cm
+            disc.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.95f, 0.94f, 0.9f));
+        }
+        AddSinglePhysics(disc, 0.002f);
+        var item = disc.AddComponent<LabItem>();
+        item.itemId = "filter-paper"; item.displayName = "Filter Paper";
+        return disc;
+    }
+
+    static GameObject MakeCottonSwab(Transform parent, Vector3 pos)
+    {
+        var swab = TryTripo("CottonSwabSingle", pos, parent, 0.006f);
+        if (swab != null) swab.name = "CottonSwab";
+        else
+        {
+            swab = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            swab.name = "CottonSwab";
+            swab.transform.SetParent(parent, false);
+            swab.transform.position = pos;
+            swab.transform.rotation = Quaternion.Euler(90f, 0f, 0f);            // lie along Z
+            swab.transform.localScale = new Vector3(0.004f, 0.035f, 0.004f);     // thin stick
+            swab.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.82f, 0.72f, 0.55f));
+            foreach (float end in new[] { 1f, -1f })
+            {
+                var tip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                tip.name = "Tip";
+                tip.transform.SetParent(swab.transform, false);
+                tip.transform.localPosition = new Vector3(0f, end, 0f);
+                tip.transform.localScale = new Vector3(2.2f, 0.28f, 2.2f);
+                tip.GetComponent<Renderer>().sharedMaterial = MakeMat(new Color(0.97f, 0.97f, 0.96f));
+                Object.DestroyImmediate(tip.GetComponent<Collider>());
+            }
+        }
+        AddSinglePhysics(swab, 0.002f);
+        var item = swab.AddComponent<LabItem>();
+        item.itemId = "cotton-swab"; item.displayName = "Cotton Swab";
+        return swab;
+    }
+
+    /// A fixed shelf fixture (the dispenser box): a click/hover collider, no
+    /// Rigidbody and no XRGrab, so it stays put while you pull pieces from it.
+    static void MakeFixedProp(GameObject go)
+    {
+        var grab = go.GetComponent<XRGrab>();
+        if (grab != null) Object.DestroyImmediate(grab);
+        var rb = go.GetComponent<Rigidbody>();
+        if (rb != null) Object.DestroyImmediate(rb);
+        if (go.GetComponentInChildren<Collider>() == null)
+        {
+            var rends = go.GetComponentsInChildren<Renderer>(true);
+            var col = go.AddComponent<BoxCollider>();
+            if (rends.Length > 0)
+            {
+                var b = CombinedBounds(rends);
+                col.center = go.transform.InverseTransformPoint(b.center);
+                Vector3 ls = go.transform.lossyScale;
+                col.size = new Vector3(b.size.x / Mathf.Max(1e-4f, Mathf.Abs(ls.x)),
+                                       b.size.y / Mathf.Max(1e-4f, Mathf.Abs(ls.y)),
+                                       b.size.z / Mathf.Max(1e-4f, Mathf.Abs(ls.z)));
+            }
+        }
+    }
+
+    /// Grabbable-prop physics for the ice bucket (kinematic-parked, dynamic on
+    /// release, returns home when abandoned — the shelf policy).
     static void AddPropPhysics(GameObject go, float mass)
     {
         var rb = go.GetComponent<Rigidbody>();
@@ -482,6 +635,24 @@ public static class ReagentCabinetBuilder
         var respawn = go.GetComponent<DropRespawn>();
         if (respawn == null) respawn = go.AddComponent<DropRespawn>();
         respawn.SetHome(go.transform.position, go.transform.rotation);
+    }
+
+    /// Physics for a dispensed single: kinematic-parked, dynamic on release (the
+    /// shelf policy) but NO DropRespawn — the ConsumableDispenser and the piece's
+    /// own DispensedConsumable own its lifecycle instead.
+    static void AddSinglePhysics(GameObject go, float mass)
+    {
+        var rb = go.GetComponent<Rigidbody>();
+        if (rb == null) rb = go.AddComponent<Rigidbody>();
+        rb.mass = mass;
+        rb.isKinematic = true;
+        rb.useGravity = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+        var grab = go.GetComponent<XRGrab>();
+        if (grab == null) grab = go.AddComponent<XRGrab>();
+        GrabTuning.Apply(grab);
+        if (go.GetComponent<GrabPhysicsPolicy>() == null) go.AddComponent<GrabPhysicsPolicy>();
     }
 
     static Material MakeMat(Color c)

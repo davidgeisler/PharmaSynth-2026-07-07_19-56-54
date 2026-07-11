@@ -1,0 +1,23 @@
+{
+    "asset": "cd2b9883a9461b84986a75885edf9ec8",
+    "fileName": "019f4e3b-bec5-7929-8f00-2d6cf29083a7.glb",
+    "prompt": "A single, thin rectangular litmus pH test paper strip lying flat: small thin paper strip in a neutral violet color",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "1ebbc1a0955220440a4ce5186342fcdb",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

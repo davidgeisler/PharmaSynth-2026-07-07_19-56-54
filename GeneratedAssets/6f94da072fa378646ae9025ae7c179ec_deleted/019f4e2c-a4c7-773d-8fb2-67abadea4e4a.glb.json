@@ -1,0 +1,23 @@
+{
+    "asset": "6f94da072fa378646ae9025ae7c179ec",
+    "fileName": "019f4e2c-a4c7-773d-8fb2-67abadea4e4a.glb",
+    "prompt": "A laboratory Florence flask: round-bottom spherical clear glass flask with a flat resting base and a long straight cylindrical neck, empty…",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "3efab4117228c4048881b8f6f04f178d",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

@@ -57,6 +57,15 @@ public static class PanelConsolidationBuilder
             return;
         }
 
+        // Keep the procedures board readable as the player turns (user 2026-07-11:
+        // "results/procedures panels must face the avatar"). PlaceHolo aims it on
+        // summon; FaceCamera holds it facing the head every frame after.
+        if (holo.GetComponent<FaceCamera>() == null)
+        {
+            var fc = holo.AddComponent<FaceCamera>();
+            fc.yAxisOnly = true; fc.faceTowardCamera = false;
+        }
+
         var summary = EnsureText(holo.transform, "HoloSummary", body,
             new Vector2(680f, 46f), new Vector2(0f, 368f), 26f, TextAlignmentOptions.Center,
             new Color(0.85f, 0.95f, 1f));

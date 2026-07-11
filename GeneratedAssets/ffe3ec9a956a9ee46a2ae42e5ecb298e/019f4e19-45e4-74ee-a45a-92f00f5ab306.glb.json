@@ -1,0 +1,23 @@
+{
+    "asset": "ffe3ec9a956a9ee46a2ae42e5ecb298e",
+    "fileName": "019f4e19-45e4-74ee-a45a-92f00f5ab306.glb",
+    "prompt": "A small open box of white cotton swabs, simple light-blue cardboard box with cotton buds standing upright inside, a couple lying in front",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "7014e9f424a2bd144aa9dba8e93da0e8",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

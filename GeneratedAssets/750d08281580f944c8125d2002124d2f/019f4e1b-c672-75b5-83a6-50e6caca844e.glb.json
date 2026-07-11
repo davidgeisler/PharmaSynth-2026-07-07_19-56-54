@@ -1,0 +1,23 @@
+{
+    "asset": "750d08281580f944c8125d2002124d2f",
+    "fileName": "019f4e1b-c672-75b5-83a6-50e6caca844e.glb",
+    "prompt": "\tA round box of white circular laboratory filter papers: a shallow cylindrical paper box with the lid ajar, a stack of white filter paper discs visible inside and one disc leaning against the box",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "a420d589e93fe5c47843d6300f61e84a",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

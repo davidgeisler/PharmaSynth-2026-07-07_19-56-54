@@ -32,27 +32,102 @@ public static class LabelForge
             var lp = bottle.GetComponent<LiquidPhysics>();
             string chem = lp != null && lp.currentChemical != null ? lp.currentChemical.chemicalName : null;
             if (string.IsNullOrEmpty(chem)) continue;
-
-            string safe = chem.Replace(" ", "").Replace("%", "").Replace("/", "-");
-            string pngPath = OutDir + "/Label_" + safe + ".png";
-            RenderLabel(baseTex, chem, pngPath);
-
-            string matPath = OutDir + "/Label_" + safe + ".mat";
-            var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
-            if (mat == null)
-            {
-                mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                AssetDatabase.CreateAsset(mat, matPath);
-            }
-            mat.mainTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pngPath);
-            mat.SetFloat("_Smoothness", 0.15f);
-            EditorUtility.SetDirty(mat);
-
-            MountQuad(bottle, mat);
+            MountQuad(bottle, EnsureLabelMat(baseTex, chem), RoomOutward(bottle.position));
             made++;
         }
+
+        // Raw-reagent cabinets (user 2026-07-11): the same crisp labels on every
+        // stocked bottle/jar; boxes and the ice bucket (not tubular) get a FLAT
+        // label plate on their open face instead of a curved band. Tiny singles
+        // (matchsticks, litmus strips) stay label-free — the hover card names them.
+        var cabinets = GameObject.Find("ReagentCabinets");
+        if (cabinets != null)
+        {
+            foreach (var lp in cabinets.GetComponentsInChildren<LiquidPhysics>(true))
+            {
+                string chem = lp.currentChemical != null ? lp.currentChemical.chemicalName : null;
+                if (string.IsNullOrEmpty(chem)) continue;
+                MountQuad(lp.transform, EnsureLabelMat(baseTex, chem), CabinetOutward(lp.transform));
+                made++;
+            }
+            foreach (var item in cabinets.GetComponentsInChildren<LabItem>(true))
+            {
+                if (item.GetComponent<LiquidPhysics>() != null) continue;   // bottles handled above
+                if (!item.name.StartsWith("Raw_")) continue;                // singles ride beside boxes
+                var rs = item.GetComponentsInChildren<Renderer>();
+                if (rs.Length == 0) continue;
+                Bounds b = rs[0].bounds;
+                foreach (var r in rs) b.Encapsulate(r.bounds);
+                if (Mathf.Max(b.size.x, b.size.z) < 0.05f) continue;        // too small to label
+                MountFlat(item.transform, EnsureLabelMat(baseTex, item.displayName), CabinetOutward(item.transform), b);
+                made++;
+            }
+        }
+
         AssetDatabase.SaveAssets();
-        Debug.Log("<color=#4CD07D>[LabelForge] composited + mounted " + made + " labels</color>");
+        Debug.Log("<color=#4CD07D>[LabelForge] composited + mounted " + made + " labels (shelf + cabinets)</color>");
+    }
+
+    /// Composite (or refresh) the label texture + material for one chemical name.
+    static Material EnsureLabelMat(Texture2D baseTex, string chem)
+    {
+        string safe = chem.Replace(" ", "").Replace("%", "").Replace("/", "-").Replace("'", "");
+        string pngPath = OutDir + "/Label_" + safe + ".png";
+        RenderLabel(baseTex, chem, pngPath);
+
+        string matPath = OutDir + "/Label_" + safe + ".mat";
+        var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+        if (mat == null)
+        {
+            mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            AssetDatabase.CreateAsset(mat, matPath);
+        }
+        mat.mainTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pngPath);
+        mat.SetFloat("_Smoothness", 0.15f);
+        EditorUtility.SetDirty(mat);
+        return mat;
+    }
+
+    /// Label direction for shelf bottles: toward the room centre (legacy heuristic).
+    static Vector3 RoomOutward(Vector3 pos)
+    {
+        Vector3 outward = new Vector3(0.2f, 0f, -2.5f) - pos;
+        outward.y = 0f;
+        return outward.normalized;
+    }
+
+    /// Label direction for cabinet stock: the owning unit's OPEN face (local −x
+    /// by construction) — correct even after the user moves/rotates a unit.
+    static Vector3 CabinetOutward(Transform t)
+    {
+        for (var p = t.parent; p != null; p = p.parent)
+            if (p.name.StartsWith("CabinetUnit_")) return -p.right;
+        return RoomOutward(t.position);
+    }
+
+    /// Flat label plate for non-tubular stock (boxes, the ice bucket): a small
+    /// quad hovering just off the outward face, sized to the item.
+    static void MountFlat(Transform item, Material mat, Vector3 outward, Bounds b)
+    {
+        var old = item.Find("NameLabel");
+        if (old != null) Object.DestroyImmediate(old.gameObject);
+
+        var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad.name = "NameLabel";
+        Object.DestroyImmediate(quad.GetComponent<Collider>());
+        quad.transform.SetParent(item, true);
+        quad.GetComponent<MeshRenderer>().sharedMaterial = mat;
+
+        float w = Mathf.Clamp(Mathf.Max(b.size.x, b.size.z) * 0.85f, 0.04f, 0.14f);
+        float h = Mathf.Clamp(b.size.y * 0.6f, 0.025f, 0.09f);
+        quad.transform.rotation = Quaternion.LookRotation(-outward);   // Quad front is −Z
+        var ls = quad.transform.lossyScale;
+        quad.transform.localScale = new Vector3(
+            quad.transform.localScale.x * w / Mathf.Max(ls.x, 1e-4f),
+            quad.transform.localScale.y * h / Mathf.Max(ls.y, 1e-4f),
+            quad.transform.localScale.z);
+        float faceDist = Mathf.Abs(Vector3.Dot(b.extents, outward)) + 0.007f;
+        quad.transform.position = b.center + outward * faceDist;
     }
 
     /// Render base + centred black name text via an off-scene ortho camera.
@@ -117,7 +192,7 @@ public static class LabelForge
     /// base is portrait anyway) — user wants every reagent named on the glass.
     const float MinLabelRadius = 0.005f;
 
-    static void MountQuad(Transform bottle, Material mat)
+    static void MountQuad(Transform bottle, Material mat, Vector3 outward)
     {
         var old = bottle.Find("NameLabel");
         if (old != null) Object.DestroyImmediate(old.gameObject);
@@ -129,7 +204,6 @@ public static class LabelForge
         float radius = Mathf.Max(b.extents.x, b.extents.z);
         if (radius < MinLabelRadius) return;                     // thin tube: skip
 
-        Vector3 outward = new Vector3(0.2f, 0f, -2.5f) - bottle.position;   // toward the room
         outward.y = 0f; outward = outward.normalized;
 
         var band = new GameObject("NameLabel", typeof(MeshFilter), typeof(MeshRenderer));
@@ -137,9 +211,12 @@ public static class LabelForge
         band.GetComponent<MeshFilter>().sharedMesh = ArcMesh();
         band.GetComponent<MeshRenderer>().sharedMaterial = mat;
 
-        // Body radius (not the cap/neck): sample at the label's height where
-        // possible — approximated as 92% of the widest extent, +2 mm clearance.
-        float bandRadius = radius * 0.92f + 0.002f;
+        // Sit the band JUST PROUD of the glass, never inside it. Because the
+        // vessels are transparent, a band tucked at <100% radius reads as
+        // embedded/"half-buried" (user 2026-07-11) — the wider cabinet beakers
+        // showed the text sunk into the body. Float it a hair outside the widest
+        // extent so the whole 140° arc clears the surface all along its length.
+        float bandRadius = radius * 1.0f + 0.006f;
         // Wide vessels: squat band; thin tubes: small portrait band (min 3.5 cm
         // so the name stays legible up close).
         float bandHeight = Mathf.Min(b.size.y * 0.42f, Mathf.Max(bandRadius * 2.4f, 0.035f));

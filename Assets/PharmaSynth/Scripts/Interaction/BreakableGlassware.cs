@@ -1,20 +1,28 @@
 using UnityEngine;
+using XRGrab = UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable;
 
 /// Glassware that shatters when dropped hard (§2 mishandling penalties).
-/// Only a FREE (dynamic) item can break — kinematic shelf items and held
-/// items never do. On break: shatter SFX, a DroppedGlassware mistake against
-/// the Sanitation rubric, and the item goes home via DropRespawn as a fresh
-/// replacement so the experiment stays completable.
+/// Only a FREE (dynamic, un-held) item can break — kinematic shelf items and
+/// items currently in a hand never do, no matter how they scrape a wall. On
+/// break: shatter SFX, a DroppedGlassware mistake against the Sanitation rubric,
+/// and the item goes home via DropRespawn as a fresh replacement so the
+/// experiment stays completable.
 public class BreakableGlassware : MonoBehaviour
 {
     [SerializeField] private float breakImpactSpeed = Mishandling.DefaultBreakSpeed;
     [SerializeField, Min(0f)] private float rearmSeconds = 1.5f;
+    // A just-released item still carries the hand's velocity for a frame or two;
+    // don't let that release spike shatter it against nearby geometry. Only a
+    // genuine free-flight impact after this grace window counts.
+    [SerializeField, Min(0f)] private float releaseGraceSeconds = 0.35f;
 
     private ExperimentRunner _runner;
     private DropRespawn _respawn;
     private Rigidbody _rb;
+    private XRGrab _grab;
     private string _label = "Glassware";
     private float _cooldownUntil;
+    private float _releasedAt = -999f;
 
     void Awake()
     {
@@ -27,11 +35,19 @@ public class BreakableGlassware : MonoBehaviour
     {
         _runner = runner; _respawn = respawn; _rb = rb;
         if (!string.IsNullOrEmpty(label)) _label = label;
+        if (_grab == null) _grab = GetComponent<XRGrab>();
     }
+
+    // Velocity-tracked grabs keep the Rigidbody DYNAMIC while held (Batch A), so
+    // isKinematic no longer signals "in a hand" — track the grab directly and
+    // stamp the release time so the grace window can start.
+    private bool Held => _grab != null && _grab.isSelected;
 
     void OnCollisionEnter(Collision collision)
     {
-        if (_rb == null || _rb.isKinematic) return;          // on the shelf / in a hand
+        if (_rb == null || _rb.isKinematic) return;          // parked on the shelf
+        if (Held) { _releasedAt = Time.time; return; }       // in a hand — never breaks
+        if (Time.time - _releasedAt < releaseGraceSeconds) return;   // just let go — ignore the spike
         if (Time.time < _cooldownUntil) return;
         if (!Mishandling.ShouldBreak(collision.relativeVelocity.magnitude, breakImpactSpeed)) return;
         Break();

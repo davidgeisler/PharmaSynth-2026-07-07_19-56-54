@@ -1,0 +1,23 @@
+{
+    "asset": "f7a1b4db92465d848b21dfffd46baf30",
+    "fileName": "019f4e40-8252-7552-b96a-6ec93d7a5a21.glb",
+    "prompt": "A single wooden matchstick lying horizontally: pale wood square-sided stick with a rounded red phosphorus tip on one end",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "8f3aa8dce38db5547a9ee2fd6b7393ee",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

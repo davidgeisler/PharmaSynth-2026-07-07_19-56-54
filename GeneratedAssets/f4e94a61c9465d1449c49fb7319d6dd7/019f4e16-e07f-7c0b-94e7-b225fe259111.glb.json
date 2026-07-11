@@ -1,0 +1,23 @@
+{
+    "asset": "f4e94a61c9465d1449c49fb7319d6dd7",
+    "fileName": "019f4e16-e07f-7c0b-94e7-b225fe259111.glb",
+    "prompt": "\tA small cardboard matchbox for a laboratory, kraft brown box with the inner drawer slid slightly open showing wooden matches with red tips, a dark strike strip on the side. Single object, centered, plain flat white background, even studio lighting, product photo, no text.",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "c1afbc874fcfdc54b9865dd7eff42c60",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

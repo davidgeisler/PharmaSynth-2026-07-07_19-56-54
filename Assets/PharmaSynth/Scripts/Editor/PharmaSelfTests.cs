@@ -81,6 +81,7 @@ public static class PharmaSelfTests
         CenterTableMathSuite();
         RawReagentSuite();
         VoiceSuite();
+        DispenserSuite();
 
         string summary = $"PharmaSynth Self-Tests: {_total - _fail}/{_total} passed";
         if (_fail == 0) Debug.Log("<color=#4CD07D>" + summary + " — ALL GREEN</color>");
@@ -392,6 +393,10 @@ public static class PharmaSelfTests
             A("gate: tutorial episode chosen", m.ChooseEpisode(ExperimentPeriod.Tutorial, canSel, firstOf)
                 && m.State == GateState.CoatPrompt && m.SelectedModuleId == "tutorial-methane");
 
+            // 2026-07-11: the PPE locker moved just inside the lab → the door is
+            // open through the gear-up steps (the run still gates on PPE + walk-in).
+            A("gate: coat prompt opens the door", GatekeeperModel.DoorOpen(GateState.CoatPrompt)
+                && GatekeeperModel.DoorOpen(GateState.ReadyPrompt));
             A("gate: coat then ready", m.Fire(GateEvent.Coated) && m.Fire(GateEvent.Ready) && m.State == GateState.Loading);
             A("gate: loaded warns", m.Fire(GateEvent.Loaded) && m.State == GateState.ThresholdWarn && !GatekeeperModel.DoorOpen(m.State));
             A("gate: cross before confirm refused", !m.Fire(GateEvent.CrossedThreshold));
@@ -947,9 +952,10 @@ public static class PharmaSelfTests
             if (!RealSizes.TryGet(n, out _)) { allReal = false; _log.Add("breakable not in RealSizes: " + n); }
         A("mishandle: breakables are real prefabs", allReal);
 
-        // Impact policy: bench-height drop breaks, gentle set-down never does.
-        A("mishandle: hard impact breaks", Mishandling.ShouldBreak(3.2f));
-        A("mishandle: threshold impact breaks", Mishandling.ShouldBreak(2.8f));
+        // Impact policy: a real drop breaks, but carrying + bumping a wall does not.
+        A("mishandle: hard drop breaks", Mishandling.ShouldBreak(4.5f));
+        A("mishandle: threshold impact breaks", Mishandling.ShouldBreak(4.0f));
+        A("mishandle: carry-bump into wall safe", !Mishandling.ShouldBreak(2.5f));
         A("mishandle: gentle set-down safe", !Mishandling.ShouldBreak(0.8f));
 
         // Spill policy: un-held + tipped + has liquid, and only then.
@@ -2314,6 +2320,31 @@ public static class PharmaSelfTests
         A("demo: unknown module still rejected", !demoFlow.IsUnlocked("does-not-exist"));
         A("demo: pass state stays honest", !demoFlow.IsPassed("tutorial-methane") && demoFlow.PassedCount() == 0);
         A("demo: normal flow unaffected", !normalFlow.IsPeriodUnlocked(ExperimentPeriod.Final));
+
+        // End products hide outside demo sessions (user 2026-07-11).
+        A("endproduct: ethanol is a product", DemoMode.IsEndProduct("Ethanol"));
+        A("endproduct: acetone is a product", DemoMode.IsEndProduct("Acetone"));
+        A("endproduct: aspirin is a product", DemoMode.IsEndProduct("Aspirin"));
+        A("endproduct: sulfuric acid is raw", !DemoMode.IsEndProduct("Sulfuric Acid"));
+        A("endproduct: sodium acetate is feedstock", !DemoMode.IsEndProduct("Sodium Acetate"));
+        A("endproduct: null safe", !DemoMode.IsEndProduct(null));
+    }
+
+    // Consumable dispenser (user 2026-07-11: grab the box → pull a single piece;
+    // it refills; used pieces clean themselves up).
+    static void DispenserSuite()
+    {
+        // Taken: a hand grabs the resting piece, OR it moves off the slot.
+        A("dispenser: grab counts as taken", DispenserMath.IsTaken(true, 0f));
+        A("dispenser: nudge off slot counts as taken", DispenserMath.IsTaken(false, 0.2f));
+        A("dispenser: resting piece not taken", !DispenserMath.IsTaken(false, 0.01f));
+
+        // Discard: only a piece that was held, is now set down, still, long enough.
+        A("dispenser: used + idle piece discarded", DispenserMath.ShouldDiscard(true, false, 0f, 15f));
+        A("dispenser: never-held ready piece kept", !DispenserMath.ShouldDiscard(false, false, 0f, 999f));
+        A("dispenser: held piece kept", !DispenserMath.ShouldDiscard(true, true, 0f, 999f));
+        A("dispenser: still-moving piece kept", !DispenserMath.ShouldDiscard(true, false, 0.5f, 999f));
+        A("dispenser: not-yet-idle piece kept", !DispenserMath.ShouldDiscard(true, false, 0f, 3f));
     }
 
     // Demo HUD auto-complete verbs (skip step / finish experiment / auto quiz).

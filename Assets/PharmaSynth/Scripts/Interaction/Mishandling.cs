@@ -24,10 +24,13 @@ public static class Mishandling
     public static bool IsBreakable(string prefabName) => Breakables.Contains(prefabName ?? "");
     public static IEnumerable<string> BreakableNames => Breakables;
 
-    /// An impact at or above this speed shatters glass. 2.8 m/s ≈ a free fall
-    /// of ~0.4 m onto a hard surface — bench-height drops break, gentle
-    /// set-downs never do.
-    public const float DefaultBreakSpeed = 2.8f;
+    /// An impact at or above this speed shatters glass. 4.0 m/s ≈ a free fall
+    /// of ~0.8 m onto a hard surface — a real drop from bench/shelf height
+    /// breaks, but carrying an item and bumping a wall or a neighbouring bottle
+    /// (a slow scrape, well under this) never does (user 2026-07-11: breakage
+    /// was far too twitchy). Held items are additionally immune in
+    /// BreakableGlassware regardless of speed.
+    public const float DefaultBreakSpeed = 4.0f;
 
     public static bool ShouldBreak(float impactSpeed, float breakSpeed = DefaultBreakSpeed)
         => impactSpeed >= breakSpeed;

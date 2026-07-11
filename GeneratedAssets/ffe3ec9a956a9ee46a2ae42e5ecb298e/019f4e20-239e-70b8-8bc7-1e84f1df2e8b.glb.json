@@ -1,0 +1,23 @@
+{
+    "asset": "ffe3ec9a956a9ee46a2ae42e5ecb298e",
+    "fileName": "019f4e20-239e-70b8-8bc7-1e84f1df2e8b.glb",
+    "prompt": "A small flat dispenser box of litmus pH test paper strips: a purple-violet cardboard box with a slot, several strips in red, violet and blue fanned out beside it",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "eac9abfdace5edd48884eb55a6eeb90b",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

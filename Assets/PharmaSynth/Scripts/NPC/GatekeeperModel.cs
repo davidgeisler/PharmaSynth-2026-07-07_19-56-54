@@ -148,10 +148,12 @@ public class GatekeeperModel
     }
 
     /// Whether the physical door blocker should be OFF in this state. (Debrief now
-    /// happens back at the entrance after the Returning teleport → door closed.)
+    /// happens back at the entrance after the Returning teleport → door closed.
+    /// CoatPrompt/ReadyPrompt are open since 2026-07-11: the PPE locker moved to
+    /// the corner just INSIDE the lab, so gearing up happens through the door.)
     public static bool DoorOpen(GateState s)
         => s == GateState.LabTour || s == GateState.DoorArmed || s == GateState.Running
-        || s == GateState.SupplyPrompt
+        || s == GateState.SupplyPrompt || s == GateState.CoatPrompt || s == GateState.ReadyPrompt
         || s == GateState.QuizIntro || s == GateState.QuizTime || s == GateState.ScoreReview;
 
     /// Pick the episode (period): resolves the first playable module in it, checks

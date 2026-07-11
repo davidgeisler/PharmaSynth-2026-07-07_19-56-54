@@ -1,0 +1,31 @@
+{
+    "asset": "8f3aa8dce38db5547a9ee2fd6b7393ee",
+    "fileName": "019f4e52-9138-735e-b407-dfa7b5d5a57e.png",
+    "prompt": "One single wooden matchstick, isolated. A very long thin slender cylindrical wooden stick (like a toothpick) with a small rounded red-brown phosphorus tip on ONE end only. Lying horizontally, extremely elongated thin proportions, length roughly 12x its thickness. Centered on a plain flat white background, even soft studio lighting, product photo, no box, no other objects, no text.",
+    "negativePrompt": "",
+    "model": "gpt-image-1",
+    "modelName": "GPT Image 1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

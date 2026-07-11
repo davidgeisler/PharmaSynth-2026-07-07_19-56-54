@@ -1,0 +1,23 @@
+{
+    "asset": "d62cf5ee7a3cf15459d941e894a8a58f",
+    "fileName": "019f4e2a-9e64-7448-928c-cf62f9b4ce28.glb",
+    "prompt": "A laboratory separatory funnel: pear-shaped clear glass funnel with a ground glass stopper on top and a glass stopcock tap at the narrow bottom stem, standing upright…",
+    "negativePrompt": "",
+    "model": "model3d-tripo-p1",
+    "modelName": "Tripo P1",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "promptImageReferenceGuid": "3a4d27e5f71b3434898859352cdee4fc",
+    "modelReferenceGuid": "",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}

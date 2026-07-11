@@ -86,6 +86,30 @@ public static class DemoMode
         }
     }
 
+    /// Chemicals that are an experiment's END PRODUCT (user 2026-07-11: in the
+    /// regular laboratory these must NOT sit ready-made on the shelves — the
+    /// player synthesises them; each experiment's own stage still spawns what
+    /// its manuscript reagent list requires). Demo sessions show them.
+    /// (Sodium Acetate is excluded — it's methane's FEEDSTOCK, not a product.)
+    public static bool IsEndProduct(string chemicalName)
+    {
+        switch (chemicalName)
+        {
+            case "Ethanol":
+            case "Benzoic Acid":
+            case "Acetanilide":
+            case "Acetone":
+            case "Chloroform":
+            case "Benzamide":
+            case "Aspirin":
+            case "Caffeine":
+            case "Grape Juice":
+                return true;
+            default:
+                return false;
+        }
+    }
+
     /// Demo sessions persist to their own file so panel demos never pollute the
     /// real progression ("pharmasynth_progress.json" → "pharmasynth_progress_demo.json").
     public static string SavePathFor(bool demoActive, string normalPath)

@@ -91,96 +91,112 @@ public static class LabInfoDatabase
 
         // ---- EQUIPMENT (order: multi-word / specific tokens BEFORE their prefixes) ----
         AddEquip("graduatedcylinder", "Graduated Cylinder",
-            "Measures liquid volume accurately. Set it on the bench and read the bottom of the meniscus at eye level.");
+            "Measures liquid volume accurately — far more precise than a beaker's marks. Stand it on the bench, pour to just below the mark, then read the BOTTOM of the curved surface (the meniscus) at eye level. Use it whenever a step names an exact volume.");
         AddEquip("erlenmeyer", "Erlenmeyer Flask",
-            "Cone-shaped flask. The narrow neck lets you swirl the contents without spilling and slows evaporation — ideal for reactions and titrations.");
+            "Cone-shaped reaction flask. The narrow neck lets you swirl vigorously to mix without splashing and slows evaporation of volatile solvents. First choice for running a reaction, collecting a filtrate, or titrating.");
         AddEquip("testtuberack", "Test-Tube Rack",
-            "Holds test tubes upright while samples react, settle or cool.");
+            "Holds several test tubes upright at once so samples react, settle or cool hands-free. Line your confirmatory tests up in it and label positions so you don't mix up which tube is which.");
         AddEquip("testtubeholder", "Test-Tube Holder",
-            "Spring clamp for gripping a hot test tube while you heat it — keeps your hand clear of the flame.");
+            "Spring clamp for gripping a test tube while you heat it over a flame — keeps fingers clear of the heat. Clip it near the mouth and keep the open end pointed away from yourself and others.");
         AddEquip("testtubebrush", "Test-Tube Brush",
-            "Bristle brush for scrubbing the inside of test tubes and narrow glassware clean.");
+            "Bristle brush for scrubbing the inside of test tubes and narrow glassware. Clean and rinse between reagents so leftover residue can't spoil the next test.");
         AddEquip("testtube", "Test Tube",
-            "Holds small samples for reactions and tests. Heat gently along the side, mouth pointed away from people.");
+            "Holds a small sample for a reaction or confirmatory test. Add only a few millilitres, heat gently along the SIDE (not the base) while shaking, and always point the mouth away from people.");
         AddEquip("washbottle", "Wash Bottle",
-            "Squeeze bottle of distilled water for rinsing glassware and washing residues down.");
+            "Squeeze bottle of distilled water. Use it to rinse glassware, wash the last drops of a solution into a flask, or knock crystals off a rod — a clean rinse keeps your results accurate.");
         AddEquip("watchglass", "Watch Glass",
-            "Shallow glass dish — evaporate a few drops, hold solids for weighing, or cover a beaker.");
+            "Shallow glass disc. Cover a beaker to stop splashing, evaporate a few drops to reveal a solid, or hold a sample on the balance. Handy for eyeing a colour change against a white background.");
         AddEquip("beaker", "Beaker",
-            "Wide-mouth container for holding, mixing and heating liquids. Its marks are rough guides only — use a cylinder for accurate volumes.");
+            "Wide-mouth workhorse for holding, mixing, dissolving and heating liquids. Its printed marks are rough guides only — pour into a graduated cylinder whenever a step needs an accurate volume.");
         AddEquip("bunsenburner", "Bunsen Burner",
-            "Gas burner for strong heat. Light it with the striker, then open the air collar for a hot blue flame.");
+            "Gas burner for strong heat. Light it with the striker, then open the air collar until the flame turns blue and quiet — that hot blue cone is for real heating; a yellow flame is cool and sooty. Close the collar or the gas to stop.");
         AddEquip("alcoholburner", "Alcohol Burner",
-            "Spirit lamp giving a gentle flame for mild heating. Light the wick; cap it to put it out — never blow it.");
-        AddEquip("cruribletongs", "Crucible Tongs", "Long tongs for lifting hot crucibles and dishes safely.");
-        AddEquip("crucibletongs", "Crucible Tongs", "Long tongs for lifting hot crucibles and evaporating dishes safely.");
+            "Spirit lamp giving a gentle, steady flame for mild warming. Light the wick with a match; put it out by capping it — NEVER blow it out. Keep other flammable liquids well clear.");
+        AddEquip("cruribletongs", "Crucible Tongs", "Long tongs for lifting a hot crucible or evaporating dish. Metal stays cool at the far end — never grab hot glass or ceramic by hand.");
+        AddEquip("crucibletongs", "Crucible Tongs", "Long tongs for lifting a hot crucible or evaporating dish. Metal stays cool at the far end — never grab hot glass or ceramic by hand.");
         AddEquip("crucible", "Crucible",
-            "Ceramic cup that survives very high heat for igniting or fusing solids. Move it only with tongs.");
-        AddEquip("claytriangle", "Clay Triangle", "Supports a crucible on a tripod or ring during strong heating.");
+            "Ceramic cup that shrugs off very high heat — used to ignite, dry or fuse a solid to constant weight. It looks the same hot or cold, so always move it with tongs and let it cool on wire gauze.");
+        AddEquip("claytriangle", "Clay Triangle", "Sits on a tripod or iron ring and cradles a crucible over a flame for strong, direct heating.");
         AddEquip("evaporatingdish", "Evaporating Dish",
-            "Shallow porcelain dish for boiling off solvent to leave a solid residue behind.");
+            "Shallow porcelain dish for boiling off solvent to leave the dissolved solid (your product) behind. Heat slowly near the end so the residue doesn't spit or scorch.");
         AddEquip("glassrod", "Stirring Rod",
-            "Glass rod that stirs solutions and guides pouring down its length so liquid doesn't splash.");
-        AddEquip("dropper", "Dropper", "Adds liquid one drop at a time for small, precise additions.");
-        AddEquip("scoopula", "Scoopula", "Scoop for transferring solid reagent. Keep it clean and dry between chemicals.");
-        AddEquip("spatula", "Spatula", "Transfers small amounts of solid reagent. Wipe it clean between chemicals.");
-        AddEquip("forceps", "Forceps", "Fine tweezers for handling small solids, crystals or paper without touching them.");
-        AddEquip("motar", "Mortar & Pestle", "The mortar (bowl) and pestle (grinder) crush and grind solids into a fine powder.");
-        AddEquip("mortar", "Mortar & Pestle", "The mortar (bowl) and pestle (grinder) crush and grind solids into a fine powder.");
-        AddEquip("pestle", "Mortar & Pestle", "The pestle grinds solids against the mortar bowl into a fine powder.");
-        AddEquip("retortstand", "Retort Stand", "Vertical support rod. Clamps and rings attach to it to hold apparatus above the bench.");
-        AddEquip("ironring", "Iron Ring", "Clamps to the stand to support a funnel, wire gauze or flask over a burner.");
-        AddEquip("wiregauze", "Wire Gauze", "Metal mesh that spreads a flame's heat evenly under glassware.");
-        AddEquip("tripod", "Tripod", "Three-legged stand that holds glassware over a burner — pair it with wire gauze.");
-        AddEquip("funnel", "Funnel", "Guides liquid into narrow openings and holds filter paper for gravity filtration.");
-        AddEquip("balance", "Balance", "Weighs reagents. Tare it with the empty container on the pan, then add reagent to the target mass.");
-        AddEquip("vial", "Reagent Vial", "Small capped bottle for storing or dispensing a reagent or a product.");
-        AddEquip("labspeaker", "Lab Speaker", "Plays ambient background music for the lab. It gets louder as you walk toward it — a handy audio landmark for this corner.");
-        AddEquip("speaker", "Lab Speaker", "Plays ambient background music for the lab. It gets louder as you walk toward it.");
+            "Solid glass rod. Stir to dissolve or mix evenly, and pour liquid DOWN the rod so it runs into a funnel or flask without splashing. Also used to touch a drop onto litmus paper.");
+        AddEquip("dropper", "Dropper", "Adds liquid one drop at a time for small, precise additions — perfect when a test needs 'a few drops' of a reagent. Don't let the tip touch the sample, or you'll contaminate the bottle.");
+        AddEquip("scoopula", "Scoopula", "Curved scoop for transferring powdered or crystalline solids. Keep it clean and DRY between chemicals so nothing cross-contaminates.");
+        AddEquip("spatula", "Spatula", "Transfers small amounts of solid reagent onto the balance or into a flask. Wipe it clean between chemicals to avoid mixing reagents.");
+        AddEquip("forceps", "Forceps", "Fine tweezers for handling crystals, small solids or strips of paper without touching them with your fingers (which adds moisture and oils).");
+        AddEquip("motar", "Mortar & Pestle", "The bowl (mortar) and grinder (pestle) crush lumps into a fine, even powder — a bigger surface area means the solid dissolves and reacts faster.");
+        AddEquip("mortar", "Mortar & Pestle", "The bowl (mortar) and grinder (pestle) crush lumps into a fine, even powder — a bigger surface area means the solid dissolves and reacts faster.");
+        AddEquip("pestle", "Mortar & Pestle", "The pestle grinds a solid against the mortar bowl into a fine powder, so it dissolves and reacts faster.");
+        AddEquip("retortstand", "Retort Stand", "The tall support rod that anchors your setup. Clamps, rings and gauze attach to it to hold flasks, condensers and funnels steady above the bench.");
+        AddEquip("ironring", "Iron Ring", "Clamps to the stand to support a funnel during filtration, or wire gauze and a flask above a burner.");
+        AddEquip("wiregauze", "Wire Gauze", "Metal mesh laid on a tripod or ring. It spreads the flame's heat evenly so glassware warms gently instead of cracking from a hot spot.");
+        AddEquip("tripod", "Tripod", "Three-legged stand that holds glassware over a burner. Rest wire gauze on top first so the heat spreads evenly.");
+        AddEquip("funnel", "Funnel", "Guides liquid into a narrow neck and, fitted with folded filter paper, separates solid from liquid by gravity filtration. Wet the paper first so it clings to the cone.");
+        AddEquip("balance", "Balance", "Weighs reagents and product. Place the empty container on the pan and TARE (zero) it, then add reagent until you reach the target mass — this is how you find your percent yield.");
+        AddEquip("vial", "Reagent Vial", "Small capped bottle that stores or dispenses a reagent or your finished product. Keep it capped between pours so nothing spills or evaporates.");
+        AddEquip("labspeaker", "Lab Speaker", "Plays the lab's ambient music and gets louder as you approach — a handy audio landmark for this corner of the room.");
+        AddEquip("speaker", "Lab Speaker", "Plays the lab's ambient music and gets louder as you approach — a handy audio landmark for this corner.");
+        AddEquip("litmus", "Litmus Paper", "pH test strip. Touch a drop of solution to it: it turns RED in acid and BLUE in base (violet when neutral). Used to check acidity and to catch an alkaline gas like ammonia coming off a reaction.");
+        AddEquip("matchstick", "Matchstick", "Strike it to make a small flame for lighting a burner, or to run a combustion test — a glowing or lit splint reacts differently to flammable vapours (e.g. it goes out over non-flammable chloroform).");
+        AddEquip("filterpaper", "Filter Paper", "A paper disc folded into a cone in the funnel. Liquid passes through while solid crystals stay behind — the standard way to collect or purify your product.");
+        AddEquip("cottonswab", "Cotton Swab", "Loose plug of cotton used to stopper a fermentation tube — it lets gas escape but keeps airborne contaminants out during wine-making.");
+        AddEquip("icebucket", "Ice Bath", "A bucket of ice water. Lower a flask into it to crash-cool a reaction so the product crystallises out — cold makes crystals form faster and purer.");
+        AddEquip("icebath", "Ice Bath", "A bucket of ice water. Lower a flask into it to crash-cool a reaction so the product crystallises out — cold makes crystals form faster and purer.");
+        AddEquip("separatory", "Separatory Funnel", "Pear-shaped funnel with a tap for separating two liquid layers that don't mix. Let them settle, then drain the lower layer off through the tap.");
+        AddEquip("florence", "Florence Flask", "Round-bottomed boiling flask. Its even curve heats uniformly, so it's used for distillation and reactions that must reach a steady boil.");
+        AddEquip("thermometer", "Thermometer", "Reads the temperature of a bath or mixture. Watch it so you heat to the range a step specifies and never overshoot — overheating ruins the product.");
+        AddEquip("fumehood", "Fume Hood", "Ventilated enclosure that draws toxic fumes away from you. Do every step with aniline, chloroform, ammonia or acid chlorides inside it, with the sash low.");
         // PPE wearables (locker displays).
-        AddEquip("labcoat", "Lab Coat", "Protects your clothes and skin from splashes. One of the three required PPE pieces — put it on at the locker before an experiment.");
-        AddEquip("coat", "Lab Coat", "Protects your clothes and skin from splashes. One of the three required PPE pieces — put it on at the locker before an experiment.");
-        AddEquip("goggle", "Safety Goggles", "Shield your eyes from splashes, fumes and flying glass. Required PPE — wear them the whole time you work.");
-        AddEquip("glove", "Nitrile Gloves", "Protect your hands from corrosive and toxic reagents. Required PPE — pull on a pair before handling any chemical.");
-        AddEquip("clothes", "Casual Clothes", "Your everyday outfit, seen in the mirror. Pull the lab coat, goggles and gloves on over it before starting.");
+        AddEquip("labcoat", "Lab Coat", "Protects your clothes and skin from splashes and stray reagent. One of the three required PPE pieces — put it on at the locker; the door stays locked until all three are worn.");
+        AddEquip("coat", "Lab Coat", "Protects your clothes and skin from splashes and stray reagent. One of the three required PPE pieces — put it on at the locker; the door stays locked until all three are worn.");
+        AddEquip("goggle", "Safety Goggles", "Shield your eyes from splashes, fumes and flying glass. Required PPE — wear them the WHOLE time you work, not just while pouring.");
+        AddEquip("glove", "Nitrile Gloves", "Protect your hands from corrosive and toxic reagents. Required PPE — pull on a pair before touching any chemical, and change them if they get splashed.");
+        AddEquip("clothes", "Casual Clothes", "Your everyday outfit, seen in the mirror. Pull the lab coat, goggles and gloves on over it at the locker before an experiment will start.");
 
-        // ---- REAGENTS (chemical-name keyed; trivia + hazard) --------------------------
-        AddReagent("Sodium Hydroxide", "Caustic soda, a strong base. Dissolving it releases heat. Corrosive to skin and eyes — gloves and goggles are essential.");
-        AddReagent("Sodium Acetate", "Salt of acetic acid. Heated with soda lime it gives off methane in the tutorial synthesis.");
-        AddReagent("Soda Lime", "A NaOH/CaO mixture. Heated with sodium acetate it produces methane gas.");
-        AddReagent("Glacial Acetic Acid", "Nearly pure acetic acid (>99%) — 'glacial' because it freezes just below room temperature. Pungent and corrosive.");
-        AddReagent("Acetic Anhydride", "An acetylating agent used to make aspirin and acetanilide. Reacts with water and irritates the eyes and lungs.");
-        AddReagent("Potassium Permanganate", "Deep-purple strong oxidiser. Stains skin brown; oxidises benzaldehyde to benzoic acid.");
-        AddReagent("Benzaldehyde", "Almond-smelling aldehyde. Oxidised by potassium permanganate to benzoic acid in the midterm.");
-        AddReagent("Acetyl Chloride", "A very reactive acetylating agent that fumes in moist air. Converts aniline to acetanilide.");
-        AddReagent("Aniline", "Oily aromatic amine — toxic and absorbed through skin. Acetylation protects it as acetanilide.");
-        AddReagent("Ethanol", "Drinking alcohol and a common solvent. Highly flammable — keep it away from open flames.");
-        AddReagent("Sulfuric Acid", "Dense, strongly acidic and dehydrating. Always add acid TO water, never the reverse. Causes severe burns.");
-        AddReagent("Hydrochloric Acid 6N", "A strong acid that fumes slightly. Supplies H+ and chloride for tests and neutralisations.");
-        AddReagent("Sodium Nitrite", "Generates nitrous acid in place for the nitrous-acid test on benzamide. Toxic if swallowed.");
-        AddReagent("Ammonia Solution", "Aqueous ammonia — sharp smell, weak base. Turns red litmus blue, so it flags evolved acidic gases.");
-        AddReagent("Salicylic Acid", "The starting material for aspirin; acetylation turns it into acetylsalicylic acid.");
-        AddReagent("Ferric Chloride 10%", "Iron(III) test reagent — gives a violet colour with phenols such as salicylic acid.");
-        AddReagent("Silver Nitrate", "Forms white or cream precipitates with halides. Stains skin black in light.");
-        AddReagent("Bromine Water", "Orange bromine solution that decolourises with unsaturated or easily-oxidised compounds.");
-        AddReagent("Sodium Hypochlorite", "Bleach solution — an oxidiser and chlorinating agent used in the iodoform-type test.");
-        AddReagent("Schiff's Reagent", "A colourless dye reagent that turns magenta with aldehydes but stays clear with ketones like acetone.");
-        AddReagent("Murexide", "Ammonium purpurate. A purple murexide colour confirms caffeine.");
-        AddReagent("Murexide Reagent", "The reagent set for the murexide test — a purple product confirms caffeine.");
-        AddReagent("Caffeine", "Bitter alkaloid from tea and coffee, confirmed here by the purple murexide test.");
-        AddReagent("Chloroform", "Dense, sweet-smelling solvent (CHCl3) and a suspected carcinogen — use it only in the fume hood.");
-        AddReagent("Acetone", "Volatile, highly flammable solvent (propanone). Being a ketone it is Schiff-negative.");
-        AddReagent("Benzoic Acid", "White crystalline aromatic acid — the product of oxidising benzaldehyde, and a food preservative.");
-        AddReagent("Acetanilide", "White amide solid, the acetylation product of aniline. Once used to reduce fever.");
-        AddReagent("Benzamide", "The simplest aromatic amide; alkali hydrolyses it to release ammonia for the litmus test.");
-        AddReagent("Aspirin", "Acetylsalicylic acid — made by acetylating salicylic acid; a common pain reliever.");
-        AddReagent("Limewater", "Calcium hydroxide solution. It turns milky with carbon dioxide, confirming the gas.");
-        AddReagent("Yeast", "Living fungus that ferments sugars into ethanol and carbon dioxide in the wine-making module.");
-        AddReagent("Grape Juice", "The sugar source that yeast ferments into wine (ethanol).");
-        AddReagent("Sodium Carbonate", "Washing soda — a mild base and a by-product of the methane synthesis.");
-        AddReagent("Calcium Carbonate", "Chalk or limestone; treated with acid it releases carbon dioxide.");
-        AddReagent("Carbon Dioxide", "The gas that turns limewater milky — the classic confirmatory test for CO2.");
-        AddReagent("Manganese Dioxide", "A dark oxidiser and catalyst; helps break down peroxides and oxidise organics.");
-        AddReagent("Iodoform", "Pale-yellow solid with an antiseptic smell — the positive result of the iodoform test.");
+        // ---- REAGENTS (chemical-name keyed: what it is + how it's used + hazard) -------
+        // Raw materials & test reagents.
+        AddReagent("Sodium Hydroxide", "Caustic soda, a strong base (lye). Dissolving it in water releases heat, and it hydrolyses amides — it's what frees ammonia from benzamide. Very corrosive to skin and eyes: gloves and goggles are essential.");
+        AddReagent("Sodium Acetate", "The sodium salt of acetic acid. Heated with soda lime it loses CO2 and gives off methane — the feedstock pair for the tutorial synthesis. Low hazard, but keep it dry.");
+        AddReagent("Soda Lime", "A mix of sodium and calcium hydroxide. Ground with sodium acetate and heated strongly, it drives off methane gas. A caustic base — avoid skin contact.");
+        AddReagent("Glacial Acetic Acid", "Nearly pure acetic acid (>99%) — 'glacial' because it freezes just below room temperature. It's the acid solvent/catalyst in the acetanilide prep. Pungent and corrosive; use in the hood.");
+        AddReagent("Acetic Anhydride", "A powerful acetylating agent — it swaps an acetyl group onto salicylic acid to make aspirin. Reacts sharply with water and irritates eyes and lungs; work in the fume hood.");
+        AddReagent("Potassium Permanganate", "Deep-purple strong oxidiser. It oxidises benzaldehyde all the way to benzoic acid; as it reacts the purple fades and brown manganese solid appears. Stains skin — handle with gloves.");
+        AddReagent("Benzaldehyde", "Oily liquid with an almond smell. Potassium permanganate oxidises it to benzoic acid in the midterm. Volatile and an irritant — keep it in the hood and capped.");
+        AddReagent("Acetyl Chloride", "A fiercely reactive acetylating agent that fumes in moist air (releasing HCl). It converts aniline into acetanilide. Corrosive; add it carefully in the fume hood.");
+        AddReagent("Aniline", "Oily aromatic amine, toxic and readily absorbed through skin. Acetylation 'caps' it as the safer solid acetanilide. Always glove up and work in the hood.");
+        AddReagent("Sulfuric Acid", "Dense, strongly acidic and dehydrating — a common catalyst (e.g. for aspirin). Golden rule: add acid TO water, never water to acid, or it can boil and spit. Causes severe burns.");
+        AddReagent("Hydrochloric Acid 6N", "A strong acid that fumes slightly. Supplies acid and chloride for neutralisations and confirmatory tests, and dissolves many carbonates with fizzing. Corrosive to skin and eyes.");
+        AddReagent("Sodium Nitrite", "Mixed with acid it makes nitrous acid in place for the nitrous-acid test on benzamide (nitrogen gas bubbles off). Toxic if swallowed — keep it labelled and capped.");
+        AddReagent("Ammonia Solution", "Aqueous ammonia — sharp-smelling weak base. It turns red litmus blue, so a whiff that blues damp litmus confirms an amide or a base is releasing ammonia. Use in the hood.");
+        AddReagent("Salicylic Acid", "White solid, the starting material for aspirin — acetylation converts it to acetylsalicylic acid. It also gives a violet colour with ferric chloride (a phenol test).");
+        AddReagent("Ferric Chloride 10%", "Iron(III) test reagent. A few drops give a violet–purple colour with phenols such as salicylic acid, so it tells unreacted starting material from finished aspirin.");
+        AddReagent("Silver Nitrate", "Test reagent for halides — forms a white or cream precipitate (e.g. silver chloride). Light turns spills black, and it stains skin; keep it in its amber bottle.");
+        AddReagent("Bromine Water", "Orange bromine solution. It's decolourised (loses its colour) by unsaturated or easily-oxidised compounds, so fading confirms them. Toxic and irritating — hood only.");
+        AddReagent("Sodium Hypochlorite", "Household-strength bleach — an oxidiser and chlorinating agent used in iodoform-type tests and to make chloroform. Never mix it with acid (releases toxic chlorine gas).");
+        AddReagent("Schiff's Reagent", "A colourless dye reagent that turns magenta with ALDEHYDES but stays clear with ketones — so it's the test that tells acetone (a ketone, negative) from an aldehyde.");
+        AddReagent("Murexide", "Ammonium purpurate. Forming a purple murexide colour is the positive result that confirms caffeine.");
+        AddReagent("Murexide Reagent", "The reagent set for the murexide test: evaporate the sample with oxidiser, then add ammonia — a purple colour confirms caffeine.");
+        AddReagent("Limewater", "Clear calcium hydroxide solution. Bubbling carbon dioxide through it turns it milky white — the classic confirmatory test for CO2 from fermentation or a carbonate.");
+        AddReagent("Yeast", "Living fungus that ferments sugars into ethanol and carbon dioxide. It's the biological engine of the wine-making module — keep it warm, not hot, or you kill it.");
+        AddReagent("Grape Juice", "The sugar source yeast ferments into wine (ethanol) over the fermentation. Its dissolved sugars are the 'food' that drives the reaction.");
+        AddReagent("Sodium Carbonate", "Washing soda — a mild base and a by-product of the methane synthesis. Fizzes with acid, releasing CO2.");
+        AddReagent("Calcium Carbonate", "Chalk or limestone. Treated with acid it fizzes and releases carbon dioxide, which you can confirm with limewater.");
+        AddReagent("Carbon Dioxide", "Colourless gas that turns limewater milky — the standard confirmatory test. Given off by fermentation and by carbonates meeting acid.");
+        AddReagent("Manganese Dioxide", "A dark oxidiser and catalyst. It speeds the breakdown of peroxides and helps oxidise organics.");
+        AddReagent("Iodoform", "Pale-yellow solid with a sharp antiseptic smell — the positive result of the iodoform test for methyl ketones and ethanol.");
+
+        // Ready-made products (the shelf 'shortcut' reagents — hidden in normal
+        // play, shown in demo). Each card teaches how it's really made + how to
+        // confirm it, so hovering the finished product still educates.
+        AddReagent("Ethanol", "Drinking alcohol and a versatile solvent — the target of the ethyl-alcohol module, made by fermenting sugar with yeast. Highly flammable; keep it away from every flame.");
+        AddReagent("Benzoic Acid", "White crystalline aromatic acid and food preservative — the midterm product, made by oxidising benzaldehyde with potassium permanganate. It's only weakly soluble, so it crystallises out on cooling.");
+        AddReagent("Acetanilide", "White amide solid, the acetylation product of aniline (once a fever medicine). Confirm it by its sharp melting point; recrystallise from hot water to purify.");
+        AddReagent("Acetone", "Volatile, highly flammable solvent (propanone) and the midterm product from dry-distilling calcium acetate. Because it's a KETONE it is Schiff-NEGATIVE (stays colourless) — that's how you tell it from an aldehyde.");
+        AddReagent("Chloroform", "Dense, sweet-smelling solvent (CHCl3), made here by reacting acetone with bleaching powder. A suspected carcinogen and NON-flammable — a lit splint goes out over it. Use only in the fume hood.");
+        AddReagent("Benzamide", "The simplest aromatic amide — the final-period product from benzoyl chloride and ammonia. Boil it with alkali and it hydrolyses, releasing ammonia that blues damp litmus (its confirmatory test).");
+        AddReagent("Aspirin", "Acetylsalicylic acid, a common pain reliever — made by acetylating salicylic acid with acetic anhydride and an acid catalyst. Unlike its starting material it gives NO violet with ferric chloride, which confirms the reaction worked.");
+        AddReagent("Caffeine", "Bitter alkaloid extracted from tea and coffee. It's confirmed by the purple murexide test — evaporate with an oxidiser, add ammonia, and watch for purple.");
+        AddReagent("Wine", "The fermented product of the wine-making module — grape sugar turned to ethanol by yeast, with CO2 bubbling off through the fermentation lock.");
     }
 }

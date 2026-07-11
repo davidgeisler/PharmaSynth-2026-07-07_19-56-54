@@ -300,6 +300,14 @@ public class PharmeeGatekeeper : MonoBehaviour
 
             case GateState.DoorArmed:
                 panel?.Hide();
+                // The PPE locker sits just INSIDE the lab (2026-07-11), so the
+                // player may already be past the threshold when the timer arms —
+                // the walk-in trigger would never fire. Auto-start in that case.
+                After(0.8f, () =>
+                {
+                    if (Model.State == GateState.DoorArmed && PlayerInsideLab())
+                        Model.Fire(GateEvent.CrossedThreshold);
+                });
                 break;
 
             case GateState.Running:
@@ -479,6 +487,15 @@ public class PharmeeGatekeeper : MonoBehaviour
         if (WearableReseat.Instance != null) WearableReseat.Instance.Reseat();
         else if (ppe != null) ppe.RemovePPE();
         TeleportToFrontDoor();
+    }
+
+    /// Whether the player's head is already inside the lab proper (past the
+    /// front-wall plane at z≈−0.2, i.e. deeper than the entrance strip).
+    private bool PlayerInsideLab()
+    {
+        var cam = cameraOverride != null ? cameraOverride : Camera.main;
+        Transform head = cam != null ? cam.transform : playerRig;
+        return head != null && head.position.z < -0.45f;
     }
 
     /// Fade wrapper with the edit-mode/test fallback (immediate).

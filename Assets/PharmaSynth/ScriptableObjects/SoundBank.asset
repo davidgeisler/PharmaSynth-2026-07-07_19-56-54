@@ -70,7 +70,7 @@ MonoBehaviour:
     category: 1
     volume: 0.15
   - key: music-menu
-    clip: {fileID: 8300000, guid: 395e1d8e1d8d8a140b092a17dc354be2, type: 3}
+    clip: {fileID: 8300000, guid: 72d7ac12153dda642af22fcb48f42228, type: 3}
     category: 3
     volume: 0.5
   - key: pour
