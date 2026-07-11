@@ -75,8 +75,9 @@ public static class MenuCubeRoomBuilder
         Box(root, "Trim_BaseS", new Vector3(0, y0, -Depth * 0.5f + 0.04f), new Vector3(Width - 0.2f, 0.05f, 0.03f), trimMat);
 
         // --- accent panels on the side walls ---------------------------------
-        Box(root, "Panel_W", new Vector3(-Width * 0.5f + 0.09f, 1.5f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
-        Box(root, "Panel_E", new Vector3(Width * 0.5f - 0.09f, 1.5f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
+        // Centres at 1.25 to suit the unified 1.40 m eye height (2026-07-11).
+        Box(root, "Panel_W", new Vector3(-Width * 0.5f + 0.09f, 1.25f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
+        Box(root, "Panel_E", new Vector3(Width * 0.5f - 0.09f, 1.25f, -1.2f), new Vector3(0.03f, 1.4f, 1.6f), panelMat);
 
         // --- holographic neon frames on every wall + a floor grid ------------
         NeonFrames(root, gridMat);

@@ -70,6 +70,8 @@ public static class PharmaSelfTests
         GlyphSafeSuite();
         MusicSpeakerSuite();
         GrabTuningSuite();
+        HeightCalibrationSuite();
+        WatchMathSuite();
         ShelfPourWiringSuite();
         FxMaterialSuite();
         ChecklistPagerSuite();
@@ -2202,6 +2204,74 @@ public static class PharmaSelfTests
         A("glyph: null/empty safe", GlyphSafe.Sanitize(null) == null && GlyphSafe.Sanitize("") == "");
     }
 
+    // Fixed per-scene eye height (user 2026-07-11 design pivot: NOT relative to
+    // the player's real height — the runtime's Floor/Device flip-flop made any
+    // relative scheme spawn players on the floor or the roof).
+    static void HeightCalibrationSuite()
+    {
+        A("height: seated head lifted to target", Near(HeightCalibration.FixedOffset(1.65f, 1.00f), 0.65f));
+        A("height: head already at target", Near(HeightCalibration.FixedOffset(1.65f, 1.65f), 0f));
+        A("height: too-high head pulled DOWN (roof impossible)", Near(HeightCalibration.FixedOffset(1.65f, 2.40f), -0.75f));
+        A("height: upward adjust clamped", Near(HeightCalibration.FixedOffset(1.65f, 0.00f), HeightCalibration.MaxAdjust));
+        A("height: downward adjust clamped", Near(HeightCalibration.FixedOffset(1.65f, 4.00f), -HeightCalibration.MaxAdjust));
+        A("height: different scene targets differ", HeightCalibration.FixedOffset(1.40f, 1.0f) < HeightCalibration.FixedOffset(1.80f, 1.0f));
+        // Pose validity (2026-07-11 "1.6x too tall / roof" root cause: calibrating
+        // from an UNTRACKED zero pose during the load fade must be impossible).
+        A("height: untracked zero pose rejected", !HeightCalibration.PoseValid(UnityEngine.Vector3.zero, 0f));
+        A("height: settled real pose accepted", HeightCalibration.PoseValid(new UnityEngine.Vector3(0.1f, 1.0f, 0.2f), 1.001f));
+        A("height: tracking-kick-in jump rejected", !HeightCalibration.PoseValid(new UnityEngine.Vector3(0.1f, 1.0f, 0.2f), 0f));
+        // Two-sided drift ("stuck at 0.96 after headset repositioned"): tall
+        // corrects with a small allowance, stuck-short with a generous one so
+        // ordinary crouching/bench-leaning is never touched.
+        A("height: standing-up overshoot detected", Near(HeightCalibration.TallExcess(2.10f, 1.65f), 0.30f));
+        A("height: small lean-up tolerated", Near(HeightCalibration.TallExcess(1.75f, 1.65f), 0f));
+        A("height: bench crouch never corrected", Near(HeightCalibration.TallExcess(1.25f, 1.65f), 0f));
+        A("height: stuck-short corrected upward", HeightCalibration.TallExcess(0.96f, 1.65f) < 0f);
+        A("height: short allowance more generous than tall",
+            HeightCalibration.ShortTolerance > HeightCalibration.TallTolerance);
+        // Hand-vs-glove display policy (bare hand unless the PPE glove is worn).
+        A("handswap: bare hand when unglovd", HandSwap.ShowBareHand(false));
+        A("handswap: glove replaces bare hand", !HandSwap.ShowBareHand(true));
+        // Three-pose two-skin hands (user 2026-07-11: free + grab + point, bare + nitrile).
+        A("handpose: grab wins over point", HandPosePolicy.PoseFor(true, true) == HandPoseKind.Grab);
+        A("handpose: hovering an interactable points", HandPosePolicy.PoseFor(false, true) == HandPoseKind.Point);
+        A("handpose: idle hand is free", HandPosePolicy.PoseFor(false, false) == HandPoseKind.Free);
+        A("handpose: pointing index stays straight", Near(HandPosePolicy.AngleFor(HandPoseKind.Point, false, true, 0), 0f));
+        A("handpose: pointing curls the other fingers", Near(HandPosePolicy.AngleFor(HandPoseKind.Point, false, false, 0), HandPosePolicy.ProximalCurl));
+        A("handpose: grab curls the index too", Near(HandPosePolicy.AngleFor(HandPoseKind.Grab, false, true, 0), HandPosePolicy.ProximalCurl));
+        A("handpose: free hand fully open", Near(HandPosePolicy.AngleFor(HandPoseKind.Free, false, false, 0), 0f));
+        A("handpose: nitrile only when gloves worn", HandPosePolicy.Nitrile(true) && !HandPosePolicy.Nitrile(false));
+        A("handpose: distal curls less than proximal", HandPosePolicy.DistalCurl < HandPosePolicy.ProximalCurl);
+    }
+
+    // Fitted watch geometry (user 2026-07-11: the solid Tripo watch cannot wrap a
+    // wrist — the band is generated around the MEASURED wrist cross-section).
+    static void WatchMathSuite()
+    {
+        var pts = new System.Collections.Generic.List<UnityEngine.Vector3>
+        {
+            new UnityEngine.Vector3(-0.03f, 0.00f, -0.045f),
+            new UnityEngine.Vector3( 0.03f, 0.02f, -0.045f),
+            new UnityEngine.Vector3( 0.00f, -0.01f, -0.044f),
+            new UnityEngine.Vector3( 0.00f, 0.03f, -0.046f),
+            new UnityEngine.Vector3( 0.50f, 0.50f, 0.200f)    // far point — must be excluded
+        };
+        var s = WatchMath.MeasureSlice(pts, -0.045f, 0.008f);
+        A("watch: slice excludes far points", s.samples == 4);
+        A("watch: slice half-width measured", Near(s.halfExtents.x, 0.03f));
+        A("watch: slice centre offset found", Near(s.center.y, 0.01f));
+        A("watch: empty slice is safe", WatchMath.MeasureSlice(pts, 9f, 0.001f).samples == 0);
+        A("watch: band adds skin clearance",
+            Near(WatchMath.BandRadii(new UnityEngine.Vector2(0.03f, 0.02f)).x, 0.03f + WatchMath.BandClearance));
+        A("watch: band floors tiny measurements", WatchMath.BandRadii(UnityEngine.Vector2.zero).x >= WatchMath.MinHalfWidth);
+        A("watch: palm bulge cannot widen the band",
+            Near(WatchMath.BandRadii(new UnityEngine.Vector2(0.05f, 0.02f)).x, WatchMath.MaxHalfWidth));
+        A("watch: face diameter clamped", WatchMath.FaceDiameter(1f) <= 0.0401f);
+        var mesh = WatchMath.BuildBandMesh(new UnityEngine.Vector2(0.03f, 0.02f), 0.004f, 16, 8);
+        A("watch: band mesh has full geometry", mesh.vertexCount == 17 * 9 && mesh.triangles.Length == 16 * 8 * 6);
+        UnityEngine.Object.DestroyImmediate(mesh);
+    }
+
     // Held-item collision profile (user 2026-07-10: grabbed props phased through
     // walls — pack prefabs shipped with Instantaneous movement, no physics sweep).
     static void GrabTuningSuite()
@@ -2214,6 +2284,7 @@ public static class PharmaSelfTests
             A("grab: untuned detected", !GrabTuning.IsTuned(grab));
             A("grab: apply reports change", GrabTuning.Apply(grab));
             A("grab: velocity-tracked after apply", GrabTuning.IsTuned(grab));
+            A("grab: two-handed (multi-grab) after apply", grab.selectMode == UnityEngine.XR.Interaction.Toolkit.Interactables.InteractableSelectMode.Multiple);
             A("grab: ease-in set", Near(grab.attachEaseInTime, GrabTuning.AttachEaseSeconds));
             A("grab: re-apply is a no-op", !GrabTuning.Apply(grab));
             A("grab: null safe", !GrabTuning.Apply(null) && !GrabTuning.IsTuned(null));
