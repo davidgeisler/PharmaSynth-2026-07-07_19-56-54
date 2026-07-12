@@ -38,6 +38,18 @@ public class LiquidPourer : MonoBehaviour
     private AudioSource pourAudio;
     private float pourBaseVol = 0.5f;
 
+    // Pour assist (W5.12, user: "I still can't pour into vials/tubes/beakers —
+    // the beaker won't catch the spills"): VR aim is imprecise, so when the
+    // precise ray misses, a forgiving sphere sweep catches a receiver whose
+    // mouth is within this radius of the stream line.
+    [Header("Pour Assist (W5.12)")]
+    public float assistRadius = 0.045f;
+
+    /// Dev toggle (DevExperimentDriver 'P'): shows what each PourTick actually
+    /// hits so in-headset misses can be diagnosed live.
+    public static bool DebugOverlay;
+    private float _lastDebugText;
+
     /// Pure, testable pour-volume curve: silent when not pouring, otherwise the
     /// clip's base × the Sfx category volume, floored so a trickle is still heard.
     public static float PourVolume(bool pouring, float baseVol, float catVol, float flow01)
@@ -237,10 +249,40 @@ public class LiquidPourer : MonoBehaviour
             streamLine.endWidth = width * 0.65f;
         }
 
-        // Raycast Physics
+        // Raycast Physics: precise ray first, then the forgiving sphere sweep —
+        // the sweep also catches a receiver already overlapping the mouth
+        // (distance-0 hits), which the thin ray can slip past entirely.
         var hits = Physics.RaycastAll(Mouth.position, Vector3.down, 2.0f, ~0, QueryTriggerInteraction.Ignore);
         RaycastHit hit;
         LiquidPhysics target = ResolveTarget(hits, sourceContainer, out hit);
+        if (target == null)
+        {
+            var sweep = Physics.SphereCastAll(Mouth.position, assistRadius, Vector3.down, 2.0f, ~0,
+                                              QueryTriggerInteraction.Ignore);
+            RaycastHit sweepHit;
+            var sweepTarget = ResolveTarget(sweep, sourceContainer, out sweepHit);
+            if (sweepTarget != null)
+            {
+                target = sweepTarget;
+                // Distance-0 overlap hits report a degenerate point — land the
+                // visual arc on the vessel instead so it matches the transfer.
+                hit = sweepHit;
+                if (hit.distance <= 0f)
+                {
+                    hit.point = target.transform.position;
+                    hit.normal = Vector3.up;
+                }
+            }
+        }
+        if (DebugOverlay && Application.isPlaying && Time.time - _lastDebugText > 0.5f)
+        {
+            _lastDebugText = Time.time;
+            FloatingText.Show(
+                "pour hit: " + (hit.collider != null ? hit.collider.name : "—")
+                + "\ntarget: " + (target != null ? target.name : "none"),
+                Mouth.position + Vector3.up * 0.06f,
+                target != null ? new Color(0.5f, 1f, 0.6f) : new Color(1f, 0.6f, 0.5f), 0.8f);
+        }
         if (hit.collider != null)
         {
             if (streamLine) DrawCurvedStream(Mouth.position, hit.point, smoothedFlow01);

@@ -84,52 +84,75 @@ public static class PhysicsAudit
             string prefabName = PrefabNameFor(go);
             if (!PhysicsProfiles.TryGet(prefabName, out _)) continue;
             Undo.RegisterFullObjectHierarchyUndo(go, "Physics Audit Fix");
-            var rb = PhysicsProfiles.EnsurePhysics(go, prefabName);
-            var grab = go.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
-            if (grab != null && go.GetComponent<GrabPhysicsPolicy>() == null)
-                go.AddComponent<GrabPhysicsPolicy>();
-
-            // Mishandling + drop-audio pass (shelf items are hand-built — the
-            // builder only covers spawned props).
-            if (go.GetComponent<DropRespawn>() == null)
-            {
-                var dr = go.AddComponent<DropRespawn>();
-                dr.Bind(rb, grab);
-                dr.SetHome(go.transform.position, go.transform.rotation);
-            }
-            bool breakable = Mishandling.IsBreakable(prefabName)
-                || (prefabName.StartsWith("Reagent_") || go.name.StartsWith("Reagent_"));   // shelf bottles are glass
-            // Material-nature cleanup (user 2026-07-12: the scale/burner shattered
-            // like glass — an earlier unconditional pass left BreakableGlassware on
-            // non-glass items, and the component breaks whatever it's attached to).
-            var stale = go.GetComponent<BreakableGlassware>();
-            if (!breakable && stale != null) { Object.DestroyImmediate(stale); }
-            if (breakable)
-            {
-                var bg = go.GetComponent<BreakableGlassware>()
-                         ?? go.AddComponent<BreakableGlassware>();
-                bg.Bind(runner, go.GetComponent<DropRespawn>(), rb, Mishandling.DisplayNameFor(go));
-                // The threshold is a SERIALIZED field — stale scene components keep
-                // the old 4.5; re-pin every glass item to the current default.
-                var bgSo = new SerializedObject(bg);
-                var thr = bgSo.FindProperty("breakImpactSpeed");
-                if (thr != null && !Mathf.Approximately(thr.floatValue, Mishandling.DefaultBreakSpeed))
-                { thr.floatValue = Mishandling.DefaultBreakSpeed; bgSo.ApplyModifiedPropertiesWithoutUndo(); }
-            }
-            var lp = go.GetComponent<LiquidPhysics>();
-            if (lp != null && go.GetComponent<LiquidPourer>() != null && go.GetComponent<SpillMistake>() == null)
-                go.AddComponent<SpillMistake>().Bind(runner, lp, grab, Mishandling.DisplayNameFor(go));
-            // Re-key ImpactSound by material nature every pass (serialized — stale
-            // keys/ceilings persist otherwise).
-            var snd = go.GetComponent<ImpactSound>() ?? go.AddComponent<ImpactSound>();
-            snd.Bind(rb,
-                breakable ? "glass-clink" : Mishandling.DropSoundKey(prefabName),
-                breakable ? Mishandling.DefaultBreakSpeed : float.PositiveInfinity);
-            EditorUtility.SetDirty(go);
+            WireSceneItem(go, prefabName, runner);
             fixedCount++;
         }
         UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
         Debug.Log($"[PhysicsAudit] applied profiles to {fixedCount} scene item(s) — save the scene to keep them.");
+    }
+
+    /// The full W5.8/W5.12 interaction treatment for ONE hand-built scene item:
+    /// physics profile, grab policy, drop respawn, nature-correct breakability +
+    /// impact audio, spill grading, scoop verb. Idempotent; shared with the
+    /// workspace-kits builder so shelf stock and audited items wire identically.
+    public static Rigidbody WireSceneItem(GameObject go, string prefabName, ExperimentRunner runner)
+    {
+        var rb = PhysicsProfiles.EnsurePhysics(go, prefabName);
+        var grab = go.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        if (grab != null && go.GetComponent<GrabPhysicsPolicy>() == null)
+            go.AddComponent<GrabPhysicsPolicy>();
+
+        // Mishandling + drop-audio pass (shelf items are hand-built — the
+        // builder only covers spawned props).
+        if (go.GetComponent<DropRespawn>() == null)
+        {
+            var dr = go.AddComponent<DropRespawn>();
+            dr.Bind(rb, grab);
+            dr.SetHome(go.transform.position, go.transform.rotation);
+        }
+        bool breakable = Mishandling.IsBreakable(prefabName)
+            || (prefabName.StartsWith("Reagent_") || go.name.StartsWith("Reagent_"));   // shelf bottles are glass
+        // Material-nature cleanup (user 2026-07-12: the scale/burner shattered
+        // like glass — an earlier unconditional pass left BreakableGlassware on
+        // non-glass items, and the component breaks whatever it's attached to).
+        var stale = go.GetComponent<BreakableGlassware>();
+        if (!breakable && stale != null) { Object.DestroyImmediate(stale); }
+        if (breakable)
+        {
+            var bg = go.GetComponent<BreakableGlassware>()
+                     ?? go.AddComponent<BreakableGlassware>();
+            bg.Bind(runner, go.GetComponent<DropRespawn>(), rb, Mishandling.DisplayNameFor(go));
+            // The threshold is a SERIALIZED field — stale scene components keep
+            // the old 4.5; re-pin every glass item to the current default.
+            var bgSo = new SerializedObject(bg);
+            var thr = bgSo.FindProperty("breakImpactSpeed");
+            if (thr != null && !Mathf.Approximately(thr.floatValue, Mishandling.DefaultBreakSpeed))
+            { thr.floatValue = Mishandling.DefaultBreakSpeed; bgSo.ApplyModifiedPropertiesWithoutUndo(); }
+        }
+        var lp = go.GetComponent<LiquidPhysics>();
+        if (lp != null && go.GetComponent<LiquidPourer>() != null && go.GetComponent<SpillMistake>() == null)
+            go.AddComponent<SpillMistake>().Bind(runner, lp, grab, Mishandling.DisplayNameFor(go));
+        // Scooping tools transfer solid reagents by the scoopful (W5.12).
+        if ((prefabName == "Scoopula" || prefabName == "Spatula")
+            && go.GetComponent<ScoopController>() == null)
+            go.AddComponent<ScoopController>().Bind(grab);
+        // Assembly-capable apparatus sticks together on release (W5.12).
+        if (AssemblyMath.Participates(prefabName))
+        {
+            var snap = go.GetComponent<ApparatusSnap>() ?? go.AddComponent<ApparatusSnap>();
+            snap.Bind(prefabName, grab, rb);
+        }
+        // The test-tube brush scrubs dirty glassware clean (W5.12).
+        if (prefabName == "TestTubeBrush" && go.GetComponent<BrushController>() == null)
+            go.AddComponent<BrushController>().Bind(grab);
+        // Re-key ImpactSound by material nature every pass (serialized — stale
+        // keys/ceilings persist otherwise).
+        var snd = go.GetComponent<ImpactSound>() ?? go.AddComponent<ImpactSound>();
+        snd.Bind(rb,
+            breakable ? "glass-clink" : Mishandling.DropSoundKey(prefabName),
+            breakable ? Mishandling.DefaultBreakSpeed : float.PositiveInfinity);
+        EditorUtility.SetDirty(go);
+        return rb;
     }
 
     // ---- drop test ----------------------------------------------------------
@@ -226,7 +249,8 @@ public static class PhysicsAudit
 
     /// Best-effort prefab name for a scene instance: the source prefab's name,
     /// else the GO name with Unity's "(N)"/"(Clone)" suffixes stripped.
-    static string PrefabNameFor(GameObject go)
+    /// Public: the workspace-kits builder adopts loose apparatus by this name.
+    public static string PrefabNameFor(GameObject go)
     {
         var src = PrefabUtility.GetCorrespondingObjectFromSource(go);
         if (src != null) return src.name;

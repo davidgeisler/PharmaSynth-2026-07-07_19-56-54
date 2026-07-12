@@ -38,6 +38,7 @@ public static class PhysicsProfiles
         { "Crucible",                         new PhysicsProfile(0.06f,  RestPose.Upright) },
         { "CrucibleTongs",                    new PhysicsProfile(0.15f,  RestPose.LieLongAxis) },
         { "Dropper",                          new PhysicsProfile(0.015f, RestPose.LieLongAxis) },
+        { "DistillingFlask",                  new PhysicsProfile(0.16f,  RestPose.Upright) },   // W5.12 glTFast model
         { "ErlenmeyerFlask_400mL",            new PhysicsProfile(0.18f,  RestPose.Upright) },
         { "ErlenmeyerFlask_400mL_WithLiquid", new PhysicsProfile(0.45f,  RestPose.Upright) },
         { "EvaporatingDish",                  new PhysicsProfile(0.09f,  RestPose.Upright) },

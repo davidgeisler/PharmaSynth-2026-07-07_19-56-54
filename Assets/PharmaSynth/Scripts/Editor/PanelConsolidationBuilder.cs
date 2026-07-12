@@ -232,10 +232,11 @@ public static class PanelConsolidationBuilder
         label.raycastTarget = false;
 
         // Re-wire idempotently: clear then add ONE persistent listener.
-        int n = UnityEngine.Events.UnityEventTools.RemovePersistentListenerCount(btn.onClick);
-        for (int i = n - 1; i >= 0; i--) UnityEditor.Events.UnityEventTools.RemovePersistentListener(btn.onClick, i);
+        for (int i = btn.onClick.GetPersistentEventCount() - 1; i >= 0; i--)
+            UnityEditor.Events.UnityEventTools.RemovePersistentListener(btn.onClick, i);
         UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(btn.onClick,
-            up ? (UnityEngine.Events.UnityAction)scroller.PageUp : scroller.PageDown);
+            up ? (UnityEngine.Events.UnityAction)scroller.PageUp
+               : (UnityEngine.Events.UnityAction)scroller.PageDown);
     }
 
     static T FirstSceneObject<T>() where T : Component

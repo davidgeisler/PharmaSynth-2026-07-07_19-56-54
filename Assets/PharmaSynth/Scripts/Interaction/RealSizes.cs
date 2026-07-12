@@ -20,6 +20,7 @@ public static class RealSizes
         { "ClayTriangle", 0.13f },
         { "Crucible", 0.055f },
         { "CrucibleTongs", 0.32f },
+        { "DistillingFlask", 0.20f },           // W5.12: glTFast model, prefabbed by AdoptManualLayout
         { "Dropper", 0.12f },
         { "ErlenmeyerFlask_400mL", 0.16f },
         { "ErlenmeyerFlask_400mL_WithLiquid", 0.16f },

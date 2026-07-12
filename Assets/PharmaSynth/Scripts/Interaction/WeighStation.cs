@@ -22,9 +22,13 @@ public class WeighStation : MonoBehaviour
     private LiquidPhysics _occupantVessel;
     private int _occupants;
     private float _onPanSince = -1f;
+    // Explicit vacancy flag: the old "-1 = vacant" timestamp sentinel misread a
+    // legitimately NEGATIVE backdated timestamp (Time.time ≈ 0 in a fresh
+    // batchmode editor) as an empty pan — the headless suite failed on it (W5.12).
+    private bool _panTimed;
 
     public LabItem OccupantItem => _occupantItem;
-    public float SecondsOnPan => _occupants > 0 && _onPanSince >= 0f ? Time.time - _onPanSince : 0f;
+    public float SecondsOnPan => _occupants > 0 && _panTimed ? Time.time - _onPanSince : 0f;
 
     /// Builder seam.
     public void Bind(ExperimentRunner runner, string taskId, string requiredItemId,
@@ -72,6 +76,7 @@ public class WeighStation : MonoBehaviour
     {
         _occupantItem = item; _occupantVessel = vessel;
         _occupants = (item != null || vessel != null) ? 1 : 0;
+        _panTimed = _occupants > 0;
         _onPanSince = _occupants > 0 ? Time.time - secondsAgo : -1f;
     }
 
@@ -83,7 +88,7 @@ public class WeighStation : MonoBehaviour
         _occupants++;
         if (item != null) _occupantItem = item;
         if (lp != null) _occupantVessel = lp;
-        if (_occupants == 1) _onPanSince = Time.time;
+        if (_occupants == 1) { _onPanSince = Time.time; _panTimed = true; }
     }
 
     private void OnTriggerExit(Collider other)
@@ -94,7 +99,7 @@ public class WeighStation : MonoBehaviour
         _occupants = Mathf.Max(0, _occupants - 1);
         if (item != null && _occupantItem == item) _occupantItem = null;
         if (lp != null && _occupantVessel == lp) _occupantVessel = null;
-        if (_occupants == 0) _onPanSince = -1f;
+        if (_occupants == 0) { _onPanSince = -1f; _panTimed = false; }
     }
 
     private void Update()

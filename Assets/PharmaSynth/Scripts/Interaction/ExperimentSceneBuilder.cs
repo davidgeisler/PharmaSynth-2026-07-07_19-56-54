@@ -169,6 +169,7 @@ public class ExperimentSceneBuilder : MonoBehaviour
         lp.SetContents(null, 0f);
         EnsureLiquidVisual(inst, lp);
         inst.AddComponent<HazardousMixReactor>().Bind(lp, runner);
+        inst.AddComponent<CleanableVessel>().Bind(lp);   // used vessels get dirty (W5.12)
         var pl = inst.AddComponent<ProximityLabel>(); pl.SetLabel(label, 1.6f);
         inst.AddComponent<VesselStatus>().Bind(lp, pl, label, 1.6f);
         inst.AddComponent<MixFeedback>().Bind(lp);
@@ -509,6 +510,9 @@ public class ExperimentSceneBuilder : MonoBehaviour
         inst.AddComponent<GrabPhysicsPolicy>();
         GrabTuning.Apply(inst.GetComponent<XRGrab>());   // held items collide with the world
         inst.AddComponent<HoverHighlight>().Bind(inst.GetComponent<XRGrab>());   // hover affordance
+        // Scooping tools transfer solid reagents by the scoopful (W5.12).
+        if (p.prefabName == "Scoopula" || p.prefabName == "Spatula")
+            inst.AddComponent<ScoopController>().Bind(inst.GetComponent<XRGrab>());
         var respawn = inst.AddComponent<DropRespawn>();
         respawn.SetHome(inst.transform.position, inst.transform.rotation);
         if (Mishandling.IsBreakable(p.prefabName))

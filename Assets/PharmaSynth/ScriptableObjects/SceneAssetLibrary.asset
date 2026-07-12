@@ -55,6 +55,7 @@ MonoBehaviour:
   - {fileID: 3602589426776089869, guid: 0d9dd6e3a9fbb914393340419fa9c381, type: 3}
   - {fileID: 2582447071662842644, guid: 7a5b83c93f7138d4181ff4d57898ada8, type: 3}
   - {fileID: 3682657625690491062, guid: 0b50e5ebce3456543b621249ebd7a390, type: 3}
+  - {fileID: 7082897973039226363, guid: ab1b931d43fc0ee4b8ff1814fabeb2bf, type: 3}
   chemicals:
   - {fileID: 11400000, guid: 681a555f71cface45bc96fcbcd4b3d7f, type: 2}
   - {fileID: 11400000, guid: d175ccce662faf04a960239d2e5c9060, type: 2}

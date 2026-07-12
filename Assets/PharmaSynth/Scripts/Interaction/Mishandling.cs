@@ -17,6 +17,7 @@ public static class Mishandling
     {
         "Beaker_100mL", "Beaker_100mL_WithLiquid",
         "Beaker_500mL", "Beaker_500mL_WithLiquid",
+        "DistillingFlask",
         "ErlenmeyerFlask_400mL", "ErlenmeyerFlask_400mL_WithLiquid",
         "GraduatedCylinder_50mL", "GraduatedCylinder_50mL_WithLiquid",
         "TestTube", "TestTube_WithLiquid",

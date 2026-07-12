@@ -791,7 +791,7 @@ public static class PharmaSelfTests
 
     static void RealSizeSuite()
     {
-        A("size: table count", RealSizes.Count == 42);
+        A("size: table count", RealSizes.Count == 43);   // +DistillingFlask (W5.12)
         var lib = AssetDatabase.LoadAssetAtPath<SceneAssetLibrary>("Assets/PharmaSynth/ScriptableObjects/SceneAssetLibrary.asset");
         if (lib != null)
         {
@@ -1026,6 +1026,11 @@ public static class PharmaSelfTests
         // last character types in; short lines keep their authored dwell).
         A("narration: long line keeps a read hold", Near(NPCNarrationController.HoldSecondsAfterReveal(3.5f, 4.7f), 1.2f));
         A("narration: short line keeps authored dwell", Near(NPCNarrationController.HoldSecondsAfterReveal(3.5f, 1.0f), 2.5f));
+
+        // Holo board scroll paging (W5.12: wrap + scrollable checklist).
+        A("holo: page down moves toward the bottom", Near(HoloScroller.NextPage(1f, 0.6f, -1), 0.4f));
+        A("holo: clamped at the bottom", HoloScroller.NextPage(0.2f, 0.6f, -1) == 0f);
+        A("holo: clamped at the top", HoloScroller.NextPage(0.9f, 0.6f, +1) == 1f);
 
         // Settle-freeze (W5.8): a released body at rest goes kinematic in place.
         A("settle: rested body freezes", DropRespawnMath.ShouldSettleFreeze(false, false, 0.01f, 3f));
@@ -1608,6 +1613,22 @@ public static class PharmaSelfTests
             pourer.PourTick(0.1f, 120f);
             A("pour: self-tilt never fires LiquidAdded on itself", !selfAdded);
             A("pour: self-tilt still wastes liquid", srcLp.currentLiquidVolume < before);
+
+            // W5.12 pour assist: a receiver the precise ray narrowly misses is
+            // still caught by the sphere sweep (in-headset aim is imprecise —
+            // "the beaker won't catch the spills").
+            target.SetActive(true);
+            target.transform.position = new Vector3(50.08f, 0.1f, 50f);
+            target.transform.localScale = new Vector3(0.1f, 0.2f, 0.1f);
+            tgtLp.SetContents(null, 0f);
+            srcLp.SetContents(chemA, 50f);
+            Physics.SyncTransforms();
+            var strayHits = Physics.RaycastAll(spout.position, Vector3.down, 2f, ~0, QueryTriggerInteraction.Ignore);
+            RaycastHit strayHit;
+            A("pour assist: precise ray misses the offset vessel",
+                LiquidPourer.ResolveTarget(strayHits, srcLp, out strayHit) == null);
+            pourer.PourTick(0.1f, 120f);
+            A("pour assist: sphere sweep still lands the transfer (W5.12)", tgtLp.currentLiquidVolume > 0.1f);
         }
         finally
         {
@@ -1723,6 +1744,29 @@ public static class PharmaSelfTests
         A("weigh: chemical mode wrong chem", !WeighMath.Satisfied(true, "Salicylic Acid", "Ethanol", 60f, 50f, "", null));
         A("weigh: item mode satisfied", WeighMath.Satisfied(true, "", null, 0f, 0f, "weigh-acetates", "weigh-acetates"));
         A("weigh: item mode wrong item", !WeighMath.Satisfied(true, "", null, 0f, 0f, "weigh-acetates", "prep-koh"));
+
+        // ScoopMath (W5.12): fixed charge per dip, solids only, no double-dip.
+        A("scoop: dips only into solids", ScoopMath.CanPickUp(false, PhysicalState.Solid, 50f)
+            && ScoopMath.CanPickUp(false, PhysicalState.Powder, 50f)
+            && !ScoopMath.CanPickUp(false, PhysicalState.Liquid, 50f));
+        A("scoop: no double-dip while loaded", !ScoopMath.CanPickUp(true, PhysicalState.Solid, 50f));
+        A("scoop: empty jar gives nothing", !ScoopMath.CanPickUp(false, PhysicalState.Solid, 0f));
+        A("scoop: fixed charge, last scoop takes the rest",
+            Near(ScoopMath.ScoopCharge(50f), 2f) && Near(ScoopMath.ScoopCharge(1.2f), 1.2f));
+        A("scoop: deposits anywhere but the source jar",
+            ScoopMath.CanDeposit(true, false) && !ScoopMath.CanDeposit(true, true) && !ScoopMath.CanDeposit(false, false));
+        A("scoop: deposit label shows the running total",
+            ScoopMath.DepositLabel("Salicylic Acid", 2f, 8f) == "+2 g Salicylic Acid  (8 g total)");
+
+        // CleanupMath (W5.12): residue on empty, five swipes clean, rinse helps.
+        A("clean: emptying a used vessel leaves residue", CleanupMath.BecomesDirty(60f, true)
+            && !CleanupMath.BecomesDirty(60f, false) && !CleanupMath.BecomesDirty(0f, true));
+        A("clean: five swipes scrub it clean", Near(CleanupMath.AfterSwipe(100f), 80f)
+            && CleanupMath.AfterSwipe(15f) == 0f);
+        A("clean: wash-bottle rinse also cleans", CleanupMath.AfterRinse(100f, 90f) == 0f
+            && Near(CleanupMath.AfterRinse(100f, 10f), 88f));
+        A("clean: label prefix follows the state", CleanupMath.NamePrefix(60f, true) == "Dirty "
+            && CleanupMath.NamePrefix(0f, true) == "Clean " && CleanupMath.NamePrefix(0f, false) == "");
         A("weigh: open mode any settled load", WeighMath.Satisfied(true, "", null, 0f, 0f, "", null));
         A("weigh: unsettled never", !WeighMath.Satisfied(false, "", null, 0f, 0f, "", null));
 
@@ -1979,6 +2023,87 @@ public static class PharmaSelfTests
         float zBackEdge = WorkspaceShelfMath.ZCenter - size.z * 0.5f;
         A("shelf: tile bridges both rails", zFrontEdge >= -3.16f && zBackEdge <= -3.49f);
         A("shelf: tiles are thin planks", Near(size.y, WorkspaceShelfMath.Thickness) && size.y < 0.05f);
+
+        // W5.12 second row (the user's lower planks at y≈1.20): below the top
+        // row with real headroom for glassware, same footprint.
+        A("shelf: two rows", WorkspaceShelfMath.Rows == 2);
+        A("shelf: lower row at the user's plank height", Near(WorkspaceShelfMath.TopYOf(1), 1.215f, 0.001f));
+        A("shelf: lower row has glassware headroom", WorkspaceShelfMath.LowerRowHeadroom > 0.25f);
+        A("shelf: rows share the rail footprint",
+            Near(WorkspaceShelfMath.TileCenter(0, n, 1).z, WorkspaceShelfMath.TileCenter(0, n, 0).z)
+            && Near(WorkspaceShelfMath.TileCenter(0, n, 1).x, WorkspaceShelfMath.TileCenter(0, n, 0).x));
+
+        // W5.12 apparatus-kit layout: both rows fit tightly with no overlaps,
+        // and the manuscript-derived kit manifest holds its shape.
+        foreach (var (plan, rowName) in new[] { (WorkspaceKitsBuilder.Row0Plan(), "top"),
+                                                (WorkspaceKitsBuilder.Row1Plan(), "lower") })
+        {
+            var centers = WorkspaceKitsBuilder.SlotCenters(plan, out float used);
+            A("kits: " + rowName + " row fits the shelf width",
+                used <= (WorkspaceShelfMath.XMax - WorkspaceShelfMath.XMin) + 0.001f);
+            bool noOverlap = true, inBounds = true;
+            for (int i = 0; i < plan.Length; i++)
+            {
+                float l = centers[i] - plan[i].width * 0.5f, r = centers[i] + plan[i].width * 0.5f;
+                if (l < WorkspaceShelfMath.XMin - 0.001f || r > WorkspaceShelfMath.XMax + 0.001f) inBounds = false;
+                if (i > 0 && l < centers[i - 1] + plan[i - 1].width * 0.5f - 0.001f) noOverlap = false;
+            }
+            A("kits: " + rowName + " row items stay on the shelf", inBounds);
+            A("kits: " + rowName + " row items never overlap", noOverlap);
+        }
+        int racks = 0, burners = 0; bool hardRack = false, vialRack = false, brush = false, clay = false;
+        foreach (var s in WorkspaceKitsBuilder.Row1Plan())
+        {
+            if (s.prefab == "TestTubeRack") racks++;
+            if (s.display.Contains("Hard-Glass")) hardRack = true;
+            if (s.display.Contains("Vials")) vialRack = true;
+            if (s.prefab == "TestTubeBrush") brush = true;
+        }
+        foreach (var s in WorkspaceKitsBuilder.Row0Plan())
+        {
+            if (s.prefab == "BunsenBurner") burners++;
+            if (s.prefab == "ClayTriangle") clay = true;
+        }
+        A("kits: three dispenser racks (regular + hard-glass + vials)", racks == 3 && hardRack && vialRack);
+        A("kits: brush staged beside the racks", brush);
+        A("kits: one Bunsen heating set + the alcohol crucible set (user layout W5.12)", burners == 1 && clay);
+
+        // W5.12 rack dispenser: capped, reusable, seat detection.
+        A("rack: tube seated when resting in the hole", RackDispenserMath.InHole(false, 0.02f));
+        A("rack: held tube is not seated", !RackDispenserMath.InHole(true, 0.02f));
+        A("rack: tube pulled clear is not seated", !RackDispenserMath.InHole(false, 0.2f));
+        A("rack: out-count = capacity minus seated", RackDispenserMath.OutCount(6, 4) == 2
+            && RackDispenserMath.OutCount(6, 6) == 0);
+        A("rack: live label reads seated/capacity", RackDispenserMath.Label("Test Tubes", 4, 6) == "Test Tubes  4/6");
+        bool namesReal = true;
+        foreach (var s in WorkspaceKitsBuilder.Row0Plan()) if (!RealSizes.TryGet(s.prefab, out _)) namesReal = false;
+        foreach (var s in WorkspaceKitsBuilder.Row1Plan()) if (!RealSizes.TryGet(s.prefab, out _)) namesReal = false;
+        A("kits: every kit prefab is a real pack item", namesReal);
+
+        // W5.12 apparatus snap: directed pairs + seat math (grab moves the
+        // group; the ACTIVATE click detaches — AssemblyMath owns the policy).
+        A("snap: gauze onto tripod, never the reverse",
+            AssemblyMath.CanAttach("WireGauze", "Tripod") && !AssemblyMath.CanAttach("Tripod", "WireGauze"));
+        A("snap: watch glass covers a beaker",
+            AssemblyMath.CanAttach("WatchGlass", "Beaker_100mL") && AssemblyMath.CanAttach("WatchGlass", "Beaker_500mL"));
+        A("snap: burner slides under the tripod",
+            AssemblyMath.TryAnchor("BunsenBurner", "Tripod", out var burnerSeat) && burnerSeat == SnapAnchor.SameBase);
+        A("snap: iron ring clamps the stand pole",
+            AssemblyMath.TryAnchor("IronRing", "RetortStand", out var ringSeat) && ringSeat == SnapAnchor.PoleMid);
+        A("snap: flask seats on the gauze", AssemblyMath.CanAttach("ErlenmeyerFlask_400mL", "WireGauze"));
+        A("snap: unrelated pairs never stick",
+            !AssemblyMath.CanAttach("Beaker_100mL", "RetortStand") && !AssemblyMath.CanAttach("TestTube", "Tripod"));
+        A("snap: participants cover the heating kit",
+            AssemblyMath.Participates("Tripod") && AssemblyMath.Participates("RetortStand")
+            && AssemblyMath.Participates("WireGauze") && !AssemblyMath.Participates("TestTubeBrush"));
+        var hostB = new Bounds(new Vector3(0f, 0.5f, 0f), new Vector3(0.2f, 0.2f, 0.2f));   // top 0.6, base 0.4
+        var partB = new Bounds(new Vector3(5f, 5f, 5f), new Vector3(0.1f, 0.1f, 0.1f));     // extents 0.05
+        A("snap: top-centre seat rests on the host top",
+            Near(AssemblyMath.SeatCenter(SnapAnchor.TopCenter, hostB, partB).y, 0.65f));
+        A("snap: same-base seat stands on the host's floor",
+            Near(AssemblyMath.SeatCenter(SnapAnchor.SameBase, hostB, partB).y, 0.45f));
+        A("snap: pole-mid seat clamps mid-height",
+            Near(AssemblyMath.SeatCenter(SnapAnchor.PoleMid, hostB, partB).y, 0.5f));
     }
 
     // W5.9 flow-smoothness audit fixes.

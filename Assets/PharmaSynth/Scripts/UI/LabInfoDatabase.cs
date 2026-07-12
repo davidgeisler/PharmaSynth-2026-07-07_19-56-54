@@ -94,6 +94,8 @@ public static class LabInfoDatabase
             "Measures liquid volume accurately — far more precise than a beaker's marks. Stand it on the bench, pour to just below the mark, then read the BOTTOM of the curved surface (the meniscus) at eye level. Use it whenever a step names an exact volume.");
         AddEquip("erlenmeyer", "Erlenmeyer Flask",
             "Cone-shaped reaction flask. The narrow neck lets you swirl vigorously to mix without splashing and slows evaporation of volatile solvents. First choice for running a reaction, collecting a filtrate, or titrating.");
+        AddEquip("distillingflask", "Distilling Flask",
+            "Round-bottom flask with a side arm for distillation: the mixture boils here, vapour escapes through the arm toward the condenser, and the purified liquid collects beyond. The heart of most syntheses in this course.");
         AddEquip("testtuberack", "Test-Tube Rack",
             "Holds several test tubes upright at once so samples react, settle or cool hands-free. Line your confirmatory tests up in it and label positions so you don't mix up which tube is which.");
         AddEquip("testtubeholder", "Test-Tube Holder",

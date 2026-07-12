@@ -41,6 +41,7 @@ public class WristWatchController : MonoBehaviour
     private bool _gestureVisible;
     private bool _manualVisible;
     private bool _lastShow;
+    private HoloScroller _scroller;
 
     // Wrist-flip suppression window (user 2026-07-12: Pharmee dialogue kept
     // firing when the panel was summoned — the twisting hand can select his
@@ -106,7 +107,14 @@ public class WristWatchController : MonoBehaviour
         // Large holographic procedures board: appears in front of the player on
         // the same gesture. Focused checklist (active phase in detail, others
         // collapsed) + status header + reaction footer.
-        if (show && !_lastShow) PlaceHolo();
+        if (show && !_lastShow)
+        {
+            PlaceHolo();
+            // Fresh summon reads from the top of the checklist (W5.12 scroll).
+            if (_scroller == null && holoPanel != null)
+                _scroller = holoPanel.GetComponentInChildren<HoloScroller>(true);
+            if (_scroller != null) _scroller.SnapToTop();
+        }
         _lastShow = show;
         if (holoPanel != null && holoPanel.activeSelf != show) holoPanel.SetActive(show);
         if (show && runner != null)

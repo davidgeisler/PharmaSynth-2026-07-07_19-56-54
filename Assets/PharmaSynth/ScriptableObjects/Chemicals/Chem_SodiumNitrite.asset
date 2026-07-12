@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chem_SodiumNitrite
   m_EditorClassIdentifier: Assembly-CSharp::ChemicalData
   chemicalName: Sodium Nitrite
-  state: 0
+  state: 1
   liquidColor: {r: 0.95, g: 0.92, b: 0.62, a: 1}
   liquidTopColor: {r: 0.95, g: 0.92, b: 0.62, a: 1}
   sceneColourAmount: 0.12

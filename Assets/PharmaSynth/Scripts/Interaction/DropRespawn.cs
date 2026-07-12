@@ -72,11 +72,15 @@ public class DropRespawn : MonoBehaviour
 
     public void SetHome(Vector3 pos, Quaternion rot) { _homePos = pos; _homeRot = rot; _hasHome = true; }
 
+    /// While part of an apparatus assembly, respawn is the assembly's problem —
+    /// a mid-stack GoHome would teleport a piece out of the formation (W5.12).
+    public bool Suspended { get; set; }
+
     public void SetKillZ(float y) => killZ = y;
 
     void Update()
     {
-        if (!_hasHome) return;
+        if (Suspended || !_hasHome) return;
         if (!_supplyCaptured) CaptureSupply();
         bool held = _grab != null && _grab.isSelected;
         float speed = _rb != null && !_rb.isKinematic ? _rb.linearVelocity.magnitude : 0f;

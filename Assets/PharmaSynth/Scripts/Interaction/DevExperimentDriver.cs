@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 /// Keyboard driver for in-editor testing of the experiment loop without needing
 /// full XR interaction. Lets you watch the HUD, Pharmee, and grade screen react.
 ///   B = begin/restart · 1-5 = complete step N · F = finish · R = retry
+///   P = pour-debug overlay (floating "hit/target" text at every pouring mouth)
 /// Disabled in builds unless enableInBuild is set.
 public class DevExperimentDriver : MonoBehaviour
 {
@@ -36,6 +37,11 @@ public class DevExperimentDriver : MonoBehaviour
             else { var res = runner.Finish(1f); Debug.Log("[Dev] Finish → grade " + res.grade.Total.ToString("0") + "% passed=" + res.passed); }
         }
         if (kb.rKey.wasPressedThisFrame) { runner.Retry(); Debug.Log("[Dev] Retry"); }
+        if (kb.pKey.wasPressedThisFrame)
+        {
+            LiquidPourer.DebugOverlay = !LiquidPourer.DebugOverlay;
+            Debug.Log("[Dev] Pour debug overlay " + (LiquidPourer.DebugOverlay ? "ON" : "OFF"));
+        }
     }
 
     private void CompleteIndex(int i)
