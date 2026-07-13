@@ -178,6 +178,11 @@ public class PharmeeBrain : MonoBehaviour
 
     private void Speak(PharmeeState state, PharmeeFaceExpression face, string line)
     {
+        // While the wrist-watch procedures panel is up (user 2026-07-13: Pharmee
+        // kept talking over it, blocking the read), stay quiet — the player is
+        // reading, not acting. The window also covers 1.5 s after it closes.
+        if (WristWatchController.SuppressNpcPokes) return;
+
         State = state;
         LastLine = line;
         LastExpression = face;

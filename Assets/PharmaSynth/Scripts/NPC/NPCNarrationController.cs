@@ -174,13 +174,19 @@ public class NPCNarrationController : MonoBehaviour
         }
         yield return RevealAndHold(subtitle, waitSeconds);
         _voiceActive = false;
-        // Chain any line that queued while this one was typing.
+        // Chain any line that queued while this one was typing — but leave a clear
+        // BEAT between lines (user 2026-07-13: Pharmee fired lines back-to-back too
+        // fast to follow). The pause lets the bubble/HUD fully clear before the next.
         if (_queued.Count > 0)
         {
             var next = _queued.Dequeue();
+            yield return new WaitForSeconds(InterLineGap);
             narrationRoutine = StartCoroutine(SayRoutine(next.subtitle, next.seconds, next.clip));
         }
     }
+
+    /// Beat between consecutive Pharmee lines so they don't run together.
+    private const float InterLineGap = 0.85f;
 
     /// Type the line out character-by-character (with per-few-chars talking blips),
     /// then hold the finished line for the remaining dwell time, then end it. The HUD

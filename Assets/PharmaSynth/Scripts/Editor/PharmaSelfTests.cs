@@ -1792,6 +1792,9 @@ public static class PharmaSelfTests
         A("splint: waits for a match first", !MethaneApparatusRig.SplintShouldFire(true, false, float.MaxValue, false, 5f));
         A("splint: not collected never", !MethaneApparatusRig.SplintShouldFire(false, false, 0.1f, true, 30f));
         A("splint: fires once", !MethaneApparatusRig.SplintShouldFire(true, true, 0.1f, true, 30f));
+        // W5.12 location-free: proximity reach check (heat/collect/assemble).
+        A("reach: within fires", MethaneApparatusRig.WithinReach(0.2f, 0.35f));
+        A("reach: beyond doesn't", !MethaneApparatusRig.WithinReach(0.5f, 0.35f));
 
         // Stir end-to-end: circle the rod → TaskGraph condition completes.
         var module = ScriptableObject.CreateInstance<ExperimentModuleDefinition>();
@@ -2917,12 +2920,13 @@ public static class PharmaSelfTests
             runner.SetModule(module);
             var temp = xgo.AddComponent<TemperatureSim>();
             var gas = xgo.AddComponent<GasCollection>();
-            var burnerZone = xgo.AddComponent<ZoneItemSensor>(); burnerZone.SetItemId("burner");
-            var collectZone = cgo.AddComponent<ZoneItemSensor>(); collectZone.SetItemId("collection-tube");
             var rig = xgo.AddComponent<MethaneApparatusRig>();
 
             runner.StartExperiment();
-            rig.Bind(runner, temp, gas, burnerZone, collectZone);
+            // W5.12: location-free rig — no zones; heat/collect complete via the
+            // rig's own TemperatureSim/GasCollection conditions (driven by burner/
+            // collection-tube PROXIMITY in play; here we drive the sims directly).
+            rig.Bind(runner, temp, gas);
             rig.HandleExperimentStarted(module);   // edit mode: subscribe happened post-start
 
             runner.CompleteTask("prepare-mixture");

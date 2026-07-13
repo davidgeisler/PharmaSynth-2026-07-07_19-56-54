@@ -33,6 +33,12 @@ public class GrindController : MonoBehaviour
 
     public void SetPestle(Transform pestle) => _pestle = pestle;
 
+    /// Re-point which task this grind completes (W5.12: the Methane rig aims the
+    /// shared workspace mortar at "prepare-mixture" while its tutorial runs, then
+    /// clears it back to cosmetic afterwards). Re-registers the condition.
+    public void SetTaskId(string taskId) { _taskId = taskId; Register(); }
+    public string TaskId => _taskId;
+
     // W5.9: also re-Register on enable (see StirController note).
     private void OnEnable() { Resubscribe(); Register(); }
     private void OnDisable() { if (_runner != null) _runner.ExperimentStarted -= OnStarted; _subscribed = false; }

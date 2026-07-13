@@ -148,6 +148,15 @@ public static class LabInfoDatabase
         AddEquip("separatory", "Separatory Funnel", "Pear-shaped funnel with a tap for separating two liquid layers that don't mix. Let them settle, then drain the lower layer off through the tap.");
         AddEquip("florence", "Florence Flask", "Round-bottomed boiling flask. Its even curve heats uniformly, so it's used for distillation and reactions that must reach a steady boil.");
         AddEquip("thermometer", "Thermometer", "Reads the temperature of a bath or mixture. Watch it so you heat to the range a step specifies and never overshoot — overheating ruins the product.");
+        // W5.12 distillation set + methane splint.
+        AddEquip("condenser", "Condenser", "Liebig condenser: hot vapour passes through the inner tube while cold water flows around the outer jacket, cooling the vapour back to liquid. Clamp it sloping down from the flask so the distillate runs into the receiver.");
+        AddEquip("deliverytube", "Delivery Tube", "Bent glass tube (with rubber) that carries an evolved gas or vapour from a stoppered flask to where it's collected — e.g. leading methane over water, or CO2 into limewater.");
+        AddEquip("waterbath", "Water Bath", "A bath of hot water that heats a flask GENTLY and evenly, below water's boiling point — used for warming volatile or flammable mixtures where a direct flame would be dangerous.");
+        AddEquip("utilityclamp", "Utility Clamp", "Three-prong clamp on a boss head that grips a flask, condenser or tube and holds it steady on the retort stand. Tighten just enough to hold — over-tightening cracks the glass.");
+        AddEquip("aspirator", "Aspirator", "Water-driven suction pump that pulls a vacuum for filtration, speeding up how fast liquid draws through the filter paper.");
+        AddEquip("rubberstopper", "Rubber Stopper", "Bored rubber bung that seals a flask while letting a delivery tube or thermometer through the hole — keeps the evolved gas heading where you want it.");
+        AddEquip("stopper", "Rubber Stopper", "Bored rubber bung that seals a flask while letting a delivery tube or thermometer through the hole.");
+        AddEquip("splint", "Wooden Splint", "A thin wooden stick you light to test a collected gas: held to the mouth of the tube, methane ignites with a small pop and a clean blue flame — that confirms the gas.");
         AddEquip("fumehood", "Fume Hood", "Ventilated enclosure that draws toxic fumes away from you. Do every step with aniline, chloroform, ammonia or acid chlorides inside it, with the sash low.");
         // PPE wearables (locker displays).
         AddEquip("labcoat", "Lab Coat", "Protects your clothes and skin from splashes and stray reagent. One of the three required PPE pieces — put it on at the locker; the door stays locked until all three are worn.");
